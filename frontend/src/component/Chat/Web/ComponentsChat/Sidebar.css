@@ -1,0 +1,135 @@
+/* Sidebar.css */
+.sidebar {
+  width: 25%;
+  height: 80vh;
+  background-color: #744159;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  border: 2px solid #ff007b;
+  border-radius: 25px;
+  margin-right: 1.5%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #805656;
+}
+.logo .img-logo {
+  width: 35%;
+  border-radius: 50%;
+}
+
+.profile{
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #805656;
+}
+.profile .img-profile-user {
+  width: 20%;
+  margin: 0 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  object-fit : contain;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #805656;
+}
+
+.icons {
+  width: 7%;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 10px;
+}
+
+.vip-section {
+  background-color: pink;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+
+/* ---------- user list ----------------- */
+.user-list {
+  height: 28%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-left: 30px;
+  padding-top: 5px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  position: relative;
+  transform-origin: center;
+  gap: 8px;
+}
+
+.user:nth-child(1) {
+  transform: rotate(-10deg);
+}
+
+.user:nth-child(2) {
+  padding-top: 10px;
+  transform: rotate(10deg);
+  justify-content: center; 
+  /* چیدمان عناصر به انتهای سمت راست */
+}
+
+.user:nth-child(3) {
+  transform: rotate(-5deg);
+}
+
+.img-profile-user {
+  width: 11%;
+  /* height: 25px; */
+  border-radius: 50%;
+}
+
+.user:nth-child(1) .img-profile-user {
+  background-color: #ff6ec7;
+}
+
+.user:nth-child(2) .img-profile-user {
+  background-color: #34d399;
+}
+
+.user:nth-child(3) .img-profile-user {
+  background-color: #ff5959;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  background-color: #d3d3d3;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.user:nth-child(2) .user-name {
+  margin-left: 0;
+  margin-right: 10px;
+}

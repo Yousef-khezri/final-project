@@ -1,0 +1,107 @@
+/* ChatArea.css */
+.chat-area {
+	width: 50%;
+	height: 80vh;
+	margin-right: 1.5%;
+	display: flex;
+	flex-direction: column;
+	background-color: #ffffff;
+	border: 2px solid #ff007b;
+	border-radius: 25px;
+}
+
+.chat-header {
+	padding: 15px 20px;
+	background-color: #f7f7fa;
+	border-bottom: 1px solid #ececec;
+	font-size: 16px;
+	font-weight: 600;
+	color: #333333;
+	border-radius: 25px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.chat-header .img-profile-friend {
+	width: 7%;
+	/* margin: 0 20px; */
+}
+
+/*-------------------- chat body ------------------------------*/
+.chat-body {
+	flex: 1;
+	padding: 20px;
+	overflow-y: auto;
+	background-color: #f9f9f9;
+	display: flex;
+	flex-direction: column;
+}
+
+.message {
+	margin-bottom: 15px;
+	max-width: 60%;
+	padding: 12px 15px;
+	border-radius: 20px;
+	font-size: 14px;
+	line-height: 1.5;
+	display: inline-block;
+}
+
+.message.received {
+	background-color: #ececec;
+	color: #333333;
+	align-self: flex-start;
+	border-top-left-radius: 4px;
+}
+
+.message.sent {
+	background-color: #007bff;
+	color: #ffffff;
+	align-self: flex-end;
+	margin-left: auto;  /* اینجا اضافه شده */
+	border-top-right-radius: 4px;
+}
+
+.message .file {
+	background-color: #a34170;
+	padding: 5px 10px;
+	border-radius: 10px;
+	cursor: pointer;
+	display: inline-block;
+	margin-top: 5px;
+}
+
+/*------------------------- end chat body ----------------------------------*/
+
+.chat-input {
+	display: flex;
+	align-items: center;
+	padding: 15px 20px;
+	background-color: #f7f7fa;
+	border-top: 1px solid #ececec;
+	border-radius: 25px;
+	gap: 10px;
+}
+
+.chat-input input {
+	width: 80%;
+	padding: 10px 15px;
+	border-radius: 25px;
+	border: 1px solid #ececec;
+	font-size: 14px;
+}
+
+.attach-img,
+.smile-img {
+	width: 2.5%;
+	cursor: pointer;
+}
+
+.chat-input .send-img {
+	width: 5%;
+	border-radius: 50%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+}

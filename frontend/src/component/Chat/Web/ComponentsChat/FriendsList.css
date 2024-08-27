@@ -1,0 +1,64 @@
+/* FriendsList.css */
+.friends-list {
+  width: 25%;
+  min-width: 257px;
+  height: 80vh;
+  background-color: #f7f7fa;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #ff007b;
+  border-radius: 25px;
+}
+
+.search-box {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 25px;
+  border: none;
+  background-color: #ffffff;
+  font-size: 14px;
+}
+
+.friend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ececec;
+  cursor: pointer;
+}
+
+.friend img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+  object-fit: cover;
+  display: block;
+}
+
+.friend-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.span_usernameFriend {
+  /* margin-top: 5px; */
+  padding: 10px 0;
+  color: blue;
+}
+
+.friend .box_Date_Time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+.time {
+  font-size: 12px;
+  color: #999999;
+}

@@ -1,0 +1,145 @@
+/* Photos.css */
+
+.photo-gallery {
+  padding: 20px;
+  text-align: center;
+}
+
+.photo-gallery h2 {
+  margin-bottom: 30px;
+}
+
+.photo-item img {
+  width: 60%;
+  height: auto;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s;
+  margin: 0 auto;
+}
+
+.photo-item img:hover {
+  transform: scale(1.05);
+  border-radius: 10px;
+}
+
+.custom-arrow {
+  width: 40px !important;
+  height: 40px !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  border-radius: 50%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.custom-arrow::before {
+  font-size: 20px;
+  color: #fff;
+}
+
+/*################ popup photo ########################################*/
+.popup-overlay-photo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s;
+  z-index: 1000;
+}
+
+.popup-overlay-photo .popup-content-photo {
+  position: relative;
+  background-color: #6d6d6d;
+  padding: 20px;
+  border-radius: 10px;
+  animation: scaleUp 0.3s;
+  text-align: center;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: hidden;
+}
+
+.popup-content-photo .img_photo {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 10px;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  background-color: transparent;
+  color: #000;
+  border: none;
+  border-bottom-left-radius: 50%;
+  font-size: 30px;
+  cursor: pointer;
+  outline: none;
+}
+
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  color: #000;
+  border: none;
+  font-size: 50px;
+  cursor: pointer;
+  outline: none;
+  padding: 0 10px;
+}
+
+.prev-button {
+  left: 10px;
+}
+
+.next-button {
+  right: 10px;
+}
+
+.delete-button {
+  margin-top: 5px;
+  padding: 10px 15px;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  position: relative;
+  display: block;
+  margin: 10px auto 0 auto;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.7);
+  }
+  to {
+    transform: scale(1);
+  }
+}

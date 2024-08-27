@@ -1,0 +1,138 @@
+.user-profile {
+  background-color: #744159; /* رنگ پس‌زمینه کل صفحه پروفایل */
+  color: white;
+  font-family: Arial, sans-serif;
+  width: 60%;
+  min-width: 824px;
+  height: 80%;
+  padding: 20px;
+  border-radius: 10px; /* گرد کردن گوشه‌های کادر */
+  /* margin: 0 auto; مرکز کردن صفحه پروفایل */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between; /* فاصله دادن بین آیتم‌ها در هدر */
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.user-info {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  border-radius: 50%; /* تصویر پروفایل را به صورت دایره نمایش می‌دهد */
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.user-name {
+  font-size: 18px;
+}
+
+.user-info .img_send_request {
+  width: 35px;
+  margin-left: auto;
+  cursor: pointer;
+}
+/*--------------------------------------------------------------*/
+.menu {
+  position: relative;
+}
+
+.menu-icon {
+  cursor: pointer; /* نشانگر موس به صورت دست تغییر می‌کند */
+  font-size: 24px;
+}
+
+.menu-content {
+  display: none; /* منو به صورت پیش‌فرض نمایش داده نمی‌شود */
+  position: absolute;
+  right: 0;
+  background-color: white;
+  color: #333;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ایجاد سایه زیر منو */
+}
+
+.menu:hover .menu-content {
+  display: block; /* منو زمانی که موس روی آیکون می‌رود نمایش داده می‌شود */
+}
+
+.menu-content ul {
+  list-style: none; /* حذف بولت‌های لیست */
+  padding: 0;
+  margin: 0;
+}
+
+.menu-content ul li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.menu-content ul li:hover {
+  background-color: #f2f2f2; /* رنگ پس‌زمینه آیتم منو در حالت هاور */
+}
+
+/*----------------------------------------------------------------------*/
+.tabs_images{
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.tabs_images .image-user {
+    max-width: 15%;
+    max-height: 150px;
+    border-radius: 15px;
+}
+
+.tabs_images .upload-image-user {
+    width: 7%;
+    cursor: pointer;
+}
+/*----------------------------------------------------------------------*/
+.tabs {
+  width: 100%;
+  display: flex;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  overflow:hidden;
+}
+
+.tab {
+  width: 25%;
+  min-width: 78px;
+  height: 40px;
+  flex: 1;
+  text-align: center;
+  background-color: #ffffff30; /* رنگ پس‌زمینه تب‌ها */
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tab.active {
+  background-color: white;
+  color: #e00074;
+  font-weight: 520;
+}
+
+/*--------------------------------------------------------------*/
+.profile-content {
+  min-width: 788px;
+  background-color: white;
+  color: #333;
+  /* padding: 20px; */
+  border-radius: 10px;
+}
