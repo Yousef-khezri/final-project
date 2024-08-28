@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Axios from "axios";
 import "./PhotoUploadPopup.css";
 
-function PhotoUploadPopup({ showPopup, closePopup, setPhotos }) {
+function PhotoUploadPopup({ user_id, showPopup, closePopup, setPhotos }) {
 	const [file, setFile] = useState(null);
-	const [userId] = useState(1); // فرض می‌کنیم user_id = 1 است
+	const [userId] = useState(user_id); 
 
 	const handleFileChange = (e) => {
 		setFile(e.target.files[0]);

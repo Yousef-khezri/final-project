@@ -19,9 +19,9 @@ function LoginRegister({ updateCheckLogin }) {
 				email,
 				password,
 			});
-			updateCheckLogin(response.data.user);
+			updateCheckLogin(response.data);
 			// console.log(response.data.user); // test *******************************
-			navigate("/");
+			navigate("/user-profile");
 		} catch (error) {
 			console.log(error);
 			setErrorMessage("Invalid email or password");
@@ -52,9 +52,9 @@ function LoginRegister({ updateCheckLogin }) {
 			);
 			setIsRegistering(false);
 			setErrorMessage("");
-			console.log(response.data.message); 
+			console.log(response.data.message);
 		} catch (error) {
-			console.error(error); 
+			console.error(error);
 			setErrorMessage("Error registering user");
 		}
 	};

@@ -1,7 +1,7 @@
 import React from "react";
 import "./Sidebar.css";
 
-const Sidebar = ({ profile, handleAvatarClick, closePopup }) => {
+const Sidebar = ({ currentUserProfile, handleAvatarClick, closePopup }) => {
 	return (
 		<div className="sidebar">
 			<div className="logo">
@@ -11,10 +11,15 @@ const Sidebar = ({ profile, handleAvatarClick, closePopup }) => {
 				<img
 					className="img-profile-user"
 					onClick={handleAvatarClick}
-					src={`http://localhost:5000${profile.profile_picture_url}`}
+					src={`http://localhost:5000${currentUserProfile.profile_picture_url}`}
 				/>
 				<h3>
-					{`${profile.first_name} ${profile.last_name}`}
+					{
+					currentUserProfile.first_name &&
+					currentUserProfile.last_name
+						? `${currentUserProfile.first_name} ${currentUserProfile.last_name}`
+						: currentUserProfile.username
+					}
 				</h3>
 			</div>
 			<div className="menu">

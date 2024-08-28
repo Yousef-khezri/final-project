@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Interests.css";
 
-function Interests() {
+function Interests({user_id}) {
 	const [userInterests, setUserInterests] = useState();
 	const [interests, setInterests] = useState([]); // State برای ذخیره لیست علایق
 	const [error, setError] = useState(null); // State برای مدیریت خطاها
 	const [isEditing, setIsEditing] = useState(false);
 
-	const [userId, setUserId] = useState(1);
+	const [userId, setUserId] = useState(user_id);
 
 	//############################################################################ */
 	//                            start interests								   //
@@ -95,7 +95,6 @@ function Interests() {
 	//**************************************************************************** */
 	//                             End interests								   //
 	//############################################################################ */
-
 
 	return (
 		<div className="main_box_Interests">

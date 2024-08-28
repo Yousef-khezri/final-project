@@ -7,15 +7,15 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const http = require("http");
-const socketIO = require("socket.io");
+// const http = require("http");
+// const socketIO = require("socket.io");
 
 const app = express();
 const PORT = 5000;
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // برای parse کردن بدنه درخواست های JSON
 
 // سرویس‌دهی فایل‌های استاتیک (برای پروژه React)
 app.use(express.static("public"));
@@ -27,7 +27,8 @@ app.use(
 	express.static(path.join(__dirname, "uploads/profile_pictures"))
 );
 //--------------- Realtime Message -----------------------------------------
-const server = http.createServer(app);
+// const server = http.createServer(app);
+
 // const io = socketIO(server, {
 // 	cors: {
 // 		origin: "http://localhost:3000", // آدرس کلاینت
@@ -36,41 +37,42 @@ const server = http.createServer(app);
 // 		credentials: true,
 // 	},
 // });
-const io = require("socket.io")(server, {
-	cors: {
-		origin: "http://localhost:3000/chat",
-		methods: ["GET", "POST"],
-		allowedHeaders: ["my-custom-header"],
-		credentials: true,
-	},
-	transports: ["websocket"], // اطمینان حاصل کنید که پروتکل "websocket" به عنوان transport تنظیم شده است.
-});
 
-io.on("connection", (socket) => {
-	console.log("New user connected");
+// const io = require("socket.io")(server, {
+// 	cors: {
+// 		origin: "http://localhost:3000/chat",
+// 		methods: ["GET", "POST"],
+// 		allowedHeaders: ["my-custom-header"],
+// 		credentials: true,
+// 	},
+// 	transports: ["websocket"], // اطمینان حاصل کنید که پروتکل "websocket" به عنوان transport تنظیم شده است.
+// });
 
-	socket.on("joinRoom", ({ senderId, receiverId }) => {
-		socket.join(`chat-${senderId}-${receiverId}`);
-		socket.join(`chat-${receiverId}-${senderId}`);
-		console.log(`User joined chat-${senderId}-${receiverId}`);
-	});
+// io.on("connection", (socket) => {
+// 	console.log("New user connected");
 
-	// socket.on("newMessage", (msg) => {
-	// 	const { sender_id, receiver_id } = msg;
-	// 	io.to(`chat-${sender_id}-${receiver_id}`).emit("newMessage", msg);
-	// 	io.to(`chat-${receiver_id}-${sender_id}`).emit("newMessage", msg);
-	// });
-	socket.on("newMessage", (msg) => {
-		const { sender_id, receiver_id } = msg;
-		// ارسال پیام به اتاق‌های مربوطه
-		io.to(`chat-${sender_id}-${receiver_id}`).emit("newMessage", msg);
-		io.to(`chat-${receiver_id}-${sender_id}`).emit("newMessage", msg);
-	});
+// 	socket.on("joinRoom", ({ senderId, receiverId }) => {
+// 		socket.join(`chat-${senderId}-${receiverId}`);
+// 		socket.join(`chat-${receiverId}-${senderId}`);
+// 		console.log(`User joined chat-${senderId}-${receiverId}`);
+// 	});
 
-	socket.on("disconnect", () => {
-		console.log("User disconnected");
-	});
-});
+// 	// socket.on("newMessage", (msg) => {
+// 	// 	const { sender_id, receiver_id } = msg;
+// 	// 	io.to(`chat-${sender_id}-${receiver_id}`).emit("newMessage", msg);
+// 	// 	io.to(`chat-${receiver_id}-${sender_id}`).emit("newMessage", msg);
+// 	// });
+// 	socket.on("newMessage", (msg) => {
+// 		const { sender_id, receiver_id } = msg;
+// 		// ارسال پیام به اتاق‌های مربوطه
+// 		io.to(`chat-${sender_id}-${receiver_id}`).emit("newMessage", msg);
+// 		io.to(`chat-${receiver_id}-${sender_id}`).emit("newMessage", msg);
+// 	});
+
+// 	socket.on("disconnect", () => {
+// 		console.log("User disconnected");
+// 	});
+// });
 //----------------------------------------------------------------
 // const server = http.createServer(app);
 // const io = socketIo(server);
@@ -107,8 +109,8 @@ io.on("connection", (socket) => {
 const db = mysql.createConnection({
 	host: "127.0.0.1",
 	user: "root",
-	password: "password",
-	database: "dating_shema",
+	password: "Joseph491626128090",
+	database: "db-dating-web",
 });
 
 // اتصال به دیتابیس
@@ -122,8 +124,7 @@ db.connect((err) => {
 
 //--------------------------------------------------------------------------
 // Middleware
-// app.use(cors());
-app.use(express.json()); // برای parse کردن بدنه درخواست های JSON
+
 app.use(
 	session({
 		secret: "joseph_adrijana_key", // کلید سشن که باید در محیط تولیدی امن باشد
@@ -185,8 +186,8 @@ app.post("/register", async (req, res) => {
 app.post("/login", (req, res) => {
 	const { email, password } = req.body;
 
-	console.log(`email : ${email}`);
-	console.log(`password : ${password}`);
+	// console.log(`email : ${email}`);
+	// console.log(`password : ${password}`);
 	// بررسی اینکه آیا email و password در درخواست موجود است
 	if (!email || !password) {
 		return res
@@ -215,7 +216,11 @@ app.post("/login", (req, res) => {
 
 		// تنظیم سشن
 		req.session.user = user;
-		res.status(200).json({ message: "Login successful" });
+		res.status(200).json({
+			message: "Login successful",
+			user_id: user.id,
+			username: user.username,
+		});
 	});
 });
 //----------------------------------------------------------------
@@ -462,13 +467,12 @@ app.get("/profile", (req, res) => {
 	const query = `
     SELECT 
       user_profile.*,
+	  user_credentials.username,
       children_statuses.children_status,
       drinking_statuses.drinking_status,
       educations.education,
       languages.language,
       lifestyles.lifestyle,
-      locations.city,
-      locations.country,
       marital_statuses.marital_status,
       occupations.occupation,
       pet_ownerships.pet_ownership,
@@ -476,12 +480,12 @@ app.get("/profile", (req, res) => {
       religions.religion,
       smoking_statuses.smoking_status
     FROM user_profile
+	LEFT JOIN user_credentials ON user_profile.user_id = user_credentials.id
     LEFT JOIN children_statuses ON user_profile.children_status_id = children_statuses.id
     LEFT JOIN drinking_statuses ON user_profile.drinking_status_id = drinking_statuses.id
     LEFT JOIN educations ON user_profile.education_id = educations.id
     LEFT JOIN languages ON user_profile.language_id = languages.id
     LEFT JOIN lifestyles ON user_profile.lifestyle_id = lifestyles.id
-    LEFT JOIN locations ON user_profile.location_id = locations.id
     LEFT JOIN marital_statuses ON user_profile.marital_status_id = marital_statuses.id
     LEFT JOIN occupations ON user_profile.occupation_id = occupations.id
     LEFT JOIN pet_ownerships ON user_profile.pet_ownership_id = pet_ownerships.id

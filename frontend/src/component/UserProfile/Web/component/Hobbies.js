@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Hobbies.css";
 
-function Hobbies() {
+function Hobbies(user_id) {
 	const [userHobbies, setUserHobbies] = useState();
 	const [hobbies, setHobbies] = useState([]);
 	const [isEditingHobbies, setIsEditingHobbies] = useState(false);
 	const [error, setError] = useState(null); // State برای مدیریت خطاها
 
-	const [userId, setUserId] = useState(1);
+	const [userId, setUserId] = useState(user_id);
 
 	//############################################################################ */
 	//                            start hobbies			    					   //

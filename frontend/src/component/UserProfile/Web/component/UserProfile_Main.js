@@ -7,8 +7,12 @@ import Photos from "./Photos";
 import Hobbies from "./Hobbies";
 import PhotoUploadPopup from "./PhotoUploadPopup";
 
-function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
-	const [user_id] = useState(5); //  for testing purposes @@@@@@@@@@@
+function UserProfile_Main({
+	currentUserProfile,
+	setCurrentUserProfile,
+	handleAvatarClick,
+}) {
+	const user_id = currentUserProfile.user_id;
 
 	const [photos, setPhotos] = useState(null);
 	const [activeTab, setActiveTab] = useState("My profile");
@@ -84,30 +88,10 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 		}
 	};
 
-	//@@@@@@@@@@@ => old code <= @@@@@@@@@@@@@@@@@@@@@@@
-	// تعیین تصویر بر اساس وضعیت
-	// const getImageSrc = () => {
-	// 	if (friendRequest && friendRequest.status === "accepted") {
-	// 		return "./images/heart-accepted.png";
-	// 	}
-
-	// 	if (friendRequest && 
-	// 		friendRequest.status === "pending" && 
-	// 		friendRequest.sender_id === user_id) {
-	// 		return "./images/heart-red.png";
-	// 	} else {
-	// 		return "./images/heart.png";
-	// 	}
-
-	// 	if (friendRequest && friendRequest.status === "rejected") {
-	// 		return "./images/heart.png";
-	// 	}
-	// };
-
 	//---------------------------------------------
 	//        Update friend request status
 	// تابع برای مدیریت کلیک روی تصویر
-	
+
 	const handleFriendRequestClick = async () => {
 		try {
 			let newStatus;
@@ -143,7 +127,7 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 				);
 
 				let receiver_status_rejected = true;
-				
+
 				if (Array.isArray(friendRequest) && friendRequest.length > 1) {
 					// پیدا کردن ایندکس آبجکت‌هایی که شرایط مشخص شده را دارند
 					const index_obj_sender = friendRequest.findIndex(
@@ -168,10 +152,11 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 
 					console.log("index_obj_sender : " + index_obj_sender);
 					console.log("index_obj_receiver : " + index_obj_receiver);
-					console.log("receiver_status_rejected : " + receiver_status_rejected);
+					console.log(
+						"receiver_status_rejected : " + receiver_status_rejected
+					);
 				}
 
-				
 				console.log(existingRequest);
 
 				if (existingRequest) {
@@ -189,7 +174,7 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 							receiver_status_rejected
 						) {
 							newStatus = "pending"; // اگر وضعیت فعلی "rejected" است، باید به "pending" برگردد
-						} else { 
+						} else {
 							newStatus = "accepted"; // اگر وضعیت فعلی "rejected" است، باید به "pending" برگردد
 						}
 					} else if (existingRequest.sender_id === receiver_id) {
@@ -210,25 +195,6 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 				// اگر هیچ درخواست دوستی موجود نباشد
 				newStatus = "pending"; // وضعیت پیش‌فرض
 			}
-			//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-			// تعیین وضعیت جدید بر اساس وضعیت فعلی
-			// if (
-			// 	friendRequest?.status === "pending" &&
-			// 	friendRequest?.sender_id === user_id
-			// ) {
-			// 	newStatus = "rejected";
-			// } else if (
-			// 	friendRequest?.status === "pending" &&
-			// 	friendRequest?.sender_id === receiver_id
-			// ) {
-			// 	newStatus = "accepted";
-			// } else if (friendRequest?.status === "rejected") {
-			// 	newStatus = "pending";
-			// } else if (friendRequest?.status === "accepted") {
-			// 	newStatus = "rejected";
-			// } else {
-			// 	newStatus = "pending"; // اگر هیچ درخواستی وجود ندارد، وضعیت اولیه "pending" است
-			// }
 
 			const response = await axios.post(
 				"http://localhost:5000/update-friend-request-status",
@@ -292,15 +258,21 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 			<div className="header">
 				<div className="user-info">
 					<img
-						src={`http://localhost:5000${profile.profile_picture_url}`}
+						src={`http://localhost:5000${currentUserProfile.profile_picture_url}`}
 						alt="User Avatar"
 						className="avatar"
 						// key={profile.user_id}
 					/>
 					<p className="user-name">
-						{profile.first_name} {profile.last_name},{" "}
+						{currentUserProfile.first_name &&
+						currentUserProfile.last_name
+							? `${currentUserProfile.first_name} ${currentUserProfile.last_name}`
+							: currentUserProfile.username}
+						,{" "}
 						{new Date().getFullYear() -
-							new Date(profile.birthdate).getFullYear()}
+							new Date(
+								currentUserProfile.birthdate
+							).getFullYear()}
 					</p>
 					<img
 						className="img_send_request"
@@ -371,6 +343,7 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 					onClick={openPopup}
 				/>
 				<PhotoUploadPopup
+					user_id={user_id}
 					showPopup={showPopup}
 					closePopup={closePopup}
 					setPhotos={setPhotos}
@@ -412,16 +385,21 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 			<div className="profile-content">
 				{activeTab === "My profile" && (
 					<My_profile
-						profile={profile}
-						setProfile={setProfile}
+						currentUserProfile={currentUserProfile}
+						setCurrentUserProfile={setCurrentUserProfile}
 						handleAvatarClick={handleAvatarClick}
 					/>
 				)}
-				{activeTab === "Interests" && <Interests />}
-				{activeTab === "Hobbies" && <Hobbies />}
+				{activeTab === "Interests" && <Interests user_id={user_id} />}
+				{activeTab === "Hobbies" && <Hobbies user_id={user_id} />}
 				{activeTab === "Photos" && (
-					<Photos photos={photos} setPhotos={setPhotos} />
+					<Photos
+						user_id={user_id}
+						photos={photos}
+						setPhotos={setPhotos}
+					/>
 				)}
+				{/* photos, setPhotos */}
 			</div>
 		</div>
 	);
