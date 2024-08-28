@@ -3,7 +3,7 @@ import HomeWeb from "./HomeWeb/HomeWeb";
 import HomeHandy from "./HomeHandy/HomeHandy";
 import "./Home.css";
 
-export default function Home() {
+export default function Home({ checkLogin }) {
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   useEffect(() => {
     const handleResize = () => {
@@ -17,7 +17,7 @@ export default function Home() {
 
   return (
     <div className="home_container">
-      {windowSize > 450 ? <HomeWeb /> : <HomeHandy />}
+      {windowSize > 450 ? <HomeWeb checkLogin={checkLogin} /> : <HomeHandy />}
     </div>
   );
 }

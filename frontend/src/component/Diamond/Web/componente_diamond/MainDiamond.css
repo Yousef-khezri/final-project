@@ -1,0 +1,25 @@
+.main{
+    background-color: #ff4469;
+    width: 65%;
+    height: 90vh;
+    border-radius: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.user_box{
+    width: 20%;
+    height: 180px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    border-radius: 15px;
+}
+.p_first, .p_second{
+    margin: 0;
+    padding: 0;
+    color: white;
+}

@@ -3,10 +3,10 @@ import "./HomeWeb.css";
 import Header from "../../Header/Header";
 import Footer from "../../Footer/Footer";
 
-export default function HomeWeb() {
+export default function HomeWeb({ checkLogin }) {
   return (
     <>
-      <Header />
+      <Header checkLogin={checkLogin} />
       <main className="web_main">
         {/* section 1 - logo and heart */}
         <section className="section_1">
@@ -14,14 +14,14 @@ export default function HomeWeb() {
           <div className="logo-textDiv">
             <div className="logoDiv">
               <img className="frontLogo" src="./images/phoenix-logo .png" />
-              <h2 className="titel">- dein Neuanfang</h2>
             </div>
+            <h2 className="titel"> dein Neuanfang</h2>
             <div className="textDivFront">
               <p className="phoenix-text">
                 ...Phoenix symbolisiert den neuen Anfang und die Wiedergeburt,
                 genau wie eine neue Liebe, die in unserem Leben erblüht. In
                 unsere Plattform kannst du aus der Asche alter Beziehungen
-                aufsteigen und wahre Werbundenheit finden.
+                aufsteigen und wahre Verbundenheit finden.
               </p>
             </div>
             {/* alt-textBox */}
