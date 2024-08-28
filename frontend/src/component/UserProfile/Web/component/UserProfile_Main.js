@@ -189,7 +189,7 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 							receiver_status_rejected
 						) {
 							newStatus = "pending"; // اگر وضعیت فعلی "rejected" است، باید به "pending" برگردد
-						} else {
+						} else {git 
 							newStatus = "accepted"; // اگر وضعیت فعلی "rejected" است، باید به "pending" برگردد
 						}
 					} else if (existingRequest.sender_id === receiver_id) {
