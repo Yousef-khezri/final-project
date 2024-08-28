@@ -672,7 +672,6 @@ app.get("/chat-friends/:userId", (req, res) => {
 	});
 });
 
-
 //--------------------------------------------------------------------------
 //##########################################################################
 
@@ -1392,37 +1391,249 @@ app.get("/hobbies", (req, res) => {
 //##########################################################################
 //                  friend-request
 //--------------------------------------------------------------------------
+
+//                Get friend request
 // API برای دریافت وضعیت درخواست دوستی
-app.get('/friend-request-status', (req, res) => {
-  const { sender_id, receiver_id } = req.query;
+app.get("/friend-request-status", (req, res) => {
+	const { sender_id, receiver_id } = req.query;
 
-  if (!sender_id || !receiver_id) {
-    return res.status(400).json({ error: 'sender_id and receiver_id are required' });
-  }
+	if (!sender_id || !receiver_id) {
+		return res
+			.status(400)
+			.json({ error: "sender_id and receiver_id are required" });
+	}
 
-  const query = `
+	const query = `
     SELECT * FROM friend_requests
-    WHERE sender_id = ? AND receiver_id = ?
-    LIMIT 1
+    WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
+    LIMIT 2
   `;
 
-  db.query(query, [sender_id, receiver_id], (err, results) => {
-    if (err) {
-      console.error('Error fetching friend request status:', err);
-      return res.status(500).json({ error: 'Database query error' });
-    }
+	db.query(
+		query,
+		[sender_id, receiver_id, receiver_id, sender_id],
+		(err, results) => {
+			if (err) {
+				console.error("Error fetching friend request status:", err);
+				return res.status(500).json({ error: "Database query error" });
+			}
 
-    if (results.length > 0) {
-      res.json({ status: results[0].status });
-    } else {
-      res.json({ status: 'rejected' });  // اگر هیچ داده‌ای پیدا نشود، وضعیت به عنوان rejected در نظر گرفته می‌شود
-    }
-  });
+			if (results.length > 0) {
+				res.json(results);
+			} else {
+				res.json({
+					sender_id: sender_id,
+					receiver_id: receiver_id,
+					status: "rejected",
+				});
+			}
+		}
+	);
 });
+
+//--------------------------------------------------------------------------
+
+//       Update and Insert friend request status
+//  در این قسمت بررسی میکند حالت های مختلف برای بروزرسانی status
+app.post("/update-friend-request-status", (req, res) => {
+	const { sender_id, receiver_id, action } = req.body;
+
+	// بررسی اینکه آیا درخواست دوستی (در هر دو جهت) وجود دارد یا خیر
+	const query = `
+    SELECT * FROM friend_requests 
+    WHERE (sender_id = ? AND receiver_id = ?) 
+    OR (sender_id = ? AND receiver_id = ?)
+  `;
+	db.query(
+		query,
+		[sender_id, receiver_id, receiver_id, sender_id],
+		(err, results) => {
+			if (err) {
+				console.error("Error fetching friend request:", err);
+				return res
+					.status(500)
+					.json({ message: "Error fetching friend request." });
+			}
+
+			// بررسی وجود درخواست دوستی از sender_id به receiver_id
+			const directRequest = results.find(
+				(req) =>
+					req.sender_id === sender_id &&
+					req.receiver_id === receiver_id
+			);
+
+			// بررسی وجود درخواست دوستی از receiver_id به sender_id
+			const reverseRequest = results.find(
+				(req) =>
+					req.sender_id === receiver_id &&
+					req.receiver_id === sender_id
+			);
+
+			if (directRequest) {
+				// اگر درخواست دوستی از sender_id به receiver_id وجود دارد، وضعیت آن را به‌روزرسانی کنید
+				const updateQuery = `
+        UPDATE friend_requests 
+        SET status = ? 
+        WHERE sender_id = ? AND receiver_id = ?
+      `;
+				db.query(
+					updateQuery,
+					[action, sender_id, receiver_id],
+					(err, updateResult) => {
+						if (err) {
+							console.error(
+								"Error updating friend request status:",
+								err
+							);
+							return res.status(500).json({
+								message:
+									"Error updating friend request status.",
+							});
+						}
+
+						if (action === "accepted" && reverseRequest) {
+							// اگر action = accepted باشد و درخواست معکوس وجود داشته باشد، وضعیت آن را به accepted تغییر دهید
+							const updateReverseQuery = `
+            UPDATE friend_requests 
+            SET status = ? 
+            WHERE sender_id = ? AND receiver_id = ?
+          `;
+							db.query(
+								updateReverseQuery,
+								[action, receiver_id, sender_id],
+								(err, updateResult) => {
+									if (err) {
+										console.error(
+											"Error updating reverse friend request status:",
+											err
+										);
+										return res.status(500).json({
+											message:
+												"Error updating reverse friend request status.",
+										});
+									}
+									return res.json({
+										message:
+											"Friend request status updated successfully, reverse request also updated to accepted.",
+									});
+								}
+							);
+						} else if (action === "rejected" && reverseRequest) {
+							// اگر action = rejected باشد و درخواست معکوس وجود داشته باشد، وضعیت آن را به rejected تغییر دهید
+							const updateReverseQuery = `
+            UPDATE friend_requests 
+            SET status = ? 
+            WHERE sender_id = ? AND receiver_id = ?
+          `;
+							db.query(
+								updateReverseQuery,
+								[action, receiver_id, sender_id],
+								(err, updateResult) => {
+									if (err) {
+										console.error(
+											"Error updating reverse friend request status:",
+											err
+										);
+										return res.status(500).json({
+											message:
+												"Error updating reverse friend request status.",
+										});
+									}
+									return res.json({
+										message:
+											"Friend request status updated successfully, reverse request also updated to rejected.",
+									});
+								}
+							);
+						} else {
+							return res.json({
+								message:
+									"Friend request status updated successfully.",
+							});
+						}
+					}
+				);
+			} else if (reverseRequest && reverseRequest.status !== "rejected") {
+				// اگر درخواست دوستی معکوس وجود دارد، وضعیت آن را به‌روزرسانی کنید
+				const updateReverseQuery = `
+        			UPDATE friend_requests 
+        			SET status = ? 
+       				WHERE sender_id = ? AND receiver_id = ?
+      				`;
+				db.query(
+					updateReverseQuery,
+					[action, receiver_id, sender_id],
+					(err, updateResult) => {
+						if (err) {
+							console.error(
+								"Error updating reverse friend request status:",
+								err
+							);
+							return res.status(500).json({
+								message:
+									"Error updating reverse friend request status.",
+							});
+						}
+
+						// حالا که درخواست معکوس به‌روزرسانی شد، یک رکورد جدید ایجاد کنید
+						const insertQuery = `
+          INSERT INTO friend_requests (sender_id, receiver_id, status, sent_at) 
+          VALUES (?, ?, ?, NOW())
+        `;
+						db.query(
+							insertQuery,
+							[sender_id, receiver_id, action],
+							(err, insertResult) => {
+								if (err) {
+									console.error(
+										"Error inserting new friend request:",
+										err
+									);
+									return res.status(500).json({
+										message:
+											"Error inserting new friend request.",
+									});
+								}
+								return res.json({
+									message:
+										"Friend request created and reverse request updated successfully.",
+								});
+							}
+						);
+					}
+				);
+			} else {
+				// اگر هیچ درخواست دوستی وجود ندارد، تنها یک رکورد جدید ایجاد کنید
+				const insertQuery = `
+        INSERT INTO friend_requests (sender_id, receiver_id, status, sent_at) 
+        VALUES (?, ?, ?, NOW())
+      `;
+				db.query(
+					insertQuery,
+					[sender_id, receiver_id, action],
+					(err, insertResult) => {
+						if (err) {
+							console.error(
+								"Error inserting new friend request:",
+								err
+							);
+							return res.status(500).json({
+								message: "Error inserting new friend request.",
+							});
+						}
+						return res.json({
+							message: "Friend request created successfully.",
+						});
+					}
+				);
+			}
+		}
+	);
+});
+
 //--------------------------------------------------------------------------
 //                    End friend-request
 //##########################################################################
-
 
 //##########################################################################
 //--------------------------------------------------------------------------

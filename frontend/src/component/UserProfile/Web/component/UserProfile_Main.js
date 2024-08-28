@@ -8,65 +8,255 @@ import Hobbies from "./Hobbies";
 import PhotoUploadPopup from "./PhotoUploadPopup";
 
 function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
-	const [user_id] = useState(1);
+	const [user_id] = useState(5); //  for testing purposes @@@@@@@@@@@
+
 	const [photos, setPhotos] = useState(null);
 	const [activeTab, setActiveTab] = useState("My profile");
 
-	//--------------------------------------------------------------------------
+	//*********************************************************************** */
 	//                checking for friend request
 	//--------------------------------------------------------------------------
-	const [friendRequest, setFriendRequest] = useState();
+	const [friendRequest, setFriendRequest] = useState(null);
 
-	const [receiver_id] = useState(3); // for testing purposes ******
+	const [receiver_id] = useState(1); // for testing purposes @@@@@@@@@@@
 
-	useEffect(() => {
-		// درخواست به بک‌اند برای گرفتن وضعیت درخواست دوستی
-		const fetchFriendRequestStatus = async () => {
-			try {
-				const response = await fetch(
-					// `http://localhost:5000/friend-request-status?sender_id=${user_id}&receiver_id=${profile.user_id}`
-					`http://localhost:5000/friend-request-status?sender_id=${user_id}&receiver_id=${receiver_id}`
-				);
-				const data = await response.json();
-
-				if (data && data.status) {
-					setFriendRequest(data.status);
-				} else {
-					setFriendRequest("rejected"); // اگر داده‌ای موجود نبود، به عنوان rejected در نظر گرفته می‌شود
+	//----------------------------------------
+	//          Get friend request status
+	const fetchFriendRequestStatus = async () => {
+		try {
+			const response = await axios.get(
+				`http://localhost:5000/friend-request-status`,
+				{
+					params: {
+						sender_id: user_id,
+						receiver_id: receiver_id,
+					},
 				}
-			} catch (error) {
-				console.error("Error fetching friend request status:", error);
-				setFriendRequest("rejected"); // در صورت وجود خطا، به عنوان rejected در نظر گرفته می‌شود
-			}
-		};
+			);
 
+			const data = response.data; // دریافت داده‌ها از پاسخ
+
+			if (data) {
+				// بررسی اینکه داده‌ای موجود است
+				setFriendRequest(data);
+			} else {
+				setFriendRequest({ status: "rejected" }); // اگر هیچ داده‌ای موجود نبود
+			}
+		} catch (error) {
+			console.error("Error fetching friend request status:", error);
+			setFriendRequest({ status: "rejected" });
+		}
+	};
+
+	// استفاده از تابع درون useEffect
+	useEffect(() => {
 		fetchFriendRequestStatus();
-	}, [user_id, receiver_id]);    // orginal : receiver_id => profile.user_id  ********
+	}, [user_id, receiver_id]);
 
-	// تعیین تصویر بر اساس وضعیت
+	//-------------------------------------------------------------------------
+	//    Set image for friend request status
 	const getImageSrc = () => {
-		if (friendRequest) {
-			switch (friendRequest.status) {
-				case "pending":
-					return "./images/heart-red.png";
-				case "accepted":
+		// بررسی می‌کنیم که آیا friendRequest یک آرایه است و حداقل یک عنصر دارد
+		if (Array.isArray(friendRequest) && friendRequest.length > 0) {
+			// پیدا کردن درخواست ارسال‌شده از user_id
+			const userRequest = friendRequest.find(
+				(request) =>
+					request.sender_id === user_id &&
+					request.receiver_id === receiver_id
+			);
+
+			// اگر درخواست ارسال‌شده از سمت user_id موجود باشد
+			if (userRequest) {
+				if (userRequest.status === "accepted") {
 					return "./images/heart-accepted.png";
-				case "rejected":
-				default:
+				} else if (userRequest.status === "pending") {
+					return "./images/heart-red.png";
+				} else if (userRequest.status === "rejected") {
 					return "./images/heart.png";
+				}
 			}
+
+			// اگر درخواست ارسال‌شده از سمت user_id وجود نداشته باشد، وضعیت پیش‌فرض
+			return "./images/heart.png";
 		} else {
+			// اگر friendRequest آرایه‌ای از درخواست‌ها نباشد یا خالی باشد
 			return "./images/heart.png";
 		}
 	};
 
+	//@@@@@@@@@@@ => old code <= @@@@@@@@@@@@@@@@@@@@@@@
+	// تعیین تصویر بر اساس وضعیت
+	// const getImageSrc = () => {
+	// 	if (friendRequest && friendRequest.status === "accepted") {
+	// 		return "./images/heart-accepted.png";
+	// 	}
+
+	// 	if (friendRequest && 
+	// 		friendRequest.status === "pending" && 
+	// 		friendRequest.sender_id === user_id) {
+	// 		return "./images/heart-red.png";
+	// 	} else {
+	// 		return "./images/heart.png";
+	// 	}
+
+	// 	if (friendRequest && friendRequest.status === "rejected") {
+	// 		return "./images/heart.png";
+	// 	}
+	// };
+
+	//---------------------------------------------
+	//        Update friend request status
+	// تابع برای مدیریت کلیک روی تصویر
+	
+	const handleFriendRequestClick = async () => {
+		try {
+			let newStatus;
+			/*
+			friendRequest = [
+				{
+					id: 3,
+					receiver_id: 5,
+					sender_id: 1,
+					sent_at: "2024-08-27T14:06:14.000Z",
+					status: "rejected"
+				},
+				{
+					id: 3,
+					receiver_id: 1,
+					sender_id: 5,
+					sent_at: "2024-08-27T18:06:57.000Z",
+					status: "pending"
+				}
+			];
+			*/
+
+			//@@@@@@@@@ => new code <= @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+			// اگر درخواست‌های دوستی موجود باشد
+			if (Array.isArray(friendRequest) && friendRequest.length > 0) {
+				// پیدا کردن درخواست دوستی مرتبط با user_id و receiver_id
+				let existingRequest = friendRequest.find(
+					(request) =>
+						(request.sender_id === user_id &&
+							request.receiver_id === receiver_id) ||
+						(request.sender_id === receiver_id &&
+							request.receiver_id === user_id)
+				);
+
+				let receiver_status_rejected = true;
+				
+				if (Array.isArray(friendRequest) && friendRequest.length > 1) {
+					// پیدا کردن ایندکس آبجکت‌هایی که شرایط مشخص شده را دارند
+					const index_obj_sender = friendRequest.findIndex(
+						(request) =>
+							request.sender_id === user_id &&
+							request.receiver_id === receiver_id
+					);
+
+					const index_obj_receiver = friendRequest.findIndex(
+						(request) =>
+							request.sender_id === receiver_id &&
+							request.receiver_id === user_id
+					);
+
+					if (
+						friendRequest[index_obj_receiver].status !== "rejected"
+					) {
+						receiver_status_rejected = false;
+					}
+
+					existingRequest = friendRequest[index_obj_sender];
+
+					console.log("index_obj_sender : " + index_obj_sender);
+					console.log("index_obj_receiver : " + index_obj_receiver);
+					console.log("receiver_status_rejected : " + receiver_status_rejected);
+				}
+
+				
+				console.log(existingRequest);
+
+				if (existingRequest) {
+					if (existingRequest.sender_id === user_id) {
+						// درخواست از سمت user_id به receiver_id ارسال شده است
+						if (
+							existingRequest.status === "pending" &&
+							receiver_status_rejected
+						) {
+							newStatus = "rejected"; // اگر وضعیت فعلی "pending" است و درخواست توسط user_id ارسال شده، باید رد شود
+						} else if (existingRequest.status === "accepted") {
+							newStatus = "rejected"; // اگر وضعیت فعلی "accepted" است، باید به "rejected" تغییر کند
+						} else if (
+							existingRequest.status === "rejected" &&
+							receiver_status_rejected
+						) {
+							newStatus = "pending"; // اگر وضعیت فعلی "rejected" است، باید به "pending" برگردد
+						} else {
+							newStatus = "accepted"; // اگر وضعیت فعلی "rejected" است، باید به "pending" برگردد
+						}
+					} else if (existingRequest.sender_id === receiver_id) {
+						// درخواست از سمت receiver_id به user_id ارسال شده است
+						if (existingRequest.status === "pending") {
+							newStatus = "accepted"; // اگر وضعیت فعلی "pending" است و درخواست از سمت receiver_id به user_id ارسال شده، باید پذیرفته شود
+						} else if (existingRequest.status === "rejected") {
+							newStatus = "pending"; // اگر وضعیت فعلی "rejected" است، باید به "pending" برگردد
+						} else if (existingRequest.status === "accepted") {
+							newStatus = "rejected"; // اگر وضعیت فعلی "accepted" است، باید به "rejected" تغییر کند
+						}
+					}
+				} else {
+					// اگر هیچ درخواست مرتبطی پیدا نشد، وضعیت پیش‌فرض "pending" خواهد بود
+					newStatus = "pending";
+				}
+			} else {
+				// اگر هیچ درخواست دوستی موجود نباشد
+				newStatus = "pending"; // وضعیت پیش‌فرض
+			}
+			//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+			// تعیین وضعیت جدید بر اساس وضعیت فعلی
+			// if (
+			// 	friendRequest?.status === "pending" &&
+			// 	friendRequest?.sender_id === user_id
+			// ) {
+			// 	newStatus = "rejected";
+			// } else if (
+			// 	friendRequest?.status === "pending" &&
+			// 	friendRequest?.sender_id === receiver_id
+			// ) {
+			// 	newStatus = "accepted";
+			// } else if (friendRequest?.status === "rejected") {
+			// 	newStatus = "pending";
+			// } else if (friendRequest?.status === "accepted") {
+			// 	newStatus = "rejected";
+			// } else {
+			// 	newStatus = "pending"; // اگر هیچ درخواستی وجود ندارد، وضعیت اولیه "pending" است
+			// }
+
+			const response = await axios.post(
+				"http://localhost:5000/update-friend-request-status",
+				{
+					sender_id: user_id,
+					receiver_id: receiver_id,
+					action: newStatus,
+				}
+			);
+
+			console.log("newStatus : ", newStatus);
+			fetchFriendRequestStatus();
+		} catch (error) {
+			console.error("Error updating friend request status:", error);
+		}
+	};
+	//----------------------
+
 	// --- testing ---
 	useEffect(() => {
 		console.log(friendRequest);
+		console.log("sender_id: ", user_id);
+		console.log("receiver_id: ", receiver_id);
+		// console.log(`sender_id: ${user_id`);
 	}, [friendRequest]);
 	//--------------------------------------------------------------------------
 	//                ending friend request
-	//--------------------------------------------------------------------------
+	//*********************************************************************** */
 
 	const handleTabClick = (tabName) => {
 		setActiveTab(tabName);
@@ -114,9 +304,10 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 					</p>
 					<img
 						className="img_send_request"
-						key={profile.user_id}
+						key={receiver_id}
 						src={getImageSrc()}
 						alt="Friend Request Status"
+						onClick={handleFriendRequestClick}
 					/>
 				</div>
 			</div>
