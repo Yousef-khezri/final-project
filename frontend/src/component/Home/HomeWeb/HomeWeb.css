@@ -1,0 +1,1064 @@
+/* font */
+@font-face {
+    font-family: Pacifico;
+    src: url('../../../../public/fonts/pacifico/Pacifico-Regular.ttf');
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+/* * */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* main Teil */
+.web_main {
+    width: 100%;
+    min-height: 50vh;
+    max-height: fit-content;
+    background-color: #212121;
+    color: white;
+    /* neues font */
+    font-family: "Lato", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+/* -------- section 1 --------- */
+.section_1 {
+    width: 100%;
+    height: 80vh;
+    box-shadow: 0 10px 15px #f67e96;
+    border-top: none;
+    max-height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* leftBox */
+.logo-textDiv {
+    width: 55%;
+    min-width: 450px;
+    height: fit-content;
+    min-height: 500px;
+    position: relative;
+}
+
+.heartDiv {
+    width: 45%;
+    min-width: 450px;
+    height: fit-content;
+    min-height: 500px;
+    position: relative;
+}
+
+/* logo */
+.logoDiv {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 20%;
+}
+
+.frontLogo {
+    width: 80px;
+    height: 80px;
+}
+
+/* text-Teil */
+.titel{
+    font-family: Pacifico;
+}
+.textDivFront {
+    width: 65%;
+    padding-left: 1%;
+    min-width: 400px;
+    margin: 25px;
+    position: absolute;
+    top: 73px;
+    left: 10%;
+    z-index: 1;
+}
+.phoenix-text{
+    font-family: Pacifico;
+    font-weight: normal;
+}
+
+/* HEARTS */
+/* color-heart */
+#heart {
+    position: absolute;
+    bottom: 70px;
+    left: 30px;
+    width: 400px;
+    height: 400px;
+    margin-top: 10px;
+}
+
+#heart::before,
+#heart::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 300px;
+    height: 400px;
+    border-radius: 170px 160px 0 0;
+    background-color: #DD3A5A;
+    box-shadow: 20px 0 20px #481B23;
+}
+
+#heart::before {
+    left: 200px;
+    transform: rotate(-50deg);
+    transform-origin: 10% 100%;
+}
+
+#heart::after {
+    left: -80px;
+    transform: rotate(50deg);
+    transform-origin: 90% 100%;
+}
+
+/* image-heart */
+.image-test {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 100px;
+    left: 134px;
+}
+
+.image-test img {
+    width: 300px;
+    height: 250px;
+    clip-path: path('M213.1,6.7c-32.4-14.4-73.7,0-88.1,30.6C110.6,4.9,67.5-9.5,36.9,6.7C2.8,22.9-13.4,62.4,13.5,110.9 C33.3,145.1,67.5,170.3,125,217c59.3-46.7,93.5-71.9,111.5-106.1C263.4,64.2,247.2,22.9,213.1,6.7z');
+    object-fit: cover;
+    margin: 0;
+    transform: scale(1.7);
+}
+
+/* klein-heart - alteLeute */
+.image-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 20px;
+    right: -50px;
+}
+
+.image-box img {
+    width: 250px;
+    height: 217px;
+    clip-path: path('M213.1,6.7c-32.4-14.4-73.7,0-88.1,30.6C110.6,4.9,67.5-9.5,36.9,6.7C2.8,22.9-13.4,62.4,13.5,110.9 C33.3,145.1,67.5,170.3,125,217c59.3-46.7,93.5-71.9,111.5-106.1C263.4,64.2,247.2,22.9,213.1,6.7z');
+    object-fit: cover;
+    margin: 0;
+    scale: 0.7;
+}
+
+/* alt-textBox */
+.altBox {
+    width: 280px;
+    display: flex;
+    padding-left: 1%;
+    position: absolute;
+    bottom: 80px;
+    right: 120px;
+    box-shadow: -10px -10px 15px black;
+    transform: skewY(-5deg);
+}
+
+.altBox:hover {
+    width: 314px;
+}
+
+.altBox p {
+    width: 90%;
+}
+
+.image-box {
+    width: 200px;
+}
+
+/* holliday-textBox */
+.hollidayBox {
+    width: 270px;
+    display: flex;
+    padding-left: 1%;
+    position: absolute;
+    bottom: 25px;
+    right: 110px;
+    box-shadow: -8px 8px 10px 5px black;
+    transform: skewY(-5deg);
+}
+
+.hollidayBox:hover {
+    width: 300px;
+}
+
+.hollidayBox p {
+    width: 85%;
+}
+
+.hollidayImageBox {
+    width: 200px;
+}
+
+/* hollidays-heart */
+.hollidayImageBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.hollidayImageBox img {
+    width: 250px;
+    height: 217px;
+    clip-path: path('M213.1,6.7c-32.4-14.4-73.7,0-88.1,30.6C110.6,4.9,67.5-9.5,36.9,6.7C2.8,22.9-13.4,62.4,13.5,110.9 C33.3,145.1,67.5,170.3,125,217c59.3-46.7,93.5-71.9,111.5-106.1C263.4,64.2,247.2,22.9,213.1,6.7z');
+    object-fit: cover;
+    margin: 0;
+    scale: 0.7;
+}
+
+/* pool-textBox */
+.poolBox {
+    width: 210px;
+    display: flex;
+    justify-content: right;
+    padding-left: 1%;
+    position: absolute;
+    bottom: 30px;
+    left: 150px;
+    box-shadow: 8px 8px 10px 5px black;
+    transform: skewY(5deg);
+}
+
+.poolBox:hover {
+    width: 220px;
+}
+
+.poolBox p {
+    width: 80%;
+}
+
+.poolImageBox {
+    width: 250px;
+}
+
+.poolImageBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.poolImageBox img {
+    width: 250px;
+    height: 217px;
+    clip-path: path('M213.1,6.7c-32.4-14.4-73.7,0-88.1,30.6C110.6,4.9,67.5-9.5,36.9,6.7C2.8,22.9-13.4,62.4,13.5,110.9 C33.3,145.1,67.5,170.3,125,217c59.3-46.7,93.5-71.9,111.5-106.1C263.4,64.2,247.2,22.9,213.1,6.7z');
+    object-fit: cover;
+    margin: 0;
+    scale: 0.7;
+}
+
+/* ------ section 3 ------- */
+.section_3 {
+    box-shadow: 0 10px 15px #f67e96;
+    width: 100%;
+    height: 95vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.textDiv {
+    background-color: #292929;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 25px;
+    font-size: 1rem;
+    padding-left: 1%;
+    box-shadow: 5px 5px 15px black;
+    padding: 1%;
+}
+
+.textDiv h2 {
+    color: rgb(101, 244, 244);
+}
+
+.seeMoreBtn {
+    width: fit-content;
+    display: flex;
+    align-self: flex-end;
+    padding: 5px 10px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    color: white;
+    font-weight: bold;
+    background-color: #DD3A5A;
+    border: none;
+}
+
+.aboutHerz {
+    width: 15%;
+    height: 90%;
+    margin-top: 35px;
+    display: flex;
+    justify-content: right;
+    align-items: end;
+}
+
+.sec3herz {
+    width: 70%;
+}
+
+.unsereBilder {
+    width: 30%;
+    height: 65%;
+    margin-top: 35px;
+    position: relative;
+}
+
+.adri {
+    width: 60%;
+    height: 70%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.yos {
+    width: 50%;
+    height: 60%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+/* ------- section 4 -------- */
+.section_4 {
+    width: 100%;
+    height: 70vh;
+    box-shadow: 0 10px 15px #f67e96;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.perfectHerz {
+    width: 10%;
+    height: 90%;
+    display: flex;
+    align-items: flex-end;
+}
+
+.perfectHerz>img {
+    width: 100%;
+}
+
+.perfectText {
+    width: 25%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: flex-start;
+    margin-top: 40px;
+}
+
+.perfectText>h2 {
+    color: rgb(101, 244, 244);
+}
+
+.perfectText p {
+    font-size: 1.2rem;
+}
+
+.sec4lastDiv {
+    width: 40%;
+}
+
+.subscribeBtn {
+    width: fit-content;
+    padding: 5px 10px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    color: white;
+    font-weight: bold;
+    background-color: #DD3A5A;
+    border: none;
+}
+
+.sec4lastDiv {
+    width: 35%;
+    height: 65%;
+    border: 10px solid black;
+}
+
+.sec4lastDiv>img {
+    width: 100%;
+    height: 100%;
+}
+
+/* -------- section 5 ---------- */
+.section_5 {
+    box-shadow: 0 10px 15px #f67e96;
+    width: 100%;
+    min-height: 40vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #212121;
+    font-size: 1.2rem;
+}
+
+.section_5>h2 {
+    margin-top: 20px;
+    color: rgb(101, 244, 244);
+}
+
+.section_5 p {
+    width: 70%;
+    text-align: center;
+}
+
+.iconsDivBox {
+    max-width: 800px;
+    min-height: 20vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+}
+
+.itemBox {
+    width: 250px;
+    height: 70px;
+    margin: 5px;
+    background-color: #292929;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.circle {
+    width: 60px;
+    height: 60px;
+    margin-left: 5px;
+    border-radius: 50%;
+}
+
+.first {
+    background-image: url(/public/images/men1.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.second {
+    background-image: url(/public/images/men2older.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.third {
+    background-image: url(/public/images/woman3.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.fourth {
+    background-image: url(/public/images/woman2.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.fifth {
+    background-image: url(/public/images/men3.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.sixth {
+    background-image: url(/public/images/woman1.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.aside p {
+    width: fit-content;
+    margin: 0 0 0 15px;
+}
+
+/* ------- section 6 ------ */
+.section_6 {
+    box-shadow: 0 10px 15px #f67e96;
+    width: 100%;
+    height: fit-content;
+    background-image: url(/public/images/sec6BG.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.teamBox {
+    width: 49%;
+    min-width: 490px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.teamBox>h2 {
+    margin-top: 25px;
+    margin-bottom: 20px;
+    color: #DD3A5A;
+}
+
+.teamDiv {
+    width: 80%;
+    height: 70%;
+    display: flex;
+    justify-content: space-between;
+    color: rgb(37, 34, 34);
+    margin-bottom: 20px;
+}
+
+.box1,
+.box2 {
+    width: 48%;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 15px;
+    font-size: 1.2rem;
+}
+
+.teamBild {
+    width: 120px;
+    margin-top: 5%;
+    margin-bottom: 7%;
+    border-radius: 50%;
+}
+
+.label1 {
+    color: #DD3A5A;
+    font-weight: bold;
+}
+
+.sMediaDiv {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.yt {
+    background-color: #f67e96;
+    border-radius: 50%;
+}
+
+.label2 {
+    width: 70%;
+}
+
+.galeryBox {
+    width: 49%;
+    min-width: 490px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.galeryBox>h2 {
+    margin-top: 25px;
+    margin-bottom: 20px;
+    color: #DD3A5A;
+}
+
+.galery {
+    width: 60%;
+    height: 70%;
+    position: relative;
+}
+
+.galery img {
+    width: 40%;
+    height: 50%;
+    min-height: 100px;
+    border-radius: 5px;
+}
+
+.img1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.img2 {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.img3 {
+    position: absolute;
+    top: 35%;
+    left: 30%;
+}
+
+/* section 7 */
+.section_7 {
+    width: 100%;
+    background-color: #212121;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section_7>h2 {
+    color: rgb(101, 244, 244);
+    margin-top: 2%;
+    margin-bottom: 20px;
+}
+
+.sec7box {
+    width: 90%;
+    display: flex;
+}
+
+.s7left {
+    width: 49%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.s7img {
+    width: 80%;
+    max-height: 90%;
+    border-radius: 10px;
+}
+
+.s7right {
+    width: 49%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.s7right>p {
+    font-size: 1.8rem;
+}
+
+.s7img2 {
+    width: 150px;
+    border-radius: 50%;
+}
+
+.s7right label {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+/* -------------------------------------------------- */
+/* ---------------- responsiveDesign ---------------- */
+@media screen and (min-width: 1800px) {
+
+    /* section 1 */
+    .section_1 .logo-textDiv {
+        width: 60%;
+        height: 100%;
+    }
+
+    .logoDiv {
+        width: 200px;
+    }
+
+    .textDivFront {
+        width: 60%;
+        position: absolute;
+        top: 150px;
+    }
+
+    .section_1 .heartDiv {
+        width: 40%;
+        height: 90%;
+    }
+
+    /* section 3 */
+    .section_3 {
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 1400px) and (max-width: 1799px) {
+
+    /* section 1 */
+    .section_1 {
+        height: 80vh;
+    }
+
+    .logo-textDiv,
+    .heartDiv {
+        height: 100%;
+    }
+
+}
+
+@media only screen and (min-width: 1000px) and (max-width: 1399px) {
+
+    /* section 1 */
+    .section_1 {
+        height: 80vh;
+    }
+
+    .logo-textDiv {
+        height: 100%;
+    }
+
+    .heartDiv {
+        height: 90%;
+    }
+
+    #heart {
+        position: absolute;
+        bottom: 170px;
+        left: -20px;
+    }
+
+    .image-test {
+        position: absolute;
+        bottom: 200px;
+        left: 75px;
+    }
+
+    .altBox {
+        position: absolute;
+        bottom: 150px;
+        right: 70px;
+    }
+
+    .image-box {
+        position: absolute;
+        bottom: 140px;
+    }
+}
+
+@media only screen and (min-width: 650px) and (max-width: 999px) {
+
+    /* section 1 */
+    .section_1 {
+        width: 100%;
+        height: fit-content;
+    }
+
+    .logo-textDiv,
+    .heartDiv {
+        width: 100%;
+    }
+
+    .hollidayBox {
+        position: absolute;
+        right: 150px;
+    }
+
+    .altBox {
+        position: absolute;
+        right: 200px;
+    }
+
+    .image-box {
+        position: absolute;
+        right: 100px;
+    }
+
+    /* sec 3 */
+    .section_3 {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+    }
+
+    .aboutHerz {
+        display: none;
+    }
+
+    .textDiv,
+    .unsereBilder {
+        width: 90%;
+    }
+
+    .unsereBilder {
+        margin-bottom: 20px;
+    }
+
+    /* section 4 */
+    .section_4 {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .perfectHerz {
+        display: none;
+    }
+
+    .perfectText,
+    .sec4lastDiv {
+        width: 90%;
+        margin: 20px 0;
+    }
+
+    /* section 6 */
+    .section_6 {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .teamBox {
+        margin-top: 20px;
+    }
+
+    .galeryBox {
+        height: 40vh;
+        margin-top: 20px;
+    }
+
+    .galery {
+        width: 70%;
+        height: 100%;
+    }
+
+    .galery img {
+        width: 150px;
+        height: 150px;
+        border-radius: 5px;
+    }
+
+    /* section 7 */
+    .sec7box {
+        width: 90%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .s7left,
+    .s7right {
+        width: 100%;
+    }
+
+    .s7right {
+        margin-bottom: 20px;
+    }
+
+}
+
+@media only screen and (min-width: 451px) and (max-width: 649px) {
+
+    /* -------- section 1 --------- */
+    .section_1 {
+        height: fit-content;
+    }
+
+    /* leftBox */
+    .logo-textDiv {
+        width: 80%;
+        height: fit-content;
+        margin: 50px 0;
+    }
+
+    .heartDiv {
+        width: 80%;
+    }
+
+    /* logo */
+    .logoDiv {
+        position: absolute;
+        top: -40px;
+        left: 0;
+    }
+
+    /* text-Teil */
+    .textDivFront {
+        width: 70%;
+        padding-left: 1%;
+        position: absolute;
+        top: 30px;
+        left: 5px;
+    }
+
+    /* HEARTS */
+    /* color-heart */
+    #heart {
+        display: none;
+    }
+
+    /* image-heart */
+    .image-test {
+        display: none;
+    }
+
+    /* klein-heart - alteLeute */
+    .image-box {
+        position: absolute;
+        bottom: 75px;
+        right: 0;
+    }
+
+    /* alt-textBox */
+    .altBox {
+        position: absolute;
+        bottom: 120px;
+        right: 150px;
+    }
+
+    /* pool-textBox */
+    .poolBox {
+        position: absolute;
+        bottom: -130px;
+        left: 150px;
+    }
+
+    .poolImageBox {
+        position: absolute;
+        bottom: -150px;
+        left: 0;
+    }
+
+    /* holliday-textBox */
+    .hollidayBox {
+        position: absolute;
+        bottom: 80px;
+        right: 130px;
+    }
+
+    /* hollidays-heart */
+    .hollidayImageBox {
+        position: absolute;
+        bottom: 100px;
+        right: 0;
+    }
+
+    /* sec 3 */
+    .section_3 {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+    }
+
+    .aboutHerz {
+        display: none;
+    }
+
+    .textDiv,
+    .unsereBilder {
+        width: 90%;
+    }
+
+    .unsereBilder {
+        margin-bottom: 20px;
+    }
+
+    /* section 4 */
+    .section_4 {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .perfectHerz {
+        display: none;
+    }
+
+    .perfectText,
+    .sec4lastDiv {
+        width: 90%;
+        margin: 20px 0;
+    }
+
+    /* -------- section 5 ---------- */
+    .section_5 {
+        width: 100%;
+        height: fit-content;
+    }
+
+    .itemBox{
+        width: 300px;
+    }
+
+     /* section 6 */
+     .section_6 {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .teamBox {
+        margin-top: 20px;
+    }
+
+    .galeryBox {
+        height: 40vh;
+        margin-top: 20px;
+    }
+
+    .galery {
+        width: 70%;
+        height: 100%;
+    }
+
+    .galery img {
+        width: 150px;
+        height: 150px;
+        border-radius: 5px;
+    }
+
+      /* section 7 */
+      .sec7box {
+        width: 90%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .s7left,
+    .s7right {
+        width: 100%;
+    }
+
+    .s7right {
+        margin-bottom: 20px;
+    }
+
+
+}
