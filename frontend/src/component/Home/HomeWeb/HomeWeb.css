@@ -16,7 +16,7 @@
 .web_main {
     width: 100%;
     min-height: 50vh;
-    max-height: fit-content;
+    /* max-height: fit-content; */
     background-color: #212121;
     color: white;
     /* neues font */
@@ -31,7 +31,7 @@
     height: 80vh;
     box-shadow: 0 10px 15px #f67e96;
     border-top: none;
-    max-height: fit-content;
+    /* max-height: fit-content; */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -41,7 +41,7 @@
 .logo-textDiv {
     width: 55%;
     min-width: 450px;
-    height: fit-content;
+    /* height: fit-content; */
     min-height: 500px;
     position: relative;
 }
@@ -49,14 +49,13 @@
 .heartDiv {
     width: 45%;
     min-width: 450px;
-    height: fit-content;
+    /* height: fit-content; */
     min-height: 500px;
     position: relative;
 }
 
 /* logo */
 .logoDiv {
-    width: fit-content;
     display: flex;
     align-items: center;
     position: absolute;
@@ -72,6 +71,11 @@
 /* text-Teil */
 .titel{
     font-family: Pacifico;
+    font-size: 2.2rem;
+    font-weight: lighter;
+    position: absolute;
+    top: 40px;
+    right: 100px;
 }
 .textDivFront {
     width: 65%;
@@ -79,7 +83,7 @@
     min-width: 400px;
     margin: 25px;
     position: absolute;
-    top: 73px;
+    top: 100px;
     left: 10%;
     z-index: 1;
 }
@@ -298,7 +302,7 @@
 }
 
 .seeMoreBtn {
-    width: fit-content;
+    /* width: fit-content; */
     display: flex;
     align-self: flex-end;
     padding: 5px 10px;
@@ -394,7 +398,7 @@
 }
 
 .subscribeBtn {
-    width: fit-content;
+    /* width: fit-content; */
     padding: 5px 10px;
     border-bottom-left-radius: 15px;
     border-top-right-radius: 15px;
@@ -500,7 +504,7 @@
 }
 
 .aside p {
-    width: fit-content;
+    /* width: fit-content; */
     margin: 0 0 0 15px;
 }
 

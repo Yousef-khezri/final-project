@@ -7,6 +7,7 @@ import LoginRegister from "./component/LoginRegistration/LoginRegister";
 import Notfound from "./component/Notfound";
 import Chat from "./component/Chat/Chat";
 import UserProfile from "./component/UserProfile/UserProfile";
+import Diamond from "./component/Diamond/Diamond";
 
 function App() {
   const [checkLogin, setCheckLogin] = useState(false);
@@ -24,6 +25,7 @@ function App() {
 						element={<Home checkLogin={checkLogin} />}
 						// handy < 350 px  < web
 					/>
+					<Route path="/diamond-page" element={<Diamond />} />
 					<Route
 						path="/login-register"
 						element={

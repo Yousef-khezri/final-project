@@ -107,8 +107,8 @@ io.on("connection", (socket) => {
 const db = mysql.createConnection({
 	host: "127.0.0.1",
 	user: "root",
-	password: "Joseph491626128090",
-	database: "db-dating-web",
+	password: "password",
+	database: "dating_shema",
 });
 
 // اتصال به دیتابیس

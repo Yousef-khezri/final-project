@@ -1,0 +1,133 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.footer {
+    width: 100%;
+    min-height: 40vh;
+    max-height: fit-content;
+    background-image: url(/public/images/footerBG.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: space-around;
+    align-items: end;
+    color: white;
+    font-family: sans-serif;
+}
+
+/* logo */
+.logoBox {
+    width: 100px;
+    height: 120px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: right;
+    align-self: center;
+}
+
+.logo {
+    width: 100%;
+}
+
+/* content-right */
+.box {
+    width: 60%;
+    height: 55%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.contact,
+.wHours,
+.iconBox {
+    width: fit-content;
+    height: 100%;
+}
+
+.contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.wHours {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.iconBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-left: 5px;
+}
+
+.fIcon {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.iconsLastones {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.FBimg,
+.LiImg {
+    width: 24px;
+}
+
+.inputDiv {
+    width: 90%;
+    background-color: rgb(32, 32, 233);
+}
+.inputDiv>input{
+    width: 90%;
+}
+
+/* responsiveDesign */
+@media only screen and (min-width: 450px) and (max-width: 700px) {
+    .footer{
+        display: flex;
+        flex-wrap: wrap;
+        height: fit-content;
+    }
+
+    .box {
+        width: 90%;
+        padding: 3%;
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+    }
+}
+@media only screen and (min-width: 700px) and (max-width: 900px) {
+    .box{
+        width: 80%;
+        display: flex;
+        flex-wrap: wrap;
+        height: max-content;
+    }
+    .contact, .wHours{
+        width: 40%;
+    }
+    .iconBox{
+        width: 60%;
+    }
+}
+@media screen and (min-width: 1900px) {
+    .box{
+        width: 60%;
+        display: flex;
+        justify-content: space-evenly;
+    }
+}
