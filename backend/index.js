@@ -426,7 +426,7 @@ app.post(
 			if (results.length) {
 				const sql = `UPDATE user_profile 
                    SET first_name = ?, last_name = ?, gender = ?, birthdate = ?, 
-                   location_id = ?, profile_picture_url = ?, updated_at = NOW(), 
+                   location = ?, profile_picture_url = ?, updated_at = NOW(), 
                    relationship_type_id = ?, children_status_id = ?, marital_status_id = ?, 
                    education_id = ?, occupation_id = ?, smoking_status_id = ?, 
                    drinking_status_id = ?, height_cm = ?, weight_kg = ?, religion_id = ?, 
@@ -438,7 +438,7 @@ app.post(
 					data.last_name,
 					data.gender,
 					data.birthdate || null,
-					data.location_id || null,
+					data.location || null,
 					profile_picture_url,
 					data.relationship_type_id,
 					data.children_status_id,

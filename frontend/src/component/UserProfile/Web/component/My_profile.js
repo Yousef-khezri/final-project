@@ -6,7 +6,8 @@ function My_profile({
 	user_id,
 	receiver_id,
 	profileToDisplay,
-	setCurrentUserProfile,
+	setProfileToDisplay,
+	// setCurrentUserProfile,
 	handleAvatarClick,
 }) {
 
@@ -33,6 +34,9 @@ function My_profile({
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
+		console.log("editedProfile");
+		console.log(editedProfile);
+
 		try {
 			const response = await axios.post(
 				"http://localhost:5000/insert-update-Profile",
@@ -47,7 +51,7 @@ function My_profile({
 
 			if (response.data.message) {
 				console.log(response.data.message);
-				setCurrentUserProfile(editedProfile); // Update the profile state with the new data
+				setProfileToDisplay(editedProfile); // Update the profile state with the new data
 				setEditing(false);
 			}
 		} catch (error) {

@@ -22,7 +22,7 @@ function UserProfile_Main({
 	const [profileToDisplay, setProfileToDisplay] = useState(null);
 	const [error, setError] = useState("");
 
-	const [receiver_id, setReceiver_id] = useState(1); // for testing purposes @@@@@@@@@@@
+	const [receiver_id, setReceiver_id] = useState(5); // for testing purposes @@@@@@@@@@@
 
 	// useEffect(() => {
 	// 	if (selectedUser === null) {
@@ -457,7 +457,8 @@ function UserProfile_Main({
 								user_id={user_id}
 								receiver_id={receiver_id}
 								profileToDisplay={profileToDisplay}
-								setCurrentUserProfile={setCurrentUserProfile}
+								setProfileToDisplay={setProfileToDisplay}
+								// setCurrentUserProfile={setCurrentUserProfile}
 								handleAvatarClick={handleAvatarClick}
 							/>
 						)}
