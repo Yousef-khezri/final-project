@@ -2,10 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./My_profile.css";
 
-function My_profile({ profile, setProfile, handleAvatarClick }) {
+function My_profile({
+	currentUserProfile,
+	setCurrentUserProfile,
+	handleAvatarClick,
+}) {
 	const [user_id] = useState(1);
 	const [editing, setEditing] = useState(false);
-	const [editedProfile, setEditedProfile] = useState({ ...profile });
+	const [editedProfile, setEditedProfile] = useState({
+		...currentUserProfile,
+	});
 
 	const handleChange = (e) => {
 		const { name, value, selectedIndex } = e.target;
@@ -39,7 +45,7 @@ function My_profile({ profile, setProfile, handleAvatarClick }) {
 
 			if (response.data.message) {
 				console.log(response.data.message);
-				setProfile(editedProfile); // Update the profile state with the new data
+				setCurrentUserProfile(editedProfile); // Update the profile state with the new data
 				setEditing(false);
 			}
 		} catch (error) {
@@ -679,28 +685,45 @@ function My_profile({ profile, setProfile, handleAvatarClick }) {
 			) : (
 				<div>
 					<div className="info-profile">
-						<p>First Name : {profile.first_name}</p>
-						<p>Last Name : {profile.last_name}</p>
-						<p>Gender : {profile.gender}</p>
+						<p>First Name : {currentUserProfile.first_name}</p>
+						<p>Last Name : {currentUserProfile.last_name}</p>
+						<p>Gender : {currentUserProfile.gender}</p>
 						<p>
 							Age :{" "}
 							{new Date().getFullYear() -
-								new Date(profile.birthdate).getFullYear()}
+								new Date(
+									currentUserProfile.birthdate
+								).getFullYear()}
 						</p>
-						<p>Location : {profile.city}</p>
-						<p>Relationship Type : {profile.relationship_type}</p>
-						<p>Children Status : {profile.children_status}</p>
-						<p>Marital Status : {profile.marital_status}</p>
-						<p>Education : {profile.education}</p>
-						<p>Occupation : {profile.occupation}</p>
-						<p>Smoking Status : {profile.smoking_status}</p>
-						<p>Drinking Status : {profile.drinking_status}</p>
-						<p>Height (cm) : {profile.height_cm}</p>
-						<p>Weight (kg) : {profile.weight_kg}</p>
-						<p>Religion : {profile.religion}</p>
-						<p>Lifestyle : {profile.lifestyle}</p>
-						<p>Language : {profile.language}</p>
-						<p>Pet Ownership : {profile.pet_ownership}</p>
+						<p>Location : {currentUserProfile.location}</p>
+						<p>
+							Relationship Type :{" "}
+							{currentUserProfile.relationship_type}
+						</p>
+						<p>
+							Children Status :{" "}
+							{currentUserProfile.children_status}
+						</p>
+						<p>
+							Marital Status : {currentUserProfile.marital_status}
+						</p>
+						<p>Education : {currentUserProfile.education}</p>
+						<p>Occupation : {currentUserProfile.occupation}</p>
+						<p>
+							Smoking Status : {currentUserProfile.smoking_status}
+						</p>
+						<p>
+							Drinking Status :{" "}
+							{currentUserProfile.drinking_status}
+						</p>
+						<p>Height (cm) : {currentUserProfile.height_cm}</p>
+						<p>Weight (kg) : {currentUserProfile.weight_kg}</p>
+						<p>Religion : {currentUserProfile.religion}</p>
+						<p>Lifestyle : {currentUserProfile.lifestyle}</p>
+						<p>Language : {currentUserProfile.language}</p>
+						<p>
+							Pet Ownership : {currentUserProfile.pet_ownership}
+						</p>
 					</div>
 					<button
 						className="btn-edit-profile"
