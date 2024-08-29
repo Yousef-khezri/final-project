@@ -18,22 +18,22 @@ function DropDown() {
           Home
         </Dropdown.Item>
         <Dropdown.Item href="../src/componente/Home/Home.js" target="_blank">
-          About us
+          Über uns
         </Dropdown.Item>
         <Dropdown.Item href="../src/componente/Home/Home.js" target="_blank">
-          Galery
+          Galerie
         </Dropdown.Item>
         <Dropdown.Item href="../src/componente/Home/Home.js" target="_blank">
-          Our Team
+          Unseres Team
         </Dropdown.Item>
         <Dropdown.Item href="../src/componente/Home/Home.js" target="_blank">
-          Contact
+          Kontakt
         </Dropdown.Item>
         <Dropdown.Item href="../src/componente/LoginRegistration/LoginRegister.js" target="_blank">
-          Singin
+          Anmelden
         </Dropdown.Item>
         <Dropdown.Item href="../src/componente/LoginRegistration/LoginRegister.js" target="_blank">
-          Signup
+          Registrieren
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
