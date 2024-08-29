@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
+
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
@@ -12,6 +14,8 @@ const fs = require("fs");
 
 const app = express();
 const PORT = 5000;
+require("dotenv").config();
+
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -107,10 +111,11 @@ app.use(
 
 //--------------------- Connection Database --------------------------------
 const db = mysql.createConnection({
-	host: "127.0.0.1",
-	user: "root",
-	password: "Joseph491626128090",
-	database: "db-dating-web",
+	host: process.env.DB_HOST,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASSWORD,
+	database: process.env.DB_NAME,
+	port: process.env.DB_PORT,
 });
 
 // اتصال به دیتابیس
