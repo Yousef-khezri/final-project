@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./Photos.css";
 
-function Photos({ user_id, photos, setPhotos }) {
+function Photos({ user_id, receiver_id, photos, setPhotos }) {
 	// const [user_id] = useState(1);
 	const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
 	const [photoUrl, setPhotoUrl] = useState(null);
@@ -29,7 +29,7 @@ function Photos({ user_id, photos, setPhotos }) {
 				"http://localhost:5000/delete-photo",
 				{
 					data: {
-						user_id: user_id,
+						user_id: receiver_id,
 						photo_url: photoUrl,
 					},
 				}
@@ -120,9 +120,14 @@ function Photos({ user_id, photos, setPhotos }) {
 						>
 							&#8250;
 						</button>
-						<button className="delete-button" onClick={deletePhoto}>
-							Delete
-						</button>
+						{user_id === receiver_id ? (
+							<button
+								className="delete-button"
+								onClick={deletePhoto}
+							>
+								Delete
+							</button>
+						) : null}
 					</div>
 				</div>
 			)}

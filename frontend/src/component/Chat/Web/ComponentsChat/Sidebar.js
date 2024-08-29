@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Sidebar.css";
 
-const Sidebar = ({ currentUserProfile, handleAvatarClick, closePopup }) => {
+const Sidebar = ({ currentUser, handleAvatarClick, closePopup }) => {
+	console.log(currentUser);
+
+	useEffect(() => {
+		console.log(currentUser);
+	}, [currentUser]);
+
 	return (
 		<div className="sidebar">
 			<div className="logo">
@@ -11,15 +17,16 @@ const Sidebar = ({ currentUserProfile, handleAvatarClick, closePopup }) => {
 				<img
 					className="img-profile-user"
 					onClick={handleAvatarClick}
-					src={`http://localhost:5000${currentUserProfile.profile_picture_url}`}
+					src={
+						currentUser.profile_picture_url
+							? `http://localhost:5000${currentUser.profile_picture_url}`
+							: "./images/user.png"
+					}
 				/>
 				<h3>
-					{
-					currentUserProfile.first_name &&
-					currentUserProfile.last_name
-						? `${currentUserProfile.first_name} ${currentUserProfile.last_name}`
-						: currentUserProfile.username
-					}
+					{currentUser.first_name && currentUser.last_name
+						? `${currentUser.first_name} ${currentUser.last_name}`
+						: currentUser.username}
 				</h3>
 			</div>
 			<div className="menu">

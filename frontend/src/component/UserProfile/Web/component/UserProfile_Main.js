@@ -8,21 +8,76 @@ import Hobbies from "./Hobbies";
 import PhotoUploadPopup from "./PhotoUploadPopup";
 
 function UserProfile_Main({
-	currentUserProfile,
+	currentUser,
+	// currentUserProfile,
 	setCurrentUserProfile,
 	handleAvatarClick,
+	selectedUser,
 }) {
-	const user_id = currentUserProfile.user_id;
+	console.log("currentUser:", currentUser.user_id);
+	const [user_id] = useState(currentUser.user_id);
 
 	const [photos, setPhotos] = useState(null);
 	const [activeTab, setActiveTab] = useState("My profile");
+	const [profileToDisplay, setProfileToDisplay] = useState(null);
+	const [error, setError] = useState("");
+
+	const [receiver_id, setReceiver_id] = useState(1); // for testing purposes @@@@@@@@@@@
+
+	// useEffect(() => {
+	// 	if (selectedUser === null) {
+	// 		setReceiver_id(currentUserProfile.user_id);
+	// 	}
+	// }, []);
+
+	useEffect(() => {
+		// if (user_id !== receiver_id) {
+			// Fetch user profile when component mounts
+			const fetchUserProfile = async () => {
+				try {
+					const response = await axios.get(
+						"http://localhost:5000/profile",
+						{
+							params: {
+								user_id: receiver_id, // ارسال user_id به عنوان پارامتر
+							},
+						}
+					);
+					setProfileToDisplay(response.data);
+				} catch (err) {
+					if (err.response && err.response.data) {
+						setError(err.response.data.message);
+					} else {
+						setError(
+							"An error occurred while fetching the profile."
+						);
+					}
+				}
+			};
+
+			fetchUserProfile();
+		// } else {
+		// 	setProfileToDisplay(currentUserProfile);
+		// }
+	}, []);
+
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	//                  tester
+	// useEffect(() => {
+	console.log("user_id : ");
+	console.log(user_id);
+	console.log("receiver_id : " + receiver_id);
+	// console.log("currentUserProfile :");
+	// console.log(currentUserProfile);
+	console.log("profileToDisplay :");
+	console.log(profileToDisplay);
+	// }, [currentUserProfile]);
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 	//*********************************************************************** */
 	//                checking for friend request
 	//--------------------------------------------------------------------------
 	const [friendRequest, setFriendRequest] = useState(null);
-
-	const [receiver_id] = useState(1); // for testing purposes @@@@@@@@@@@
 
 	//----------------------------------------
 	//          Get friend request status
@@ -235,9 +290,9 @@ function UserProfile_Main({
 	//------------------------------------------------------------------------------
 	//  Get photos user
 	useEffect(() => {
-		if (user_id) {
+		if (receiver_id) {
 			axios
-				.get(`http://localhost:5000/photos/${user_id}`)
+				.get(`http://localhost:5000/photos/${receiver_id}`)
 				.then((res) => {
 					setPhotos(res.data);
 				})
@@ -245,7 +300,7 @@ function UserProfile_Main({
 					console.error("Error fetching photos:", err);
 				});
 		}
-	}, [user_id]);
+	}, [receiver_id]);
 
 	//------------------------------------------------------------------------------
 	// یک تابع برای مدیریت خطا در بارگذاری تصویر
@@ -255,152 +310,181 @@ function UserProfile_Main({
 
 	return (
 		<div className="user-profile">
-			<div className="header">
-				<div className="user-info">
-					<img
-						src={`http://localhost:5000${currentUserProfile.profile_picture_url}`}
-						alt="User Avatar"
-						className="avatar"
-						// key={profile.user_id}
-					/>
-					<p className="user-name">
-						{currentUserProfile.first_name &&
-						currentUserProfile.last_name
-							? `${currentUserProfile.first_name} ${currentUserProfile.last_name}`
-							: currentUserProfile.username}
-						,{" "}
-						{new Date().getFullYear() -
-							new Date(
-								currentUserProfile.birthdate
-							).getFullYear()}
-					</p>
-					<img
-						className="img_send_request"
-						key={receiver_id}
-						src={getImageSrc()}
-						alt="Friend Request Status"
-						onClick={handleFriendRequestClick}
-					/>
-				</div>
-			</div>
-
-			<div className="tabs_images">
-				{photos ? (
-					<>
-						{/*  ---------------------------------------------------------  */}
-						{photos[0] && photos[0].photo_url ? ( // بررسی وجود photo_url
+			{profileToDisplay != null ? (
+				<>
+					<div className="header">
+						<div className="user-info">
 							<img
-								src={`http://localhost:5000/images/${photos[0].photo_url}`}
+								src={
+									profileToDisplay.profile_picture_url
+										? `http://localhost:5000${profileToDisplay.profile_picture_url}`
+										: "./images/user.png"
+								}
 								alt="User Avatar"
-								className="image-user"
-								onError={handleImageError}
+								className="avatar"
+								// key={profile.user_id}
 							/>
-						) : (
+							<p className="user-name">
+								{profileToDisplay.first_name &&
+								profileToDisplay.last_name
+									? `${profileToDisplay.first_name} ${profileToDisplay.last_name}`
+									: profileToDisplay.username}
+								,{" "}
+								{new Date().getFullYear() -
+									new Date(
+										profileToDisplay.birthdate
+									).getFullYear()}
+							</p>
+							{user_id !== receiver_id ? (
+								<img
+									className="img_send_request"
+									key={receiver_id}
+									src={getImageSrc()}
+									alt="Friend Request Status"
+									onClick={handleFriendRequestClick}
+								/>
+							) : null}
+						</div>
+					</div>
+
+					<div className="tabs_images">
+						{photos ? (
+							<>
+								{/*  ---------------------------------------------------------  */}
+								{photos[0] && photos[0].photo_url ? ( // بررسی وجود photo_url
+									<img
+										src={`http://localhost:5000/images/${photos[0].photo_url}`}
+										alt="User Avatar"
+										className="image-user"
+										onError={handleImageError}
+									/>
+								) : (
+									<img
+										src="./images/user.png"
+										alt="Default User Avatar"
+										className="image-user"
+									/>
+								)}
+								{/*  ---------------------------------------------------------  */}
+								{photos[1] && photos[1].photo_url ? (
+									<img
+										src={`http://localhost:5000/images/${photos[1].photo_url}`}
+										alt="User Avatar"
+										className="image-user"
+										onError={handleImageError}
+									/>
+								) : (
+									<img
+										src="./images/user.png"
+										alt="Default User Avatar"
+										className="image-user"
+									/>
+								)}
+								{/*  ---------------------------------------------------------  */}
+								{photos[2] && photos[2].photo_url ? (
+									<img
+										src={`http://localhost:5000/images/${photos[2].photo_url}`}
+										alt="User Avatar"
+										className="image-user"
+										onError={handleImageError}
+									/>
+								) : (
+									<img
+										src="./images/user.png"
+										alt="Default User Avatar"
+										className="image-user"
+									/>
+								)}
+							</>
+						) : null}
+
+						{/* ------------------ upload photo ---------------------------- */}
+						{user_id === receiver_id ? (
 							<img
-								src="./images/user.png"
-								alt="Default User Avatar"
-								className="image-user"
+								src="./images/upload-image.png"
+								alt="Upload User Image"
+								className="upload-image-user"
+								onClick={openPopup}
+							/>
+						) : null}
+						<PhotoUploadPopup
+							user_id={receiver_id}
+							showPopup={showPopup}
+							closePopup={closePopup}
+							setPhotos={setPhotos}
+						/>
+						{/* ------------------------------------------------------------ */}
+					</div>
+
+					<div className="tabs">
+						<div
+							className={`tab ${
+								activeTab === "My profile" ? "active" : ""
+							}`}
+							onClick={() => handleTabClick("My profile")}
+						>
+							Profile
+						</div>
+						<div
+							className={`tab ${
+								activeTab === "Interests" ? "active" : ""
+							}`}
+							onClick={() => handleTabClick("Interests")}
+						>
+							Interests
+						</div>
+						<div
+							className={`tab ${
+								activeTab === "Hobbies" ? "active" : ""
+							}`}
+							onClick={() => handleTabClick("Hobbies")}
+						>
+							Hobbies
+						</div>
+						<div
+							className={`tab ${
+								activeTab === "Photos" ? "active" : ""
+							}`}
+							onClick={() => handleTabClick("Photos")}
+						>
+							Photos
+						</div>
+					</div>
+
+					<div className="profile-content">
+						{activeTab === "My profile" && (
+							<My_profile
+								user_id={user_id}
+								receiver_id={receiver_id}
+								profileToDisplay={profileToDisplay}
+								setCurrentUserProfile={setCurrentUserProfile}
+								handleAvatarClick={handleAvatarClick}
 							/>
 						)}
-						{/*  ---------------------------------------------------------  */}
-						{photos[1] && photos[1].photo_url ? (
-							<img
-								src={`http://localhost:5000/images/${photos[1].photo_url}`}
-								alt="User Avatar"
-								className="image-user"
-								onError={handleImageError}
-							/>
-						) : (
-							<img
-								src="./images/user.png"
-								alt="Default User Avatar"
-								className="image-user"
+						{activeTab === "Interests" && (
+							<Interests
+								user_id={user_id}
+								receiver_id={receiver_id}
 							/>
 						)}
-						{/*  ---------------------------------------------------------  */}
-						{photos[2] && photos[2].photo_url ? (
-							<img
-								src={`http://localhost:5000/images/${photos[2].photo_url}`}
-								alt="User Avatar"
-								className="image-user"
-								onError={handleImageError}
-							/>
-						) : (
-							<img
-								src="./images/user.png"
-								alt="Default User Avatar"
-								className="image-user"
+						{activeTab === "Hobbies" && (
+							<Hobbies
+								user_id={user_id}
+								receiver_id={receiver_id}
 							/>
 						)}
-					</>
-				) : null}
-
-				{/* ------------------ upload photo ---------------------------- */}
-				<img
-					src="./images/upload-image.png"
-					alt="Upload User Image"
-					className="upload-image-user"
-					onClick={openPopup}
-				/>
-				<PhotoUploadPopup
-					user_id={user_id}
-					showPopup={showPopup}
-					closePopup={closePopup}
-					setPhotos={setPhotos}
-				/>
-				{/* ------------------------------------------------------------ */}
-			</div>
-
-			<div className="tabs">
-				<div
-					className={`tab ${
-						activeTab === "My profile" ? "active" : ""
-					}`}
-					onClick={() => handleTabClick("My profile")}
-				>
-					Profile
-				</div>
-				<div
-					className={`tab ${
-						activeTab === "Interests" ? "active" : ""
-					}`}
-					onClick={() => handleTabClick("Interests")}
-				>
-					Interests
-				</div>
-				<div
-					className={`tab ${activeTab === "Hobbies" ? "active" : ""}`}
-					onClick={() => handleTabClick("Hobbies")}
-				>
-					Hobbies
-				</div>
-				<div
-					className={`tab ${activeTab === "Photos" ? "active" : ""}`}
-					onClick={() => handleTabClick("Photos")}
-				>
-					Photos
-				</div>
-			</div>
-
-			<div className="profile-content">
-				{activeTab === "My profile" && (
-					<My_profile
-						currentUserProfile={currentUserProfile}
-						setCurrentUserProfile={setCurrentUserProfile}
-						handleAvatarClick={handleAvatarClick}
-					/>
-				)}
-				{activeTab === "Interests" && <Interests user_id={user_id} />}
-				{activeTab === "Hobbies" && <Hobbies user_id={user_id} />}
-				{activeTab === "Photos" && (
-					<Photos
-						user_id={user_id}
-						photos={photos}
-						setPhotos={setPhotos}
-					/>
-				)}
-				{/* photos, setPhotos */}
-			</div>
+						{activeTab === "Photos" && (
+							<Photos
+								user_id={user_id}
+								receiver_id={receiver_id}
+								photos={photos}
+								setPhotos={setPhotos}
+							/>
+						)}
+						{/* photos, setPhotos */}
+					</div>
+				</>
+			) : null}
 		</div>
 	);
 }

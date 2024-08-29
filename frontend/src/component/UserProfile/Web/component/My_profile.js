@@ -3,14 +3,16 @@ import axios from "axios";
 import "./My_profile.css";
 
 function My_profile({
-	currentUserProfile,
+	user_id,
+	receiver_id,
+	profileToDisplay,
 	setCurrentUserProfile,
 	handleAvatarClick,
 }) {
-	const [user_id] = useState(1);
+
 	const [editing, setEditing] = useState(false);
 	const [editedProfile, setEditedProfile] = useState({
-		...currentUserProfile,
+		...profileToDisplay,
 	});
 
 	const handleChange = (e) => {
@@ -35,7 +37,7 @@ function My_profile({
 			const response = await axios.post(
 				"http://localhost:5000/insert-update-Profile",
 				{
-					user_id,
+					user_id : receiver_id,
 					...editedProfile,
 					birthdate: new Date(editedProfile.birthdate)
 						.toISOString()
@@ -685,52 +687,50 @@ function My_profile({
 			) : (
 				<div>
 					<div className="info-profile">
-						<p>First Name : {currentUserProfile.first_name}</p>
-						<p>Last Name : {currentUserProfile.last_name}</p>
-						<p>Gender : {currentUserProfile.gender}</p>
+						<p>First Name : {profileToDisplay.first_name}</p>
+						<p>Last Name : {profileToDisplay.last_name}</p>
+						<p>Gender : {profileToDisplay.gender}</p>
 						<p>
 							Age :{" "}
 							{new Date().getFullYear() -
 								new Date(
-									currentUserProfile.birthdate
+									profileToDisplay.birthdate
 								).getFullYear()}
 						</p>
-						<p>Location : {currentUserProfile.location}</p>
+						<p>Location : {profileToDisplay.location}</p>
 						<p>
 							Relationship Type :{" "}
-							{currentUserProfile.relationship_type}
+							{profileToDisplay.relationship_type}
 						</p>
 						<p>
-							Children Status :{" "}
-							{currentUserProfile.children_status}
+							Children Status : {profileToDisplay.children_status}
 						</p>
 						<p>
-							Marital Status : {currentUserProfile.marital_status}
+							Marital Status : {profileToDisplay.marital_status}
 						</p>
-						<p>Education : {currentUserProfile.education}</p>
-						<p>Occupation : {currentUserProfile.occupation}</p>
+						<p>Education : {profileToDisplay.education}</p>
+						<p>Occupation : {profileToDisplay.occupation}</p>
 						<p>
-							Smoking Status : {currentUserProfile.smoking_status}
+							Smoking Status : {profileToDisplay.smoking_status}
 						</p>
 						<p>
-							Drinking Status :{" "}
-							{currentUserProfile.drinking_status}
+							Drinking Status : {profileToDisplay.drinking_status}
 						</p>
-						<p>Height (cm) : {currentUserProfile.height_cm}</p>
-						<p>Weight (kg) : {currentUserProfile.weight_kg}</p>
-						<p>Religion : {currentUserProfile.religion}</p>
-						<p>Lifestyle : {currentUserProfile.lifestyle}</p>
-						<p>Language : {currentUserProfile.language}</p>
-						<p>
-							Pet Ownership : {currentUserProfile.pet_ownership}
-						</p>
+						<p>Height (cm) : {profileToDisplay.height_cm}</p>
+						<p>Weight (kg) : {profileToDisplay.weight_kg}</p>
+						<p>Religion : {profileToDisplay.religion}</p>
+						<p>Lifestyle : {profileToDisplay.lifestyle}</p>
+						<p>Language : {profileToDisplay.language}</p>
+						<p>Pet Ownership : {profileToDisplay.pet_ownership}</p>
 					</div>
-					<button
-						className="btn-edit-profile"
-						onClick={openEditPopup}
-					>
-						Edit Profile
-					</button>
+					{user_id === receiver_id ? (
+						<button
+							className="btn-edit-profile"
+							onClick={openEditPopup}
+						>
+							Edit Profile
+						</button>
+					) : null}
 				</div>
 			)}
 		</div>

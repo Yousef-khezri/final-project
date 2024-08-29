@@ -11,16 +11,17 @@ import Diamond from "./component/Diamond/Diamond";
 
 function App() {
 	const [checkLogin, setCheckLogin] = useState(false);
-	const [currentUser, setCurrentUser] = useState();
+	const [currentUser, setCurrentUser] = useState([]);
+	const [selectedUser,setSelectedUser]= useState(null);
 
 	const updateCheckLogin = (user) => {
 		setCheckLogin(true);
 		setCurrentUser(user);
 	};
 
-	// useEffect(() => {	
-	// 	console.log(currentUser) 
-	// }, [currentUser]);
+	useEffect(() => {	
+		console.log(currentUser); 
+	}, [currentUser]);
 
 	return (
 		<div className="App">
@@ -43,7 +44,13 @@ function App() {
 					<Route path="/chat" element={<Chat />} />
 					<Route
 						path="/user-profile"
-						element={<UserProfile currentUser={currentUser} />}
+						element={
+							<UserProfile
+								currentUser={currentUser}
+								setCurrentUser={setCurrentUser}
+								selectedUser={selectedUser}
+							/>
+						}
 					/>
 					{/* <Route
 						path="/details-user/:username"

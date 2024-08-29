@@ -201,8 +201,10 @@ app.post("/login", (req, res) => {
 	}
 
 	// بررسی وجود کاربر در دیتابیس
-	const query = "SELECT * FROM user_credentials WHERE email = ?";
-	db.query(query, [email], async (err, results) => {
+	const queryUserCredentials =
+		"SELECT * FROM user_credentials WHERE email = ?";
+
+	db.query(queryUserCredentials, [email], async (err, results) => {
 		if (err) {
 			return res.status(500).json({ message: "Database error" });
 		}
@@ -219,14 +221,60 @@ app.post("/login", (req, res) => {
 			return res.status(400).json({ message: "Invalid credentials" });
 		}
 
-		// تنظیم سشن
-		req.session.user = user;
-		res.status(200).json({
-			message: "Login successful",
-			user_id: user.id,
-			username: user.username,
+		// حالا که کاربر معتبر است، اطلاعات اضافی را دریافت کنید
+		const queryUserProfile = `
+    SELECT first_name, last_name, profile_picture_url 
+    FROM user_profile 
+    WHERE user_id = ?
+  `;
+
+		db.query(queryUserProfile, [user.id], (err, profileResults) => {
+			if (err) {
+				return res.status(500).json({ message: "Database error" });
+			}
+
+			const userProfile = profileResults[0];
+
+			// تنظیم سشن
+			req.session.user = user;
+
+			res.status(200).json({
+				message: "Login successful",
+				user_id: user.id,
+				username: user.username,
+				first_name: userProfile.first_name,
+				last_name: userProfile.last_name,
+				profile_picture_url: userProfile.profile_picture_url,
+			});
 		});
 	});
+
+	// const query = "SELECT * FROM user_credentials WHERE email = ?";
+	// db.query(query, [email], async (err, results) => {
+	// 	if (err) {
+	// 		return res.status(500).json({ message: "Database error" });
+	// 	}
+
+	// 	if (results.length === 0) {
+	// 		return res.status(400).json({ message: "Invalid credentials" });
+	// 	}
+
+	// 	const user = results[0];
+
+	// 	// بررسی صحت پسورد
+	// 	const isMatch = await bcrypt.compare(password, user.password_hash);
+	// 	if (!isMatch) {
+	// 		return res.status(400).json({ message: "Invalid credentials" });
+	// 	}
+
+	// 	// تنظیم سشن
+	// 	req.session.user = user;
+	// 	res.status(200).json({
+	// 		message: "Login successful",
+	// 		user_id: user.id,
+	// 		username: user.username,
+	// 	});
+	// });
 });
 //----------------------------------------------------------------
 
