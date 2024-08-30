@@ -3,8 +3,8 @@ import axios from "axios";
 import "./Avatar_Upload_Popup.css";
 
 function Avatar_Upload_Popup({
-	currentUserProfile,
-	setCurrentUserProfile,
+	currentUser,
+	setCurrentUser,
 	showPopup,
 	closePopup,
 }) {
@@ -19,7 +19,7 @@ function Avatar_Upload_Popup({
 
 		const formData = new FormData();
 		formData.append("image", file);
-		formData.append("user_id", currentUserProfile.user_id);
+		formData.append("user_id", currentUser.user_id);
 
 		// profile.profile_picture_url = `/uploads/profile_pictures/${file.name}`;
 
@@ -40,10 +40,11 @@ function Avatar_Upload_Popup({
 				if (imageUrl !== null) {
 					const newPhotoUrl = `${imageUrl}`;
 
-					setCurrentUserProfile((prevProfile) => ({
+					setCurrentUser((prevProfile) => ({
 						...prevProfile, // نگه داشتن بقیه ویژگی‌های آبجکت
 						profile_picture_url: newPhotoUrl, // تغییر مقدار photo_url
 					}));
+					console.log(currentUser);
 				}
 			})
 			.catch((err) => {
@@ -62,7 +63,7 @@ function Avatar_Upload_Popup({
 			const response = await axios.post(
 				"http://localhost:5000/delete-picture",
 				{
-					profile_picture_url: currentUserProfile.profile_picture_url,
+					profile_picture_url: currentUser.profile_picture_url,
 				}
 			);
 			console.log(response.data.message);

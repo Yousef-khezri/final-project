@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Axios from "axios";
 import "./PhotoUploadPopup.css";
 
-function PhotoUploadPopup({ user_id, showPopup, closePopup, setPhotos }) {
+function PhotoUploadPopup({ receiver_id, showPopup, closePopup, setPhotos }) {
 	const [file, setFile] = useState(null);
-	const [userId] = useState(user_id); 
+	// const [userId] = useState(user_id);
 
 	const handleFileChange = (e) => {
 		setFile(e.target.files[0]);
@@ -13,7 +13,7 @@ function PhotoUploadPopup({ user_id, showPopup, closePopup, setPhotos }) {
 	const handleUploadPhoto = () => {
 		const formData = new FormData();
 		formData.append("image", file);
-		formData.append("user_id", userId);
+		formData.append("user_id", receiver_id);
 
 		Axios.post("http://localhost:5000/upload-photos", formData)
 			.then((res) => {
@@ -28,7 +28,7 @@ function PhotoUploadPopup({ user_id, showPopup, closePopup, setPhotos }) {
 					const newPhoto = {
 						id: randomId,
 						photo_url: imageUrl, // مسیر عکس جدید
-						user_id: userId,
+						user_id: receiver_id,
 					};
 
 					// اضافه کردن عکس جدید به آرایه photos

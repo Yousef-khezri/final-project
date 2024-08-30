@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 import Sidebar from "../../Chat/Web/ComponentsChat/Sidebar";
 import UserProfile_Main from "./component/UserProfile_Main";
 import Avatar_Upload_Popup from "./component/Avatar_Upload_Popup";
 import "./UserProfile_Web.css";
 
-export default function UserProfile_Web(
+export default function UserProfile_Web({
 	currentUser,
-	currentUserProfile,
-	setCurrentUserProfile
-) {
+	setCurrentUser,
+	// currentUserProfile,
+	// setCurrentUserProfile,
+	receiver_id,
+	setReceiver_id,
+}) {
 	// const [userId] = useState(currentUser.user_id); // user id testing ***************
 	// const [profile, setProfile] = useState(null);
-
+	const [error, setError] = useState("");
 	const [showPopup, setShowPopup] = useState(false);
 
 	const handleAvatarClick = () => {
@@ -23,25 +26,33 @@ export default function UserProfile_Web(
 		setShowPopup(false);
 	};
 
-	if (!currentUserProfile) {
-		return <div>Loading...</div>;
-	}
+	// console.log(currentUser);
+
+	// if (!currentUserProfile) {
+	// 	return <div>Loading...</div>;
+	// }
 
 	return (
 		<div className="userProfile_web">
 			{/* //header */}
 			<Sidebar
-				currentUserProfile={currentUserProfile}
+				currentUser={currentUser}
+				// currentUserProfile={currentUserProfile}
 				handleAvatarClick={handleAvatarClick}
+				setReceiver_id={setReceiver_id}
 			/>
 			<UserProfile_Main
-				currentUserProfile={currentUserProfile}
-				setCurrentUserProfile={setCurrentUserProfile}
+				currentUser={currentUser}
+				// currentUserProfile={currentUserProfile}
+				// setCurrentUserProfile={setCurrentUserProfile}
 				handleAvatarClick={handleAvatarClick}
+				receiver_id={receiver_id}
 			/>
 			<Avatar_Upload_Popup
-				currentUserProfile={currentUserProfile}
-				setCurrentUserProfile={setCurrentUserProfile}
+				// currentUserProfile={currentUserProfile}
+				// setCurrentUserProfile={setCurrentUserProfile}
+				currentUser={currentUser}
+				setCurrentUser={setCurrentUser}
 				showPopup={showPopup}
 				closePopup={closePopup}
 			/>

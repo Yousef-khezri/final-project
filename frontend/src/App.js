@@ -11,16 +11,23 @@ import Diamond from "./component/Diamond/Diamond";
 
 function App() {
 	const [checkLogin, setCheckLogin] = useState(false);
-	const [currentUser, setCurrentUser] = useState();
+	const [currentUser, setCurrentUser] = useState([]);
+	const [receiver_id, setReceiver_id] = useState();
 
 	const updateCheckLogin = (user) => {
 		setCheckLogin(true);
 		setCurrentUser(user);
 	};
 
-	// useEffect(() => {	
-	// 	console.log(currentUser) 
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	// useEffect(() => {
+	// 	console.log(currentUser);
 	// }, [currentUser]);
+
+	// useEffect(() => {
+	// 	console.log(receiver_id);
+	// }, [receiver_id]);
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 	return (
 		<div className="App">
@@ -40,10 +47,28 @@ function App() {
 							/>
 						}
 					/>
-					<Route path="/chat" element={<Chat />} />
+					<Route
+						path="/chat"
+						element={
+							<Chat
+								currentUser={currentUser}
+								setCurrentUser={setCurrentUser}
+								receiver_id={receiver_id}
+								setReceiver_id={setReceiver_id}
+								// updateReceiver_id={updateReceiver_id}
+							/>
+						}
+					/>
 					<Route
 						path="/user-profile"
-						element={<UserProfile currentUser={currentUser} />}
+						element={
+							<UserProfile
+								currentUser={currentUser}
+								setCurrentUser={setCurrentUser}
+								receiver_id={receiver_id}
+								setReceiver_id={setReceiver_id}
+							/>
+						}
 					/>
 					{/* <Route
 						path="/details-user/:username"

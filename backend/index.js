@@ -201,8 +201,10 @@ app.post("/login", (req, res) => {
 	}
 
 	// بررسی وجود کاربر در دیتابیس
-	const query = "SELECT * FROM user_credentials WHERE email = ?";
-	db.query(query, [email], async (err, results) => {
+	const queryUserCredentials =
+		"SELECT * FROM user_credentials WHERE email = ?";
+
+	db.query(queryUserCredentials, [email], async (err, results) => {
 		if (err) {
 			return res.status(500).json({ message: "Database error" });
 		}
@@ -219,14 +221,60 @@ app.post("/login", (req, res) => {
 			return res.status(400).json({ message: "Invalid credentials" });
 		}
 
-		// تنظیم سشن
-		req.session.user = user;
-		res.status(200).json({
-			message: "Login successful",
-			user_id: user.id,
-			username: user.username,
+		// حالا که کاربر معتبر است، اطلاعات اضافی را دریافت کنید
+		const queryUserProfile = `
+    SELECT first_name, last_name, profile_picture_url 
+    FROM user_profile 
+    WHERE user_id = ?
+  `;
+
+		db.query(queryUserProfile, [user.id], (err, profileResults) => {
+			if (err) {
+				return res.status(500).json({ message: "Database error" });
+			}
+
+			const userProfile = profileResults[0];
+
+			// تنظیم سشن
+			req.session.user = user;
+
+			res.status(200).json({
+				message: "Login successful",
+				user_id: user.id,
+				username: user.username,
+				first_name: userProfile.first_name,
+				last_name: userProfile.last_name,
+				profile_picture_url: userProfile.profile_picture_url,
+			});
 		});
 	});
+
+	// const query = "SELECT * FROM user_credentials WHERE email = ?";
+	// db.query(query, [email], async (err, results) => {
+	// 	if (err) {
+	// 		return res.status(500).json({ message: "Database error" });
+	// 	}
+
+	// 	if (results.length === 0) {
+	// 		return res.status(400).json({ message: "Invalid credentials" });
+	// 	}
+
+	// 	const user = results[0];
+
+	// 	// بررسی صحت پسورد
+	// 	const isMatch = await bcrypt.compare(password, user.password_hash);
+	// 	if (!isMatch) {
+	// 		return res.status(400).json({ message: "Invalid credentials" });
+	// 	}
+
+	// 	// تنظیم سشن
+	// 	req.session.user = user;
+	// 	res.status(200).json({
+	// 		message: "Login successful",
+	// 		user_id: user.id,
+	// 		username: user.username,
+	// 	});
+	// });
 });
 //----------------------------------------------------------------
 
@@ -378,7 +426,7 @@ app.post(
 			if (results.length) {
 				const sql = `UPDATE user_profile 
                    SET first_name = ?, last_name = ?, gender = ?, birthdate = ?, 
-                   location_id = ?, profile_picture_url = ?, updated_at = NOW(), 
+                   location = ?, profile_picture_url = ?, updated_at = NOW(), 
                    relationship_type_id = ?, children_status_id = ?, marital_status_id = ?, 
                    education_id = ?, occupation_id = ?, smoking_status_id = ?, 
                    drinking_status_id = ?, height_cm = ?, weight_kg = ?, religion_id = ?, 
@@ -390,7 +438,7 @@ app.post(
 					data.last_name,
 					data.gender,
 					data.birthdate || null,
-					data.location_id || null,
+					data.location || null,
 					profile_picture_url,
 					data.relationship_type_id,
 					data.children_status_id,
@@ -1438,6 +1486,33 @@ app.get("/friend-request-status", (req, res) => {
 			}
 		}
 	);
+});
+
+//--------------------------------------------------------------------------
+// مسیر API برای دریافت وضعیت درخواست دوستی
+app.get('/friend-request-status', (req, res) => {
+  const { sender_id, receiver_id } = req.query;
+
+  console.log("sender_id: ", sender_id);
+  console.log("receiver_id : ", receiver_id);
+
+  if (!sender_id || !receiver_id) {
+    return res.status(400).json({ error: 'Sender ID and Receiver ID are required' });
+  }
+
+  // اجرای کوئری برای دریافت وضعیت درخواست
+  const query = 'SELECT status FROM friend_requests WHERE sender_id = ? AND receiver_id = ?';
+  connection.execute(query, [sender_id, receiver_id], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Database query failed' });
+    }
+
+    if (results.length > 0) {
+      res.json({ status: results[0].status });
+    } else {
+      res.json({ status: 'No request found' });
+    }
+  });
 });
 
 //--------------------------------------------------------------------------
