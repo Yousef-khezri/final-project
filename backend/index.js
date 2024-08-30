@@ -1491,22 +1491,31 @@ app.get("/friend-request-status", (req, res) => {
 //--------------------------------------------------------------------------
 // مسیر API برای دریافت وضعیت درخواست دوستی
 app.get('/friend-request-status', (req, res) => {
+  // استخراج sender_id و receiver_id از کوئری استرینگ درخواست
   const { sender_id, receiver_id } = req.query;
 
+  // لاگ کردن sender_id و receiver_id برای بررسی
   console.log("sender_id: ", sender_id);
-  console.log("receiver_id : ", receiver_id);
+  console.log("receiver_id: ", receiver_id);
 
+  // بررسی اینکه آیا sender_id و receiver_id تعریف شده‌اند یا نه
   if (!sender_id || !receiver_id) {
     return res.status(400).json({ error: 'Sender ID and Receiver ID are required' });
   }
 
-  // اجرای کوئری برای دریافت وضعیت درخواست
+  // اجرای کوئری برای دریافت وضعیت درخواست دوستی
   const query = 'SELECT status FROM friend_requests WHERE sender_id = ? AND receiver_id = ?';
   connection.execute(query, [sender_id, receiver_id], (err, results) => {
+    // بررسی اینکه آیا کوئری پایگاه داده با خطا مواجه شده است یا نه
     if (err) {
+      console.error("Database error: ", err);  // لاگ خطا برای شناسایی مشکل
       return res.status(500).json({ error: 'Database query failed' });
     }
 
+    // لاگ کردن نتایج کوئری برای بررسی داده‌های بازگشتی
+    console.log("Query results: ", results[0]);
+
+    // بررسی اینکه آیا نتیجه‌ای بازگشت داده شده است یا نه
     if (results.length > 0) {
       res.json({ status: results[0].status });
     } else {
@@ -1514,6 +1523,7 @@ app.get('/friend-request-status', (req, res) => {
     }
   });
 });
+
 
 //--------------------------------------------------------------------------
 
