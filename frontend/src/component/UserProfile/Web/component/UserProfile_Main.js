@@ -34,7 +34,9 @@ function UserProfile_Main({
 	//         check status friend request
 	const getStatus = async () => {
 
-		if ( user_id && receiver_id ) {
+		if ( !user_id || !receiver_id ) {
+			return null;
+		}
 			try {
 				const response = await axios.get(
 					"http://localhost:5000/friend-request-status",
@@ -56,7 +58,6 @@ function UserProfile_Main({
 			// if (showChat === undefined) {
 			// 	setShowChat("accepted");
 			// }
-		}
 	};
 
 	useEffect(() => {
@@ -70,8 +71,8 @@ function UserProfile_Main({
 	useEffect(() => {
 		console.log("^^^^^^^^^^^^^^^^^^^^^^");
 		console.log("ShowChat : ", showChat);
-		console.log("ShowChat : ", showChat);
-		console.log("ShowChat : ", showChat);
+		console.log("user_id : ", user_id );
+		console.log("receiver_id : ", receiver_id );
 		console.log("-----------------------");
 
 	}, [showChat]);
