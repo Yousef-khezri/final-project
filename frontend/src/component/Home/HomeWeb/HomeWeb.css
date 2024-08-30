@@ -70,12 +70,14 @@
 
 /* text-Teil */
 .titel{
-    font-family: Pacifico;
-    font-size: 2.2rem;
-    font-weight: lighter;
+    font-family: "Lato", sans-serif;
+    font-weight: bolder;
+    font-size: 2rem;
+    font-style: normal;
+    font-size: 3rem;
     position: absolute;
-    top: 40px;
-    right: 100px;
+    top: 100px
+    left: 200px;
 }
 .textDivFront {
     width: 65%;
@@ -83,13 +85,15 @@
     min-width: 400px;
     margin: 25px;
     position: absolute;
-    top: 100px;
-    left: 10%;
+    top: 200px;
+    left: 15%;
     z-index: 1;
 }
 .phoenix-text{
-    font-family: Pacifico;
-    font-weight: normal;
+    font-family: "Lato", sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    font-style: normal;
 }
 
 /* HEARTS */

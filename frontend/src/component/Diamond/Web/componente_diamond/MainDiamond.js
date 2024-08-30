@@ -11,6 +11,9 @@ function MainDiamond() {
     profile_picture_url: "/uploads/profile_pictures/Adrijana.png",
   };
 
+  // find maximal 9
+  
+
   useEffect(() => {
     let gender;
     if (myProfile.gender && myProfile.gender === "female") {
@@ -22,16 +25,12 @@ function MainDiamond() {
     Axios.get(`http://localhost:5000/user-profiles/all/${gender}`)
       .then((response) => {
         setUserProfiles(response.data);
-        console.log(userProfiles);
+        //console.log(userProfiles);
       })
       .catch((error) => {
         console.error("Error fetching hobbies:", error);
       });
   }, [myProfile.gender, userProfiles]);
-
-  useEffect(() => {
-    console.log(userProfiles);
-  }, [userProfiles]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -49,6 +48,7 @@ function MainDiamond() {
         ? userProfiles.map((item, index) => {
             return (
               <div
+              /* onClick */
                 className={
                   windowSize > 1200
                     ? "diamond_mainBox_big"
@@ -61,23 +61,24 @@ function MainDiamond() {
                     src={`http://localhost:5000${item.profile_picture_url}`}
                   />
                   <div className="img_text">
-                    <p>
+                    <div>
                       <label>{item.first_name}</label>{" "}
                       <label>{item.last_name}</label>,
                       <label>{item.location}</label>
-                    </p>
+                    </div>
                     <p>
                       {new Date().getFullYear() -
                         new Date(item.birthdate).getFullYear()}
                     </p>
                   </div>
                 </div>
+                {/* right box */}
                 {windowSize > 1200 ? (
                   <div className="userInfo_div">
-                    <p className="above_line">
+                    <div className="above_line">
                       <label>{item.first_name}</label>{" "}
                       <label>{item.last_name}</label>
-                    </p>
+                    </div>
                     <hr />
                     <div className="under_line">
                       <img src="./icons/locationDiamond.png" />

@@ -8,6 +8,7 @@ import Notfound from "./component/Notfound";
 import Chat from "./component/Chat/Chat";
 import UserProfile from "./component/UserProfile/UserProfile";
 import Diamond from "./component/Diamond/Diamond";
+import ModalSearch from "./component/Search/ModalSearch";
 
 function App() {
 	const [checkLogin, setCheckLogin] = useState(false);
@@ -44,29 +45,6 @@ function App() {
 						element={
 							<LoginRegister
 								updateCheckLogin={updateCheckLogin}
-							/>
-						}
-					/>
-					<Route
-						path="/chat"
-						element={
-							<Chat
-								currentUser={currentUser}
-								setCurrentUser={setCurrentUser}
-								receiver_id={receiver_id}
-								setReceiver_id={setReceiver_id}
-								// updateReceiver_id={updateReceiver_id}
-							/>
-						}
-					/>
-					<Route
-						path="/user-profile"
-						element={
-							<UserProfile
-								currentUser={currentUser}
-								setCurrentUser={setCurrentUser}
-								receiver_id={receiver_id}
-								setReceiver_id={setReceiver_id}
 							/>
 						}
 					/>
