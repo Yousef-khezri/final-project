@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Hobbies.css";
 
-function Hobbies() {
+function Hobbies({user_id, receiver_id}) {
 	const [userHobbies, setUserHobbies] = useState();
 	const [hobbies, setHobbies] = useState([]);
 	const [isEditingHobbies, setIsEditingHobbies] = useState(false);
 	const [error, setError] = useState(null); // State برای مدیریت خطاها
 
-	const [userId, setUserId] = useState(1);
+	// const [receiverId, setReceiverId] = useState(receiver_id);
 
 	//############################################################################ */
 	//                            start hobbies			    					   //
@@ -20,7 +20,7 @@ function Hobbies() {
 				const response = await axios.get(
 					`http://localhost:5000/user-hobbies`,
 					{
-						params: { user_Id: userId },
+						params: { user_Id: receiver_id },
 						// ارسال پارامترها به‌عنوان query string
 					}
 				);
@@ -31,7 +31,14 @@ function Hobbies() {
 		};
 
 		fetchHobbies();
-	}, [userId]);
+	}, []);
+
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	console.log("receiver_id in Hobbies : ");
+	console.log(receiver_id);
+	console.log("userHobbies : ");
+	console.log(userHobbies);
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 	//----------------------------------------------------------------
 	// GET Hobbies API
@@ -69,7 +76,7 @@ function Hobbies() {
 			const response = await axios.post(
 				"http://localhost:5000/update-user-hobbies",
 				{
-					user_Id: userId,
+					user_Id: receiver_id,
 					userHobbies,
 				}
 			);
@@ -112,9 +119,11 @@ function Hobbies() {
 						  ))
 						: null}
 				</ul>
-				<button onClick={handleBtnSaveHobbies}>
-					{isEditingHobbies ? "Save" : "Edit"}
-				</button>
+				{user_id === receiver_id ? (
+					<button onClick={handleBtnSaveHobbies}>
+						{isEditingHobbies ? "Save" : "Edit"}
+					</button>
+				) : null}
 
 				{isEditingHobbies && (
 					<div className="hobbies-list">

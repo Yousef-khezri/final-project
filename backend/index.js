@@ -4,18 +4,22 @@ const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
+
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const http = require("http");
-const socketIO = require("socket.io");
+// const http = require("http");
+// const socketIO = require("socket.io");
 
 const app = express();
 const PORT = 5000;
+require("dotenv").config();
+
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // برای parse کردن بدنه درخواست های JSON
 
 // سرویس‌دهی فایل‌های استاتیک (برای پروژه React)
 app.use(express.static("public"));
@@ -27,7 +31,8 @@ app.use(
   express.static(path.join(__dirname, "uploads/profile_pictures"))
 );
 //--------------- Realtime Message -----------------------------------------
-const server = http.createServer(app);
+// const server = http.createServer(app);
+
 // const io = socketIO(server, {
 // 	cors: {
 // 		origin: "http://localhost:3000", // آدرس کلاینت
@@ -36,41 +41,7 @@ const server = http.createServer(app);
 // 		credentials: true,
 // 	},
 // });
-const io = require("socket.io")(server, {
-  cors: {
-    origin: "http://localhost:3000/chat",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true,
-  },
-  transports: ["websocket"], // اطمینان حاصل کنید که پروتکل "websocket" به عنوان transport تنظیم شده است.
-});
 
-io.on("connection", (socket) => {
-  console.log("New user connected");
-
-  socket.on("joinRoom", ({ senderId, receiverId }) => {
-    socket.join(`chat-${senderId}-${receiverId}`);
-    socket.join(`chat-${receiverId}-${senderId}`);
-    console.log(`User joined chat-${senderId}-${receiverId}`);
-  });
-
-  // socket.on("newMessage", (msg) => {
-  // 	const { sender_id, receiver_id } = msg;
-  // 	io.to(`chat-${sender_id}-${receiver_id}`).emit("newMessage", msg);
-  // 	io.to(`chat-${receiver_id}-${sender_id}`).emit("newMessage", msg);
-  // });
-  socket.on("newMessage", (msg) => {
-    const { sender_id, receiver_id } = msg;
-    // ارسال پیام به اتاق‌های مربوطه
-    io.to(`chat-${sender_id}-${receiver_id}`).emit("newMessage", msg);
-    io.to(`chat-${receiver_id}-${sender_id}`).emit("newMessage", msg);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
-});
 //----------------------------------------------------------------
 // const server = http.createServer(app);
 // const io = socketIo(server);
@@ -105,10 +76,6 @@ io.on("connection", (socket) => {
 
 //--------------------- Connection Database --------------------------------
 const db = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "password",
-  database: "dating_shema",
 });
 
 // اتصال به دیتابیس
@@ -122,8 +89,7 @@ db.connect((err) => {
 
 //--------------------------------------------------------------------------
 // Middleware
-// app.use(cors());
-app.use(express.json()); // برای parse کردن بدنه درخواست های JSON
+
 app.use(
   session({
     secret: "joseph_adrijana_key", // کلید سشن که باید در محیط تولیدی امن باشد
@@ -183,40 +149,7 @@ app.post("/register", async (req, res) => {
 //----------------------------------------------------------------
 // مسیر ورود
 app.post("/login", (req, res) => {
-  const { email, password } = req.body;
 
-  console.log(`email : ${email}`);
-  console.log(`password : ${password}`);
-  // بررسی اینکه آیا email و password در درخواست موجود است
-  if (!email || !password) {
-    return res
-      .status(400)
-      .json({ message: "Username and password are required" });
-  }
-
-  // بررسی وجود کاربر در دیتابیس
-  const query = "SELECT * FROM user_credentials WHERE email = ?";
-  db.query(query, [email], async (err, results) => {
-    if (err) {
-      return res.status(500).json({ message: "Database error" });
-    }
-
-    if (results.length === 0) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    const user = results[0];
-
-    // بررسی صحت پسورد
-    const isMatch = await bcrypt.compare(password, user.password_hash);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    // تنظیم سشن
-    req.session.user = user;
-    res.status(200).json({ message: "Login successful" });
-  });
 });
 //----------------------------------------------------------------
 
@@ -394,46 +327,13 @@ app.post(
       if (results.length) {
         const sql = `UPDATE user_profile 
                    SET first_name = ?, last_name = ?, gender = ?, birthdate = ?, 
-                   location_id = ?, profile_picture_url = ?, updated_at = NOW(), 
+                   location = ?, profile_picture_url = ?, updated_at = NOW(), 
                    relationship_type_id = ?, children_status_id = ?, marital_status_id = ?, 
                    education_id = ?, occupation_id = ?, smoking_status_id = ?, 
                    drinking_status_id = ?, height_cm = ?, weight_kg = ?, religion_id = ?, 
                    lifestyle_id = ?, language_id = ?, pet_ownership_id = ? 
                    WHERE user_id = ?`;
 
-        const values = [
-          data.first_name,
-          data.last_name,
-          data.gender,
-          data.birthdate || null,
-          data.location_id || null,
-          profile_picture_url,
-          data.relationship_type_id,
-          data.children_status_id,
-          data.marital_status_id,
-          data.education_id,
-          data.occupation_id,
-          data.smoking_status_id,
-          data.drinking_status_id,
-          data.height_cm,
-          data.weight_kg,
-          data.religion_id,
-          data.lifestyle_id,
-          data.language_id,
-          data.pet_ownership_id,
-          data.user_id,
-        ];
-
-        db.query(sql, values, (err, result) => {
-          if (err) {
-            return res.status(500).json({ error: err.message });
-          }
-          res.json({ message: "User profile updated successfully" });
-        });
-      } else {
-        // User does not exist, insert new profile
-        const sql = `INSERT INTO user_profile (
-                     user_id, first_name, last_name, gender, birthdate, location,
                      profile_picture_url, created_at, updated_at, relationship_type_id,
                      children_status_id, marital_status_id, education_id, occupation_id,
                      smoking_status_id, drinking_status_id, height_cm, weight_kg,
@@ -1521,6 +1421,33 @@ app.get("/friend-request-status", (req, res) => {
       }
     }
   );
+});
+
+//--------------------------------------------------------------------------
+// مسیر API برای دریافت وضعیت درخواست دوستی
+app.get('/friend-request-status', (req, res) => {
+  const { sender_id, receiver_id } = req.query;
+
+  console.log("sender_id: ", sender_id);
+  console.log("receiver_id : ", receiver_id);
+
+  if (!sender_id || !receiver_id) {
+    return res.status(400).json({ error: 'Sender ID and Receiver ID are required' });
+  }
+
+  // اجرای کوئری برای دریافت وضعیت درخواست
+  const query = 'SELECT status FROM friend_requests WHERE sender_id = ? AND receiver_id = ?';
+  connection.execute(query, [sender_id, receiver_id], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Database query failed' });
+    }
+
+    if (results.length > 0) {
+      res.json({ status: results[0].status });
+    } else {
+      res.json({ status: 'No request found' });
+    }
+  });
 });
 
 //--------------------------------------------------------------------------

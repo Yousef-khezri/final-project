@@ -11,11 +11,24 @@ import Diamond from "./component/Diamond/Diamond";
 import ModalSearch from "./component/Search/ModalSearch";
 
 function App() {
-  const [checkLogin, setCheckLogin] = useState(false);
+	const [checkLogin, setCheckLogin] = useState(false);
+	const [currentUser, setCurrentUser] = useState([]);
+	const [receiver_id, setReceiver_id] = useState();
 
-  const updateCheckLogin = () => {
-	setCheckLogin(true);
-  };
+	const updateCheckLogin = (user) => {
+		setCheckLogin(true);
+		setCurrentUser(user);
+	};
+
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	// useEffect(() => {
+	// 	console.log(currentUser);
+	// }, [currentUser]);
+
+	// useEffect(() => {
+	// 	console.log(receiver_id);
+	// }, [receiver_id]);
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 	return (
 		<div className="App">
@@ -35,9 +48,6 @@ function App() {
 							/>
 						}
 					/>
-					<Route path="/chat" element={<Chat />} />
-					<Route path="/user-profile" element={<UserProfile />} />
-					<Route path="/search" element={<ModalSearch />} />
 					{/* <Route
 						path="/details-user/:username"
 						element={<DetailsUser setUser={setUser} user={user} />}

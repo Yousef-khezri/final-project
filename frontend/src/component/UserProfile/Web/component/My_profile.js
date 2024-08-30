@@ -2,10 +2,19 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./My_profile.css";
 
-function My_profile({ profile, setProfile, handleAvatarClick }) {
-	const [user_id] = useState(1);
+function My_profile({
+	user_id,
+	receiver_id,
+	profileToDisplay,
+	setProfileToDisplay,
+	// setCurrentUserProfile,
+	handleAvatarClick,
+}) {
+
 	const [editing, setEditing] = useState(false);
-	const [editedProfile, setEditedProfile] = useState({ ...profile });
+	const [editedProfile, setEditedProfile] = useState({
+		...profileToDisplay,
+	});
 
 	const handleChange = (e) => {
 		const { name, value, selectedIndex } = e.target;
@@ -25,11 +34,14 @@ function My_profile({ profile, setProfile, handleAvatarClick }) {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
+		console.log("editedProfile");
+		console.log(editedProfile);
+
 		try {
 			const response = await axios.post(
 				"http://localhost:5000/insert-update-Profile",
 				{
-					user_id,
+					user_id : receiver_id,
 					...editedProfile,
 					birthdate: new Date(editedProfile.birthdate)
 						.toISOString()
@@ -39,7 +51,7 @@ function My_profile({ profile, setProfile, handleAvatarClick }) {
 
 			if (response.data.message) {
 				console.log(response.data.message);
-				setProfile(editedProfile); // Update the profile state with the new data
+				setProfileToDisplay(editedProfile); // Update the profile state with the new data
 				setEditing(false);
 			}
 		} catch (error) {
@@ -679,35 +691,50 @@ function My_profile({ profile, setProfile, handleAvatarClick }) {
 			) : (
 				<div>
 					<div className="info-profile">
-						<p>First Name : {profile.first_name}</p>
-						<p>Last Name : {profile.last_name}</p>
-						<p>Gender : {profile.gender}</p>
+						<p>First Name : {profileToDisplay.first_name}</p>
+						<p>Last Name : {profileToDisplay.last_name}</p>
+						<p>Gender : {profileToDisplay.gender}</p>
 						<p>
 							Age :{" "}
 							{new Date().getFullYear() -
-								new Date(profile.birthdate).getFullYear()}
+								new Date(
+									profileToDisplay.birthdate
+								).getFullYear()}
 						</p>
-						<p>Location : {profile.city}</p>
-						<p>Relationship Type : {profile.relationship_type}</p>
-						<p>Children Status : {profile.children_status}</p>
-						<p>Marital Status : {profile.marital_status}</p>
-						<p>Education : {profile.education}</p>
-						<p>Occupation : {profile.occupation}</p>
-						<p>Smoking Status : {profile.smoking_status}</p>
-						<p>Drinking Status : {profile.drinking_status}</p>
-						<p>Height (cm) : {profile.height_cm}</p>
-						<p>Weight (kg) : {profile.weight_kg}</p>
-						<p>Religion : {profile.religion}</p>
-						<p>Lifestyle : {profile.lifestyle}</p>
-						<p>Language : {profile.language}</p>
-						<p>Pet Ownership : {profile.pet_ownership}</p>
+						<p>Location : {profileToDisplay.location}</p>
+						<p>
+							Relationship Type :{" "}
+							{profileToDisplay.relationship_type}
+						</p>
+						<p>
+							Children Status : {profileToDisplay.children_status}
+						</p>
+						<p>
+							Marital Status : {profileToDisplay.marital_status}
+						</p>
+						<p>Education : {profileToDisplay.education}</p>
+						<p>Occupation : {profileToDisplay.occupation}</p>
+						<p>
+							Smoking Status : {profileToDisplay.smoking_status}
+						</p>
+						<p>
+							Drinking Status : {profileToDisplay.drinking_status}
+						</p>
+						<p>Height (cm) : {profileToDisplay.height_cm}</p>
+						<p>Weight (kg) : {profileToDisplay.weight_kg}</p>
+						<p>Religion : {profileToDisplay.religion}</p>
+						<p>Lifestyle : {profileToDisplay.lifestyle}</p>
+						<p>Language : {profileToDisplay.language}</p>
+						<p>Pet Ownership : {profileToDisplay.pet_ownership}</p>
 					</div>
-					<button
-						className="btn-edit-profile"
-						onClick={openEditPopup}
-					>
-						Edit Profile
-					</button>
+					{user_id === receiver_id ? (
+						<button
+							className="btn-edit-profile"
+							onClick={openEditPopup}
+						>
+							Edit Profile
+						</button>
+					) : null}
 				</div>
 			)}
 		</div>

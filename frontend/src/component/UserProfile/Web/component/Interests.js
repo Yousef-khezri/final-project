@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Interests.css";
 
-function Interests() {
+function Interests({ user_id, receiver_id }) {
 	const [userInterests, setUserInterests] = useState();
 	const [interests, setInterests] = useState([]); // State برای ذخیره لیست علایق
 	const [error, setError] = useState(null); // State برای مدیریت خطاها
 	const [isEditing, setIsEditing] = useState(false);
 
-	const [userId, setUserId] = useState(1);
+	const [receiverId, setReceiverId] = useState(receiver_id);
+	// const [userId, setUserId] = useState(receiver_id);
 
 	//############################################################################ */
 	//                            start interests								   //
@@ -20,7 +21,7 @@ function Interests() {
 				const response = await axios.get(
 					`http://localhost:5000/user-interests`,
 					{
-						params: { user_Id: userId },
+						params: { user_Id: receiverId },
 						// ارسال پارامترها به‌عنوان query string
 					}
 				);
@@ -31,7 +32,7 @@ function Interests() {
 		};
 
 		fetchInterests();
-	}, [userId]);
+	}, [receiverId]);
 
 	useEffect(() => {
 		// دریافت داده‌ها از سرور
@@ -70,7 +71,7 @@ function Interests() {
 			const response = await axios.post(
 				"http://localhost:5000/update-user-interests",
 				{
-					user_Id: userId,
+					user_Id: receiverId,
 					userInterests,
 				}
 			);
@@ -96,7 +97,6 @@ function Interests() {
 	//                             End interests								   //
 	//############################################################################ */
 
-
 	return (
 		<div className="main_box_Interests">
 			{/* ------------------------------------------------------------------- */}
@@ -113,9 +113,11 @@ function Interests() {
 						  ))
 						: null}
 				</ul>
-				<button onClick={handleBtnSaveInterests}>
-					{isEditing ? "Save" : "Edit"}
-				</button>
+				{user_id === receiver_id ? (
+					<button onClick={handleBtnSaveInterests}>
+						{isEditing ? "Save" : "Edit"}
+					</button>
+				) : null}
 
 				{isEditing && (
 					<div className="interests-list">
