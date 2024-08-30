@@ -22,7 +22,7 @@ function Diamond_Web() {
     id: 2,
     language: "Arabic",
     language_id: 4,
-    last_name: "lukic",
+    last_name: "Lukic",
     lifestyle: "Athletic",
     lifestyle_id: 4,
     location_id: 1,

@@ -8,6 +8,7 @@ import Notfound from "./component/Notfound";
 import Chat from "./component/Chat/Chat";
 import UserProfile from "./component/UserProfile/UserProfile";
 import Diamond from "./component/Diamond/Diamond";
+import ModalSearch from "./component/Search/ModalSearch";
 
 function App() {
   const [checkLogin, setCheckLogin] = useState(false);
@@ -36,6 +37,7 @@ function App() {
 					/>
 					<Route path="/chat" element={<Chat />} />
 					<Route path="/user-profile" element={<UserProfile />} />
+					<Route path="/search" element={<ModalSearch />} />
 					{/* <Route
 						path="/details-user/:username"
 						element={<DetailsUser setUser={setUser} user={user} />}

@@ -14,25 +14,25 @@ function DropDown() {
       </Dropdown.Toggle>
 
       <Dropdown.Menu style={{backgroundColor: "#DD3A5A"}}>
-        <Dropdown.Item href="../src/componente/Home/Home.js" target="_blank">
+        <Dropdown.Item href="../src/componente/Home/Home.js" >
           Home
         </Dropdown.Item>
-        <Dropdown.Item href="../src/componente/Home/Home.js" target="_blank">
+        <Dropdown.Item href="../src/componente/Home/Home.js" >
           Über uns
         </Dropdown.Item>
-        <Dropdown.Item href="../src/componente/Home/Home.js" target="_blank">
+        <Dropdown.Item href="../src/componente/Home/Home.js" >
           Galerie
         </Dropdown.Item>
-        <Dropdown.Item href="../src/componente/Home/Home.js" target="_blank">
+        <Dropdown.Item href="../src/componente/Home/Home.js" >
           Unseres Team
         </Dropdown.Item>
-        <Dropdown.Item href="../src/componente/Home/Home.js" target="_blank">
+        <Dropdown.Item href="../src/componente/Home/Home.js" >
           Kontakt
         </Dropdown.Item>
-        <Dropdown.Item href="../src/componente/LoginRegistration/LoginRegister.js" target="_blank">
+        <Dropdown.Item href="../src/componente/LoginRegistration/LoginRegister.js" >
           Anmelden
         </Dropdown.Item>
-        <Dropdown.Item href="../src/componente/LoginRegistration/LoginRegister.js" target="_blank">
+        <Dropdown.Item href="../src/componente/LoginRegistration/LoginRegister.js" >
           Registrieren
         </Dropdown.Item>
       </Dropdown.Menu>
