@@ -1489,6 +1489,33 @@ app.get("/friend-request-status", (req, res) => {
 });
 
 //--------------------------------------------------------------------------
+// مسیر API برای دریافت وضعیت درخواست دوستی
+app.get('/friend-request-status', (req, res) => {
+  const { sender_id, receiver_id } = req.query;
+
+  console.log("sender_id: ", sender_id);
+  console.log("receiver_id : ", receiver_id);
+
+  if (!sender_id || !receiver_id) {
+    return res.status(400).json({ error: 'Sender ID and Receiver ID are required' });
+  }
+
+  // اجرای کوئری برای دریافت وضعیت درخواست
+  const query = 'SELECT status FROM friend_requests WHERE sender_id = ? AND receiver_id = ?';
+  connection.execute(query, [sender_id, receiver_id], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Database query failed' });
+    }
+
+    if (results.length > 0) {
+      res.json({ status: results[0].status });
+    } else {
+      res.json({ status: 'No request found' });
+    }
+  });
+});
+
+//--------------------------------------------------------------------------
 
 //       Update and Insert friend request status
 //  در این قسمت بررسی میکند حالت های مختلف برای بروزرسانی status

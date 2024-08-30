@@ -1,12 +1,21 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./Sidebar.css";
 
-const Sidebar = ({ currentUser, handleAvatarClick, closePopup }) => {
-	console.log(currentUser);
+const Sidebar = ({ currentUser, handleAvatarClick, setReceiver_id }) => {
+	// console.log(currentUser);
 
-	useEffect(() => {
-		console.log(currentUser);
-	}, [currentUser]);
+	// useEffect(() => {
+	// 	console.log(currentUser);
+	// }, [currentUser]);
+
+	const clickedUser = (id) => {
+		setReceiver_id(id);
+	};
+
+	// const handleLinkClick = (event) => {
+	// 	event.stopPropagation();
+	// };
 
 	return (
 		<div className="sidebar">
@@ -23,16 +32,25 @@ const Sidebar = ({ currentUser, handleAvatarClick, closePopup }) => {
 							: "./images/user.png"
 					}
 				/>
-				<h3>
-					{currentUser.first_name && currentUser.last_name
-						? `${currentUser.first_name} ${currentUser.last_name}`
-						: currentUser.username}
-				</h3>
+				<div
+					key={currentUser.id}
+					onClick={() => clickedUser(currentUser.id)}
+				>
+					<Link className="nav_link" to="/user-profile">
+						<h3>
+							{currentUser.first_name && currentUser.last_name
+								? `${currentUser.first_name} ${currentUser.last_name}`
+								: currentUser.username}
+						</h3>
+					</Link>
+				</div>
 			</div>
 			<div className="menu">
 				<div className="menu-item">
-					<img className="icons" src="./images/msg.png" />
-					<div className="menu-chat">Chat</div>
+					<Link className="nav_link" to="/chat">
+						<img className="icons" src="./images/msg.png" />
+						<div className="menu-chat">Chat</div>
+					</Link>
 				</div>
 				<div className="menu-item">
 					<img className="icons" src="./images/heart.png" />
@@ -48,20 +66,30 @@ const Sidebar = ({ currentUser, handleAvatarClick, closePopup }) => {
 				</div>
 				<div className="vip-section">VIP</div>
 			</div>
+			{/* -------------------------------------------------------------------- */}
+			{/*                         Suggested users                              */}
+			{/* -------------------------------------------------------------------- */}
 			<div className="user-list">
-				<div className="user">
+				<div className="user" key={1} onClick={() => clickedUser(1)}>
 					<img className="img-profile-user" src="./images/user.png" />
-					<span>Svetlana, 26</span>
+					<Link className="nav_link" to="/user-profile">
+						<span>Svetlana, 26</span>
+					</Link>
 				</div>
-				<div className="user">
-					<span>Hannah, 29</span>
+				<div className="user" key={2} onClick={() => clickedUser(3)}>
+					<Link className="nav_link" to="/user-profile">
+						<span>Hannah, 29</span>
+					</Link>
 					<img className="img-profile-user" src="./images/user.png" />
 				</div>
-				<div className="user">
+				<div className="user" onClick={() => clickedUser(5)}>
 					<img className="img-profile-user" src="./images/user.png" />
-					<span>Anna, 31</span>
+					<Link className="nav_link" to="/user-profile">
+						<span>Anna, 31</span>
+					</Link>
 				</div>
 			</div>
+			{/* -------------------------------------------------------------------- */}
 		</div>
 	);
 };

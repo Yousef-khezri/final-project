@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "./UserProfile_Main.css";
 import My_profile from "./My_profile";
 import Interests from "./Interests";
@@ -12,27 +13,74 @@ function UserProfile_Main({
 	// currentUserProfile,
 	setCurrentUserProfile,
 	handleAvatarClick,
-	selectedUser,
+	receiver_id,
 }) {
-	console.log("currentUser:", currentUser.user_id);
+	// console.log("currentUser:", currentUser.user_id);
 	const [user_id] = useState(currentUser.user_id);
 
 	const [photos, setPhotos] = useState(null);
 	const [activeTab, setActiveTab] = useState("My profile");
 	const [profileToDisplay, setProfileToDisplay] = useState(null);
 	const [error, setError] = useState("");
+	const [showChat, setShowChat] = useState("pending");
 
-	const [receiver_id, setReceiver_id] = useState(5); // for testing purposes @@@@@@@@@@@
+	//const [receiver_id, setReceiver_id] = useState(5); // for testing purposes @@@@@@@@@@@
 
-	// useEffect(() => {
-	// 	if (selectedUser === null) {
-	// 		setReceiver_id(currentUserProfile.user_id);
-	// 	}
-	// }, []);
+	// const updateShowChat = (item) => {
+		
+	// };
+
+	//----------------------------------------------------------------
+	//         check status friend request
+	const getStatus = async () => {
+
+		if ( user_id && receiver_id ) {
+			try {
+				const response = await axios.get(
+					"http://localhost:5000/friend-request-status",
+					{
+						params: {
+							sender_id: user_id,
+							receiver_id: receiver_id,
+						},
+					}
+				);
+				setShowChat(response.data.status);
+				console.log("response.data.status =" + response.data.status);
+				setError("");
+			} catch (err) {
+				setError("Failed to fetch the status");
+				setShowChat("pending");
+			}
+
+			// if (showChat === undefined) {
+			// 	setShowChat("accepted");
+			// }
+		}
+	};
+
+	useEffect(() => {
+		if( user_id === receiver_id){
+			setShowChat("pending");
+		}else{
+			getStatus();
+		}	
+	}, [receiver_id]);
+
+	useEffect(() => {
+		console.log("^^^^^^^^^^^^^^^^^^^^^^");
+		console.log("ShowChat : ", showChat);
+		console.log("ShowChat : ", showChat);
+		console.log("ShowChat : ", showChat);
+		console.log("-----------------------");
+
+	}, [showChat]);
+	//----------------------------------------------------------------
 
 	useEffect(() => {
 		// if (user_id !== receiver_id) {
-			// Fetch user profile when component mounts
+		// Fetch user profile when component mounts
+		if (receiver_id) {
 			const fetchUserProfile = async () => {
 				try {
 					const response = await axios.get(
@@ -56,21 +104,22 @@ function UserProfile_Main({
 			};
 
 			fetchUserProfile();
+		}
 		// } else {
 		// 	setProfileToDisplay(currentUserProfile);
 		// }
-	}, []);
+	}, [receiver_id]);
 
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	//                  tester
 	// useEffect(() => {
-	console.log("user_id : ");
-	console.log(user_id);
-	console.log("receiver_id : " + receiver_id);
+	// console.log("user_id : ");
+	// console.log(user_id);
+	// console.log("receiver_id : " + receiver_id);
 	// console.log("currentUserProfile :");
 	// console.log(currentUserProfile);
-	console.log("profileToDisplay :");
-	console.log(profileToDisplay);
+	// console.log("profileToDisplay :");
+	// console.log(profileToDisplay);
 	// }, [currentUserProfile]);
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -82,29 +131,32 @@ function UserProfile_Main({
 	//----------------------------------------
 	//          Get friend request status
 	const fetchFriendRequestStatus = async () => {
-		try {
-			const response = await axios.get(
-				`http://localhost:5000/friend-request-status`,
-				{
-					params: {
-						sender_id: user_id,
-						receiver_id: receiver_id,
-					},
-				}
-			);
-
-			const data = response.data; // دریافت داده‌ها از پاسخ
-
-			if (data) {
-				// بررسی اینکه داده‌ای موجود است
-				setFriendRequest(data);
-			} else {
-				setFriendRequest({ status: "rejected" }); // اگر هیچ داده‌ای موجود نبود
-			}
-		} catch (error) {
-			console.error("Error fetching friend request status:", error);
-			setFriendRequest({ status: "rejected" });
+		if (!user_id || !receiver_id){
+			return null;
 		}
+			try {
+				const response = await axios.get(
+					`http://localhost:5000/friend-request-status`,
+					{
+						params: {
+							sender_id: user_id,
+							receiver_id: receiver_id,
+						},
+					}
+				);
+
+				const data = response.data; // دریافت داده‌ها از پاسخ
+
+				if (data) {
+					// بررسی اینکه داده‌ای موجود است
+					setFriendRequest(data);
+				} else {
+					setFriendRequest({ status: "rejected" }); // اگر هیچ داده‌ای موجود نبود
+				}
+			} catch (error) {
+				// console.error("Error fetching friend request status:", error);
+				setFriendRequest({ status: "rejected" });
+			}
 	};
 
 	// استفاده از تابع درون useEffect
@@ -115,6 +167,8 @@ function UserProfile_Main({
 	//-------------------------------------------------------------------------
 	//    Set image for friend request status
 	const getImageSrc = () => {
+		// let new_Status="";
+
 		// بررسی می‌کنیم که آیا friendRequest یک آرایه است و حداقل یک عنصر دارد
 		if (Array.isArray(friendRequest) && friendRequest.length > 0) {
 			// پیدا کردن درخواست ارسال‌شده از user_id
@@ -135,12 +189,16 @@ function UserProfile_Main({
 				}
 			}
 
+			// updateShowChat(userRequest.status);
+
 			// اگر درخواست ارسال‌شده از سمت user_id وجود نداشته باشد، وضعیت پیش‌فرض
 			return "./images/heart.png";
 		} else {
 			// اگر friendRequest آرایه‌ای از درخواست‌ها نباشد یا خالی باشد
 			return "./images/heart.png";
 		}
+
+		// setShowChat(new_Status);
 	};
 
 	//---------------------------------------------
@@ -205,14 +263,14 @@ function UserProfile_Main({
 
 					existingRequest = friendRequest[index_obj_sender];
 
-					console.log("index_obj_sender : " + index_obj_sender);
-					console.log("index_obj_receiver : " + index_obj_receiver);
-					console.log(
-						"receiver_status_rejected : " + receiver_status_rejected
-					);
+					// console.log("index_obj_sender : " + index_obj_sender);
+					// console.log("index_obj_receiver : " + index_obj_receiver);
+					// console.log(
+					// 	"receiver_status_rejected : " + receiver_status_rejected
+					// );
 				}
 
-				console.log(existingRequest);
+				// console.log(existingRequest);
 
 				if (existingRequest) {
 					if (existingRequest.sender_id === user_id) {
@@ -251,6 +309,8 @@ function UserProfile_Main({
 				newStatus = "pending"; // وضعیت پیش‌فرض
 			}
 
+			// updateShowChat(newStatus);
+
 			const response = await axios.post(
 				"http://localhost:5000/update-friend-request-status",
 				{
@@ -260,21 +320,26 @@ function UserProfile_Main({
 				}
 			);
 
-			console.log("newStatus : ", newStatus);
+			// console.log("newStatus : ", newStatus);
 			fetchFriendRequestStatus();
 		} catch (error) {
 			console.error("Error updating friend request status:", error);
 		}
+
+		getStatus();
 	};
 	//----------------------
 
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	// --- testing ---
 	useEffect(() => {
-		console.log(friendRequest);
-		console.log("sender_id: ", user_id);
-		console.log("receiver_id: ", receiver_id);
-		// console.log(`sender_id: ${user_id`);
+		// console.log(friendRequest);
+		// console.log("sender_id: ", user_id);
+		// console.log("receiver_id: ", receiver_id);
+		// console.log(`showChat: ${showChat}`);
 	}, [friendRequest]);
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 	//--------------------------------------------------------------------------
 	//                ending friend request
 	//*********************************************************************** */
@@ -335,6 +400,16 @@ function UserProfile_Main({
 										profileToDisplay.birthdate
 									).getFullYear()}
 							</p>
+							{showChat === "accepted" ? (
+								<>
+									<Link className="nav_link" to="/chat">
+										<img
+											className="icons"
+											src="./images/msg.png"
+										/>
+									</Link>
+								</>
+							) : null}
 							{user_id !== receiver_id ? (
 								<img
 									className="img_send_request"
@@ -408,7 +483,7 @@ function UserProfile_Main({
 							/>
 						) : null}
 						<PhotoUploadPopup
-							user_id={receiver_id}
+							receiver_id={receiver_id}
 							showPopup={showPopup}
 							closePopup={closePopup}
 							setPhotos={setPhotos}

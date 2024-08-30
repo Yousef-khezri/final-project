@@ -2,20 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./Avatar_Upload_Popup.css";
 
-/*
-const [currentUser, setCurrentUser] = useState( {currentUser : {
-	currentUser : {
-		user_id:1,
-		profile_picture_url: "/image/test.png"
-	}
-}});
-*/
-
 function Avatar_Upload_Popup({
 	currentUser,
 	setCurrentUser,
-	// currentUserProfile,
-	// setCurrentUserProfile,
 	showPopup,
 	closePopup,
 }) {

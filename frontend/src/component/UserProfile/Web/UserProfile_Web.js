@@ -10,7 +10,8 @@ export default function UserProfile_Web({
 	setCurrentUser,
 	// currentUserProfile,
 	// setCurrentUserProfile,
-	selectedUser,
+	receiver_id,
+	setReceiver_id,
 }) {
 	// const [userId] = useState(currentUser.user_id); // user id testing ***************
 	// const [profile, setProfile] = useState(null);
@@ -25,7 +26,7 @@ export default function UserProfile_Web({
 		setShowPopup(false);
 	};
 
-	console.log(currentUser);
+	// console.log(currentUser);
 
 	// if (!currentUserProfile) {
 	// 	return <div>Loading...</div>;
@@ -38,13 +39,14 @@ export default function UserProfile_Web({
 				currentUser={currentUser}
 				// currentUserProfile={currentUserProfile}
 				handleAvatarClick={handleAvatarClick}
+				setReceiver_id={setReceiver_id}
 			/>
 			<UserProfile_Main
 				currentUser={currentUser}
 				// currentUserProfile={currentUserProfile}
 				// setCurrentUserProfile={setCurrentUserProfile}
 				handleAvatarClick={handleAvatarClick}
-				selectedUser={selectedUser}
+				receiver_id={receiver_id}
 			/>
 			<Avatar_Upload_Popup
 				// currentUserProfile={currentUserProfile}

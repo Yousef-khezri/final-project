@@ -6,14 +6,14 @@ import FriendsList from "./ComponentsChat/FriendsList";
 import Avatar_Upload_Popup from "../../UserProfile/Web/component/Avatar_Upload_Popup";
 import "../Web/Chat_Web.css";
 
-const Chat_Web = () => {
-	const [userId] = useState(1);
-	const [receiverId, setReceiverId] = useState(null); // شناسه گیرنده (باید از props یا route گرفته شود)
+const Chat_Web = ({ currentUser, setCurrentUser, receiver_id, setReceiver_id }) => {
+	// const [userId] = useState(currentUser.id);
+	// const [receiverId, setReceiverId] = useState(null); // شناسه گیرنده (باید از props یا route گرفته شود)
 
-	const [usernameFriend, setUsernameFriend ] = useState();
+	const [usernameFriend, setUsernameFriend] = useState();
 	const [pictureProfileFriend, setPictureProfileFriend] = useState();
 
-	const [profile, setProfile] = useState(null);
+	// const [profile, setProfile] = useState(null);
 	const [error, setError] = useState("");
 	const [showPopup, setShowPopup] = useState(false);
 
@@ -25,57 +25,61 @@ const Chat_Web = () => {
 		setShowPopup(false);
 	};
 
-	useEffect(() => {
-		// Fetch user profile when component mounts
-		const fetchUserProfile = async () => {
-			try {
-				const response = await axios.get(
-					"http://localhost:5000/profile",
-					{
-						params: {
-							user_id: userId, // ارسال user_id به عنوان پارامتر
-						},
-					}
-				);
-				setProfile(response.data);
-			} catch (err) {
-				if (err.response && err.response.data) {
-					setError(err.response.data.message);
-				} else {
-					setError("An error occurred while fetching the profile.");
-				}
-			}
-		};
+	// useEffect(() => {
+	// 	// Fetch user profile when component mounts
+	// 	const fetchUserProfile = async () => {
+	// 		try {
+	// 			const response = await axios.get(
+	// 				"http://localhost:5000/profile",
+	// 				{
+	// 					params: {
+	// 						user_id: userId, // ارسال user_id به عنوان پارامتر
+	// 					},
+	// 				}
+	// 			);
+	// 			setProfile(response.data);
+	// 		} catch (err) {
+	// 			if (err.response && err.response.data) {
+	// 				setError(err.response.data.message);
+	// 			} else {
+	// 				setError("An error occurred while fetching the profile.");
+	// 			}
+	// 		}
+	// 	};
 
-		fetchUserProfile();
-	}, [userId]);
+	// 	fetchUserProfile();
+	// }, [userId]);
 
 	if (error) {
 		return <div>{error}</div>;
 	}
 
-	if (!profile) {
+	if (!currentUser) {
 		return <div>Loading...</div>;
-	} else {
-		console.log(profile);
 	}
 
 	return (
 		<div className="chat_Web">
-			<Sidebar profile={profile} handleAvatarClick={handleAvatarClick} />
+			<Sidebar
+				currentUser={currentUser}
+				handleAvatarClick={handleAvatarClick}
+				setReceiver_id={setReceiver_id}
+			/>
 			<ChatArea
-				receiverId={receiverId}
+				currentUser={currentUser}
+				receiver_id={receiver_id}
 				usernameFriend={usernameFriend}
 				pictureProfileFriend={pictureProfileFriend}
 			/>
 			<FriendsList
-				setReceiverId={setReceiverId}
+				currentUser={currentUser}
+				setReceiver_id={setReceiver_id}
 				setUsernameFriend={setUsernameFriend}
 				setPictureProfileFriend={setPictureProfileFriend}
-				// usernameFriend, pictureProfileFriend
 			/>
 			<Avatar_Upload_Popup
-				profile={profile}
+				currentUser={currentUser}
+				setCurrentUser={setCurrentUser}
 				showPopup={showPopup}
 				closePopup={closePopup}
 			/>

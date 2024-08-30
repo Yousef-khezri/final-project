@@ -2,12 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./ChatArea.css";
 
-const ChatArea = ({ receiverId, usernameFriend, pictureProfileFriend }) => {
+const ChatArea = ({ currentUser, receiverId, usernameFriend, pictureProfileFriend }) => {
 	const [messages, setMessages] = useState([]);
 	const [newMessage, setNewMessage] = useState("");
 	const chatEndRef = useRef(null);
 
-	const senderId = 1; // شناسه فرستنده (باید از session یا context گرفته شود)
+	const [senderId] = useState(currentUser.user_id);
 
 	useEffect(() => {
 		// بارگذاری پیام‌های قدیمی

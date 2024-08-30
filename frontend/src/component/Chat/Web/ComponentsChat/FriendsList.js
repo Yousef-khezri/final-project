@@ -2,9 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./FriendsList.css";
 
-const FriendsList = ({ setReceiverId, setUsernameFriend, setPictureProfileFriend }) => {
+const FriendsList = ({
+	currentUser,
+	setReceiver_id,
+	setUsernameFriend,
+	setPictureProfileFriend,
+}) => {
 	const [chatFriends, setChatFriends] = useState([]);
-	const [userId] = useState(1); // شناسه کاربری که وارد شده است (برای مثال)
+	const [userId] = useState(currentUser.user_id); // شناسه کاربری که وارد شده است (برای مثال)
 
 	//----------------------------------------------------------------
 	/*const chatFriend = 
@@ -90,7 +95,7 @@ const FriendsList = ({ setReceiverId, setUsernameFriend, setPictureProfileFriend
 						className="friend"
 						key={uniqueKey}
 						onClick={() => {
-							setReceiverId(uniqueKey);
+							setReceiver_id(uniqueKey);
 							setUsernameFriend(usernameFriend);
 							setPictureProfileFriend(profilePictureUrl);
 						}}

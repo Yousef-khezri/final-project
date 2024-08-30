@@ -3,7 +3,12 @@ import { useEffect, useState } from "react";
 import UserProfile_Web from "./Web/UserProfile_Web";
 import "./UserProfile.css";
 
-export default function UserProfile({ currentUser, setCurrentUser, selectedUser }) {
+export default function UserProfile({
+	currentUser,
+	setCurrentUser,
+	receiver_id,
+	setReceiver_id,
+}) {
 	// const [currentUserProfile, setCurrentUserProfile] = useState([]);
 
 	// const [error, setError] = useState("");
@@ -48,7 +53,8 @@ export default function UserProfile({ currentUser, setCurrentUser, selectedUser 
 				setCurrentUser={setCurrentUser}
 				// currentUserProfile={currentUserProfile}
 				// setCurrentUserProfile={setCurrentUserProfile}
-				selectedUser={selectedUser}
+				receiver_id={receiver_id}
+				setReceiver_id={setReceiver_id}
 			/>
 		</div>
 	);
