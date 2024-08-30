@@ -15,11 +15,9 @@ export default function HomeWeb({ checkLogin }) {
             <div className="logoDiv">
               <img className="frontLogo" src="./images/phoenix-logo .png" />
             </div>
-            <h2 className="titel"> dein Neuanfang</h2>
+            <h2 className="titel">Match deinen Partner</h2>
             <div className="textDivFront">
-              <p className="phoenix-text">
-                ...Phoenix symbolisiert den neuen Anfang und die Wiedergeburt,
-                genau wie eine neue Liebe, die in unserem Leben erblüht. In
+              <p className="phoenix-text"> In
                 unsere Plattform kannst du aus der Asche alter Beziehungen
                 aufsteigen und wahre Verbundenheit finden.
               </p>
