@@ -1,5 +1,6 @@
 .main_box_Interests {
 	width: 100%;
+	margin: 40px auto;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -7,7 +8,8 @@
 
 /*----------------- box-Interests -------------------------------*/
 .box-Interests {
-	width: 60%;
+	width: 80%;
+	min-height: 270px;
 	max-height: 400px;
 	padding: 20px 0;
 	display: flex;

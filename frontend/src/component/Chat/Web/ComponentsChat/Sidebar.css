@@ -1,6 +1,6 @@
 /* Sidebar.css */
 .sidebar {
-  width: 25%;
+  width: 20%;
   height: 80vh;
   background-color: #744159;
   color: white;
@@ -10,18 +10,19 @@
   padding: 20px;
   border: 2px solid #ff007b;
   border-radius: 25px;
-  margin-right: 1%;
+  margin-right: 2%;
 }
 
 .logo {
   display: flex;
   align-items: center;
+  max-height: 150px;
   gap: 10px;
   padding-bottom: 10px;
   border-bottom: 3px solid #805656;
 }
 .logo .img-logo {
-  width: 35%;
+  width: 55%;
   border-radius: 50%;
 }
 

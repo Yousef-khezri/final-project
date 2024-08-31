@@ -1,6 +1,7 @@
 /* Photos.css */
 
 .photo-gallery {
+  max-height: 500px;
   padding: 20px;
   text-align: center;
 }
@@ -16,6 +17,11 @@
   cursor: pointer;
   transition: transform 0.3s;
   margin: 0 auto;
+}
+
+.item-img{
+  
+  max-height: 286px;
 }
 
 .photo-item img:hover {

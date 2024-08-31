@@ -92,7 +92,7 @@ app.use(
 // 	});
 // });
 //--------------------------------------------------------------------------
-//--------------------- Connection Database --------------------------------
+/*--------------------- Connection Database --------------------------------*/
 const db = mysql.createConnection({
 	host: process.env.DB_HOST,
 	user: process.env.DB_USER,
@@ -112,10 +112,10 @@ db.connect((err) => {
 // Middleware
 app.use(
 	session({
-		secret: "joseph_adrijana_key", // کلید سشن که باید در محیط تولیدی امن باشد
+		secret: process.env.SESSION_SECRET, // استفاده از متغیر محیطی
 		resave: false,
 		saveUninitialized: true,
-		cookie: { secure: false }, // برای محیط تولیدی، secure باید true باشد
+		cookie: { secure: false }, // در محیط تولید باید true باشد
 	})
 );
 //--------------------------------------------------------------------------
@@ -198,7 +198,16 @@ app.post("/login", (req, res) => {
 			}
 			const userProfile = profileResults[0];
 			// تنظیم سشن
-			req.session.user = user;
+			// req.session.user = user;
+			req.session.user = {
+				message: "Login successful",
+				user_id: user.id,
+				username: user.username,
+				first_name: userProfile.first_name,
+				last_name: userProfile.last_name,
+				profile_picture_url: userProfile.profile_picture_url,
+			};
+
 			res.status(200).json({
 				message: "Login successful",
 				user_id: user.id,
@@ -209,30 +218,19 @@ app.post("/login", (req, res) => {
 			});
 		});
 	});
-	// const query = "SELECT * FROM user_credentials WHERE email = ?";
-	// db.query(query, [email], async (err, results) => {
-	// 	if (err) {
-	// 		return res.status(500).json({ message: "Database error" });
-	// 	}
-	// 	if (results.length === 0) {
-	// 		return res.status(400).json({ message: "Invalid credentials" });
-	// 	}
-	// 	const user = results[0];
-	// 	// بررسی صحت پسورد
-	// 	const isMatch = await bcrypt.compare(password, user.password_hash);
-	// 	if (!isMatch) {
-	// 		return res.status(400).json({ message: "Invalid credentials" });
-	// 	}
-	// 	// تنظیم سشن
-	// 	req.session.user = user;
-	// 	res.status(200).json({
-	// 		message: "Login successful",
-	// 		user_id: user.id,
-	// 		username: user.username,
-	// 	});
-	// });
 });
 //----------------------------------------------------------------
+// دریافت محتویات session.user
+app.get("/api/current-user", (req, res) => {
+	console.log(req.session.user);
+	// بررسی اینکه آیا کاربر در سشن وجود دارد
+	if (req.session.user) {
+		console.log(req.session.user);
+		res.status(200).json(req.session.user);
+	} else {
+		res.status(401).json({ message: "Not authenticated" });
+	}
+});
 //----------------------------------------------------------------
 // مسیر خروج از سیستم
 app.post("/logout", (req, res) => {
@@ -494,6 +492,36 @@ app.get("/profile", (req, res) => {
 	});
 });
 //--------------------------------------------------------------------------
+//  برای دریافت اطلاعات کاربر بر اساس user_id  برای قسمت چت  زمانی که از پروفایل کاربر به قسمت چت میرویم
+app.post('/get-user-info', (req, res) => {
+  const { user_id } = req.body; // دریافت user_id از درخواست
+
+  if (!user_id) {
+    return res.status(400).json({ message: 'user_id is required' });
+  }
+
+  // پرس و جو برای دریافت اطلاعات کاربر
+  const query = `
+    SELECT up.first_name, up.last_name, up.profile_picture_url, uc.username 
+    FROM user_profile up
+    JOIN user_credentials uc ON up.user_id = uc.id
+    WHERE up.user_id = ?
+  `;
+
+  db.query(query, [user_id], (err, results) => {
+    if (err) {
+      console.error('Error fetching user info:', err);
+      return res.status(500).json({ message: 'Database error', error: err });
+    }
+
+    if (results.length > 0) {
+      res.status(200).json(results[0]);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  });
+});
+//--------------------------------------------------------------------------
 //##########################################################################
 //##########################################################################
 //                           Messages
@@ -522,11 +550,11 @@ app.post("/messages", (req, res) => {
 				.status(500)
 				.json({ message: "Database error", error: err });
 		}
-		io.to(`chat-${sender_id}-${receiver_id}`).emit("newMessage", {
-			sender_id,
-			receiver_id,
-			content,
-		});
+		// io.to(`chat-${sender_id}-${receiver_id}`).emit("newMessage", {
+		// 	sender_id,
+		// 	receiver_id,
+		// 	content,
+		// });
 		res.status(201).json({ message: "Message sent successfully" });
 	});
 });

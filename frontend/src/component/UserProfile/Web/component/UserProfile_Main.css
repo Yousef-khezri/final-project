@@ -2,9 +2,10 @@
   background-color: #744159;
   color: white;
   font-family: Arial, sans-serif;
-  width: 60%;
+  width: 70%;
+  height: 80vh;
   min-width: 824px;
-  height: 80%;
+  /* height: 80%; */
   padding: 20px;
   border-radius: 10px;
 
@@ -34,9 +35,20 @@
   font-size: 18px;
 }
 
-.user-info .img_send_request {
+.user-info .box_icon_chat {
   width: 35px;
   margin-left: auto;
+  cursor: pointer;
+  margin-right: 25px;
+}
+
+.box_icon_chat .icon_chat {
+  width: 35px;
+  cursor: pointer;
+}
+
+.user-info .img_send_request{
+  width: 55px;
   cursor: pointer;
 }
 /*--------------------------------------------------------------*/
@@ -129,7 +141,13 @@
 
 /*--------------------------------------------------------------*/
 .profile-content {
+  padding: 0 5px;
+  display: flex;            /* test */
+  justify-content: center;  /* test */
+  align-items: center;      /* test */
   min-width: 788px;
+  min-height: 330px;
+  max-height: 335px;
   background-color: white;
   color: #333;
   border-radius: 10px;
