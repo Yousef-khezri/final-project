@@ -8,7 +8,7 @@ function Interests({ user_id, receiver_id }) {
 	const [error, setError] = useState(null); // State برای مدیریت خطاها
 	const [isEditing, setIsEditing] = useState(false);
 
-	const [receiverId, setReceiverId] = useState(receiver_id);
+	// const [receiverId, setReceiverId] = useState(receiver_id);
 	// const [userId, setUserId] = useState(receiver_id);
 
 	//############################################################################ */
@@ -21,7 +21,7 @@ function Interests({ user_id, receiver_id }) {
 				const response = await axios.get(
 					`http://localhost:5000/user-interests`,
 					{
-						params: { user_Id: receiverId },
+						params: { user_Id: receiver_id },
 						// ارسال پارامترها به‌عنوان query string
 					}
 				);
@@ -32,10 +32,10 @@ function Interests({ user_id, receiver_id }) {
 		};
 
 		fetchInterests();
-	}, [receiverId]);
+	}, [receiver_id]);
 
 	useEffect(() => {
-		// دریافت داده‌ها از سرور
+		// دریافت  interests از سرور
 		axios
 			.get("http://localhost:5000/interests")
 			.then((response) => {
@@ -51,6 +51,7 @@ function Interests({ user_id, receiver_id }) {
 	// 	console.log(userInterests);
 	// }, [userInterests]);
 
+	// for  add or delete Interest
 	const toggleInterest = (interest) => {
 		if (userInterests.some((ui) => ui.interest_id === interest.id)) {
 			setUserInterests(
@@ -71,7 +72,7 @@ function Interests({ user_id, receiver_id }) {
 			const response = await axios.post(
 				"http://localhost:5000/update-user-interests",
 				{
-					user_Id: receiverId,
+					user_Id: receiver_id,
 					userInterests,
 				}
 			);

@@ -1,9 +1,10 @@
 /* FriendsList.css */
 .friends-list {
-  width: 25%;
+  width: 20%;
   min-width: 257px;
   height: 80vh;
-  background-color: #f7f7fa;
+  background-color: #744159;
+  /* background-color: #f7f7fa; */
   padding: 20px;
   display: flex;
   flex-direction: column;

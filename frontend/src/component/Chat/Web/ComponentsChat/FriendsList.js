@@ -12,24 +12,6 @@ const FriendsList = ({
 	const [userId] = useState(currentUser.user_id); // شناسه کاربری که وارد شده است (برای مثال)
 
 	//----------------------------------------------------------------
-	/*const chatFriend = 
-	{
-		content: "test 2",
-		id: 58,
-		receiver_id: 1,
-		receiver_profile_picture_url:
-			"/uploads/profile_pictures/1724695445659.png",
-		receiver_username: "joseph",
-		sender_id: 3,
-		sender_profile_picture_url:
-			"/uploads/profile_pictures/1724695615948.png",
-		sender_username: "test1",
-		sent_at: "2024-08-26T12:14:53.000Z",
-	 };
-	 */
-
-	//----------------------------------------------------------------
-
 	useEffect(() => {
 		// فراخوانی API با استفاده از axios
 		axios
@@ -43,10 +25,10 @@ const FriendsList = ({
 	}, [userId]);
 
 	// testing ******************
-	useEffect(() => {
-		console.log("chatFriends:");
-		console.log(...chatFriends);
-	}, [chatFriends]);
+	// useEffect(() => {
+	// 	console.log("chatFriends:");
+	// 	console.log(...chatFriends);
+	// }, [chatFriends]);
 
 	return (
 		<div className="friends-list">

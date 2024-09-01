@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
 const Sidebar = ({ currentUser, handleAvatarClick, setReceiver_id }) => {
+	// const navigate = useNavigate();
 	// console.log(currentUser);
 
 	// useEffect(() => {
@@ -10,12 +11,16 @@ const Sidebar = ({ currentUser, handleAvatarClick, setReceiver_id }) => {
 	// }, [currentUser]);
 
 	const clickedUser = (id) => {
+		// console.log("id => " + id);
 		setReceiver_id(id);
 	};
 
-	// const handleLinkClick = (event) => {
-	// 	event.stopPropagation();
-	// };
+	//----------------------------------------------------------------
+	// when clicked button chat
+	const clickStartChat = () => {
+		setReceiver_id(0); // اجرای تابع دلخواه شما
+	};
+	//----------------------------------------------------------------
 
 	return (
 		<div className="sidebar">
@@ -33,8 +38,8 @@ const Sidebar = ({ currentUser, handleAvatarClick, setReceiver_id }) => {
 					}
 				/>
 				<div
-					key={currentUser.id}
-					onClick={() => clickedUser(currentUser.id)}
+					key={currentUser.user_id}
+					onClick={() => clickedUser(currentUser.user_id)}
 				>
 					<Link className="nav_link" to="/user-profile">
 						<h3>
@@ -47,8 +52,16 @@ const Sidebar = ({ currentUser, handleAvatarClick, setReceiver_id }) => {
 			</div>
 			<div className="menu">
 				<div className="menu-item">
-					<Link className="nav_link" to="/chat">
-						<img className="icons" src="./images/msg.png" />
+					<Link
+						to="/chat"
+						className="nav_link"
+						onClick={clickStartChat}
+					>
+						<img
+							className="icons"
+							src="./images/msg.png"
+							alt="chat icon"
+						/>
 						<div className="menu-chat">Chat</div>
 					</Link>
 				</div>
@@ -57,12 +70,12 @@ const Sidebar = ({ currentUser, handleAvatarClick, setReceiver_id }) => {
 					<div className="menu-like">Like</div>
 				</div>
 				<div className="menu-item">
-					<img className="icons" src="./images/question-mark.png" />
-					<div className="menu-text1">Text1</div>
+					<img className="icons" src="./images/diamond.png" />
+					<div className="menu-text1">Diamond</div>
 				</div>
 				<div className="menu-item">
 					<img className="icons" src="./images/question-mark.png" />
-					<div className="menu-text2">Text2</div>
+					<div className="menu-text2">Search</div>
 				</div>
 				<div className="vip-section">VIP</div>
 			</div>
@@ -82,7 +95,7 @@ const Sidebar = ({ currentUser, handleAvatarClick, setReceiver_id }) => {
 					</Link>
 					<img className="img-profile-user" src="./images/user.png" />
 				</div>
-				<div className="user" onClick={() => clickedUser(5)}>
+				<div className="user" key={5} onClick={() => clickedUser(5)}>
 					<img className="img-profile-user" src="./images/user.png" />
 					<Link className="nav_link" to="/user-profile">
 						<span>Anna, 31</span>

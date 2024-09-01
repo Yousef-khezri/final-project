@@ -20,7 +20,7 @@ function LoginRegister({ updateCheckLogin }) {
 				password,
 			});
 			updateCheckLogin(response.data);
-			// console.log(response.data.user); // test *******************************
+			//console.log(response.data); // test *******************************
 			navigate("/user-profile");
 		} catch (error) {
 			console.log(error);

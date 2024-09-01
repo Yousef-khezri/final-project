@@ -31,19 +31,19 @@ function Hobbies({user_id, receiver_id}) {
 		};
 
 		fetchHobbies();
-	}, []);
+	}, [receiver_id]);
 
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	console.log("receiver_id in Hobbies : ");
-	console.log(receiver_id);
-	console.log("userHobbies : ");
-	console.log(userHobbies);
+	// console.log("receiver_id in Hobbies : ");
+	// console.log(receiver_id);
+	// console.log("userHobbies : ");
+	// console.log(userHobbies);
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 	//----------------------------------------------------------------
 	// GET Hobbies API
 	useEffect(() => {
-		// دریافت داده‌ها از سرور
+		// دریافت hobbies از سرور
 		axios
 			.get("http://localhost:5000/hobbies")
 			.then((response) => {
@@ -109,7 +109,7 @@ function Hobbies({user_id, receiver_id}) {
 			{/*                      box-Hobbies                                    */}
 			{/* ------------------------------------------------------------------- */}
 			<div className="box-Hobbies">
-				<h2>Hobbies</h2>
+				<h3>Hobbies</h3>
 				<ul className="ul_Hobbies">
 					{userHobbies
 						? userHobbies.map((hobby) => (

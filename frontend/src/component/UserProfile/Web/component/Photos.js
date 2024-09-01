@@ -69,13 +69,13 @@ function Photos({ user_id, receiver_id, photos, setPhotos }) {
 		speed: 500,
 		slidesToShow: Math.min(photos.length, 4),
 		slidesToScroll: 1,
-		nextArrow: <NextArrow />,
-		prevArrow: <PrevArrow />,
+		nextArrow: <NextArrow photos={photos} />,
+		prevArrow: <PrevArrow photos={photos} />,
 	};
 
 	return (
 		<div className="photo-gallery">
-			<h2>Photo Gallery</h2>
+			{/* <h3>Photo Gallery</h3> */}
 			<Slider {...settings}>
 				{photos
 					? photos.map((photo, index) => (
@@ -136,22 +136,30 @@ function Photos({ user_id, receiver_id, photos, setPhotos }) {
 }
 
 function NextArrow(props) {
-	const { className, style, onClick } = props;
+	const { className, style, onClick, photos } = props;
 	return (
-		<div
-			className={`${className} custom-arrow next-arrow`}
-			onClick={onClick}
-		/>
+		<>
+			{photos && photos.length > 0 && (
+				<div
+					className={`${className} custom-arrow next-arrow`}
+					onClick={onClick}
+				/>
+			)}
+		</>
 	);
 }
 
 function PrevArrow(props) {
-	const { className, style, onClick } = props;
+	const { className, style, onClick, photos } = props;
 	return (
-		<div
-			className={`${className} custom-arrow prev-arrow`}
-			onClick={onClick}
-		/>
+		<>
+			{photos && photos.length > 0 && (
+				<div
+					className={`${className} custom-arrow prev-arrow`}
+					onClick={onClick}
+				/>
+			)}
+		</>
 	);
 }
 
