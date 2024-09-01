@@ -220,10 +220,10 @@ app.post("/login", (req, res) => {
 	});
 });
 //----------------------------------------------------------------
-// دریافت محتویات session.user
+// دریافت محتویات session.user 
 app.get("/api/current-user", (req, res) => {
 	console.log(req.session.user);
-	// بررسی اینکه آیا کاربر در سشن وجود دارد
+	// بررسی اینکه آیا user در session وجود دارد
 	if (req.session.user) {
 		console.log(req.session.user);
 		res.status(200).json(req.session.user);
