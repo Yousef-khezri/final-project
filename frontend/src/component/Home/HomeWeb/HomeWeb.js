@@ -15,10 +15,11 @@ export default function HomeWeb({ checkLogin }) {
             <div className="logoDiv">
               <img className="frontLogo" src="./images/phoenix-logo .png" />
             </div>
-            <h2 className="titel">Match deinen Partner</h2>
+            <h2 className="titel">Nie mehr allein sein</h2>
             <div className="textDivFront">
-              <p className="phoenix-text"> In
-                unsere Plattform kannst du aus der Asche alter Beziehungen
+              <p className="untertitel">Deine seite für Partnersuche</p>
+              <p className="phoenix-text">
+                In unsere Plattform kannst du aus der Asche alter Beziehungen
                 aufsteigen und wahre Verbundenheit finden.
               </p>
             </div>
@@ -65,13 +66,7 @@ export default function HomeWeb({ checkLogin }) {
               Kontakte knüpfen kann. Als Gründer dieser Website teilen wir
               unsere eigenen Erfahrungen in der Welt des Datings und das
               Bedürfnis nach einem komfortablen und sicheren Ort, um gesunde und
-              bedeutungsvolle Beziehungen aufzubauen. Hier haben wir uns
-              verpflichtet, Dienste bereitzustellen, die Ihnen helfen, mit
-              Menschen in Kontakt zu treten, die ähnliche Werte, Interessen und
-              Ziele teilen. Durch fortschrittliche Tools und intelligente
-              Algorithmen bemühen wir uns, Ihnen die besten Übereinstimmungen zu
-              bieten und Ihnen eine angenehme Erfahrung bei der Suche nach einem
-              Lebenspartner oder neuen Freund zu bieten. Wir legen Wert auf
+              bedeutungsvolle Beziehungen aufzubauen. -Wir legen Wert auf
               Authentizität, Ehrlichkeit und die Sicherheit unserer Benutzer und
               arbeiten stets daran, eine gesunde und unterstützende Umgebung für
               alle Mitglieder unserer Community zu schaffen. Schließen Sie sich
@@ -100,7 +95,9 @@ export default function HomeWeb({ checkLogin }) {
               Sie sagen, wir müssen auf das Gute warten, aber wir sagen, wir
               haben lange genug gewartet!
             </p>
-            <button className="subscribeBtn">Subscribe now</button>
+            <a href="http://localhost:3000/login-register" target="_blank">
+              <button className="subscribeBtn">Subscribe now</button>
+            </a>
           </div>
           <div className="sec4lastDiv">
             <img src="./images/perfectMatch.jpg" />
@@ -219,7 +216,7 @@ export default function HomeWeb({ checkLogin }) {
                 show you how perfect it is.
               </p>
               <img className="s7img2" src="./images/woman2.png" />
-              <label>Chaterine, 34</label>
+              <label>Ronja Weber, 28</label>
             </div>
           </div>
         </section>

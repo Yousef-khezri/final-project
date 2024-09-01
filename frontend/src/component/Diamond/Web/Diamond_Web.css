@@ -3,12 +3,11 @@
     padding: 0;
 }
 .diamondWeb_container{
-    border: 2px solid green;
     width: 100vw;
     height: 100vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    background-color: rgb(162, 161, 161);
+    background-color: #212121;
 }

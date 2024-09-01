@@ -3,8 +3,9 @@ import Sidebar from "../../Chat/Web/ComponentsChat/Sidebar";
 import Avatar_Upload_Popup from "../../UserProfile/Web/component/Avatar_Upload_Popup";
 import MainDiamond from "./componente_diamond/MainDiamond";
 import "../Web/Diamond_Web.css";
+import ModalSearch from "../../Search/ModalSearch";
 
-function Diamond_Web() {
+function Diamond_Web({ showPopupSearch, setShowPopupSearch }) {
   const [profile, setProfile] = useState({
     birthdate: "1990-02-23T23:00:00.000Z",
     children_status: "Doesn't want children",
@@ -46,8 +47,8 @@ function Diamond_Web() {
   const [showPopup, setShowPopup] = useState(false);
 
   const handleAvatarClick = () => {
-		setShowPopup(true);
-	};
+    setShowPopup(true);
+  };
 
   const closePopup = () => {
     setShowPopup(false);
@@ -55,13 +56,14 @@ function Diamond_Web() {
 
   return (
     <div className="diamondWeb_container">
-      <Sidebar profile={profile} handleAvatarClick={handleAvatarClick} />
+      <Sidebar profile={profile} handleAvatarClick={handleAvatarClick} /> {/* trebam sve props iz Sidebar */}
       <MainDiamond />
       <Avatar_Upload_Popup
         profile={profile}
         showPopup={showPopup}
         closePopup={closePopup}
       />
+      {showPopupSearch === true ? <ModalSearch setShowPopupSearch={setShowPopupSearch} /> : null}
     </div>
   );
 }

@@ -65,10 +65,14 @@ function ModalSearch() {
 
   return (
     <>
-      <Button onClick={handleShow}>
-        <img src="./icons/search.png" />
+      {/* da code aus bootstrap ist, um style zu änderen brauche ich inlineStyle */}
+      <button
+        style={{ backgroundColor: "#734058", margin: "0px", padding: "0px" }}
+        className="searchBtn"
+        onClick={handleShow}
+      >
         Search
-      </Button>
+      </button>
 
       <Modal
         show={show}
@@ -82,8 +86,10 @@ function ModalSearch() {
         <Modal.Body>
           {/* ----------- modal-body ----------- */}
           {/* Geschlecht wählen */}
-          <section className="genderBtns">
+          <section 
+          style={{width: "100%", display: "flex", justifyContent: "space-evenly"}}>
             <button
+              style={{ backgroundColor: "#734058" }}
               value={gender}
               onClick={() => {
                 setGender("male");
@@ -93,6 +99,7 @@ function ModalSearch() {
               mänlich
             </button>
             <button
+              style={{ backgroundColor: "#a72b61" }}
               value={gender}
               onClick={() => {
                 setGender("female");
@@ -103,14 +110,22 @@ function ModalSearch() {
             </button>
           </section>
           {/* Alter wählen */}
-          <section className="alterBox">
+          <section
+            style={{
+              width: "90%",
+              display: "flex",
+              margin: "20px",
+              justifyContent: "space-evenly",
+            }}
+          >
             <div>
               <label>von: </label>
               <input
+                style={{ width: "120px", marginLeft: "7px" }}
                 type="number"
                 min={1}
                 max={80}
-                placeholder="min Alter"
+                placeholder=" min Alter"
                 onChange={(e) => {
                   setMinAge(parseInt(e.target.value));
                 }}
@@ -119,23 +134,26 @@ function ModalSearch() {
             <div>
               <label>bis: </label>
               <input
+                style={{ width: "120px", marginLeft: "7px" }}
                 type="number"
                 min={1}
                 max={80}
-                placeholder="max Alter"
+                placeholder=" max Alter"
                 onChange={(e) => {
                   setMaxAge(parseInt(e.target.value));
                 }}
               />
-              <label> Jahre alt</label>
             </div>
+            <label> Jahre alt</label>
           </section>
           {/* Ort wählen */}
-          <section>
-            <label>Bitte trage den gewünschten Ort ein: </label>
+          <section
+          style={{ margin: "20px" }}>
+            <label>Bitte nenne den Ort: </label>
             <input
+            style={{ marginLeft: "7px" }}
               type="text"
-              placeholder="z.B. Hamburg"
+              placeholder=" z.B. Hamburg"
               onChange={(e) => {
                 setLocation(e.target.value);
               }}
@@ -146,12 +164,13 @@ function ModalSearch() {
         </Modal.Body>
         <Modal.Footer>
           <Button
+          style={{backgroundColor: "#DD3A5A"}}
             onClick={() => {
               searchHandel();
             }}
           >
             <img src="./icons/iconSearch.png" />
-            Search
+            Submit
           </Button>
         </Modal.Footer>
       </Modal>

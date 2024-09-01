@@ -29,28 +29,28 @@ export default function Header({ checkLogin }) {
         <nav className="navbar">
           <a
             className="nav_link"
-            href="../src/componente/Home/Home.js"
+            href="http://localhost:3000/"
             target="_blank"
           >
             Home
           </a>
           <a
             className="nav_link"
-            href="../src/componente/Home/Home.js"
+            href="http://localhost:3000/about-us"
             target="_blank"
           >
             About us
           </a>
           <a
             className="nav_link"
-            href="../src/componente/Home/Home.js"
+            href=""
             target="_blank"
           >
             Galery
           </a>
           <a
             className="nav_link"
-            href="../src/componente/Home/Home.js"
+            href=""
             target="_blank"
           >
             Our Team

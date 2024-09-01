@@ -554,7 +554,7 @@ app.get("/user-profiles/all/:gender", (req, res) => {
 	  LEFT JOIN
 		user_credentials uc ON up.user_id = uc.id
 	  WHERE
-		up.gender = ? LIMIT 9`;
+		up.gender = ? LIMIT 6`;
 
   db.query(query, [gender], (err, results) => {
     if (err) {
@@ -606,10 +606,10 @@ app.get("/user-profiles/filtered", (req, res) => {
   let queryParams = [gender, minAge, maxAge];
 
   if (location !== null && location !== undefined) {
-    query += " AND location = ? LIMIT 9";
+    query += " AND location = ? LIMIT 6";
     queryParams.push(location);
   }else{
-	query += " LIMIT 9";
+	query += " LIMIT 6";
   }
 
   db.query(query, queryParams, (err, results) => {
@@ -1708,8 +1708,11 @@ app.post("/update-friend-request-status", (req, res) => {
 //                    End friend-request
 //##########################################################################
 
+
 //##########################################################################
 //--------------------------------------------------------------------------
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });
+//

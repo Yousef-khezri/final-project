@@ -16,7 +16,6 @@
 .web_main {
     width: 100%;
     min-height: 50vh;
-    /* max-height: fit-content; */
     background-color: #212121;
     color: white;
     /* neues font */
@@ -41,7 +40,7 @@
 .logo-textDiv {
     width: 55%;
     min-width: 450px;
-    /* height: fit-content; */
+    height: auto;
     min-height: 500px;
     position: relative;
 }
@@ -49,7 +48,7 @@
 .heartDiv {
     width: 45%;
     min-width: 450px;
-    /* height: fit-content; */
+    height: auto;
     min-height: 500px;
     position: relative;
 }
@@ -65,19 +64,19 @@
 
 .frontLogo {
     width: 80px;
-    height: 80px;
+    height: 70px;
 }
 
 /* text-Teil */
 .titel{
     font-family: "Lato", sans-serif;
     font-weight: bolder;
-    font-size: 2rem;
-    font-style: normal;
-    font-size: 3rem;
+    font-style: italic;
+    font-size: 3.8rem;
+    text-transform: capitalize;
     position: absolute;
-    top: 100px
-    left: 200px;
+    top: 100px;
+    left: 220px;
 }
 .textDivFront {
     width: 65%;
@@ -88,6 +87,10 @@
     top: 200px;
     left: 15%;
     z-index: 1;
+}
+.untertitel{
+    font-size: 1.6rem;
+    text-transform: capitalize;
 }
 .phoenix-text{
     font-family: "Lato", sans-serif;
@@ -302,11 +305,10 @@
 }
 
 .textDiv h2 {
-    color: rgb(101, 244, 244);
+    color: #DD3A5A;
 }
 
 .seeMoreBtn {
-    /* width: fit-content; */
     display: flex;
     align-self: flex-end;
     padding: 5px 10px;
@@ -390,7 +392,7 @@
 }
 
 .perfectText>h2 {
-    color: rgb(101, 244, 244);
+    color: #DD3A5A;
 }
 
 .perfectText p {
@@ -402,7 +404,7 @@
 }
 
 .subscribeBtn {
-    /* width: fit-content; */
+    width: max-content;
     padding: 5px 10px;
     border-bottom-left-radius: 15px;
     border-top-right-radius: 15px;
@@ -437,7 +439,7 @@
 
 .section_5>h2 {
     margin-top: 20px;
-    color: rgb(101, 244, 244);
+    color: #DD3A5A;
 }
 
 .section_5 p {
@@ -508,15 +510,16 @@
 }
 
 .aside p {
-    /* width: fit-content; */
     margin: 0 0 0 15px;
+    font-size: 0.8rem;
+    width: auto;
 }
 
 /* ------- section 6 ------ */
 .section_6 {
     box-shadow: 0 10px 15px #f67e96;
     width: 100%;
-    height: fit-content;
+    height: auto;
     background-image: url(/public/images/sec6BG.png);
     background-repeat: no-repeat;
     background-size: cover;
@@ -634,7 +637,7 @@
     left: 30%;
 }
 
-/* section 7 */
+/* --------- section 7 ------- */
 .section_7 {
     width: 100%;
     background-color: #212121;
@@ -644,7 +647,7 @@
 }
 
 .section_7>h2 {
-    color: rgb(101, 244, 244);
+    color: #DD3A5A;
     margin-top: 2%;
     margin-bottom: 20px;
 }
@@ -677,7 +680,8 @@
 }
 
 .s7right>p {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
+    margin-bottom: 30px;
 }
 
 .s7img2 {
@@ -686,8 +690,9 @@
 }
 
 .s7right label {
-    font-size: 1.5em;
+    font-size: 1.2rem;
     font-weight: bold;
+    font-style: italic;
 }
 
 /* -------------------------------------------------- */

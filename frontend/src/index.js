@@ -12,17 +12,17 @@ root.render(
     {/* for bootstrap */}
     <script
       src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js"
-      crossorigin
+      crossOrigin="true"
     ></script>
 
     <script
       src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js"
-      crossorigin
+      crossOrigin="true"
     ></script>
 
     <script
       src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js"
-      crossorigin
+      crossOrigin="true"
     ></script>
 
     <script>var Alert = ReactBootstrap.Alert;</script>

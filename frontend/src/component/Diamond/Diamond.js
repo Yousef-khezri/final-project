@@ -1,12 +1,15 @@
-import React from 'react';
-import Diamond_Web from './Web/Diamond_Web';
+import React from "react";
+import Diamond_Web from "./Web/Diamond_Web";
 
-function Diamond() {
+function Diamond({showPopupSearch, setShowPopupSearch}) {
   return (
     <div>
-        <Diamond_Web />
+      <Diamond_Web
+        showPopupSearch={showPopupSearch}
+        setShowPopupSearch={setShowPopupSearch}
+      />
     </div>
-  )
+  );
 }
 
-export default Diamond
+export default Diamond;
