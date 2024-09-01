@@ -13,9 +13,12 @@ import AboutUs from "./component/Home/AboutUs/AboutUs";
 function App() {
   const [checkLogin, setCheckLogin] = useState(false);
   const [showPopupSearch, setShowPopupSearch] = useState(false);
+  const [currentUser, setCurrentUser] = useState([]);
+  const [receiver_id, setReceiver_id] = useState();
 
   const updateCheckLogin = () => {
     setCheckLogin(true);
+    setCurrentUser(user);
   };
 
   /* * */

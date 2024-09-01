@@ -10,7 +10,7 @@
   padding: 20px;
   border: 2px solid #ff007b;
   border-radius: 25px;
-  margin-right: 1.5%;
+  margin-right: 1%;
 }
 
 .logo {
@@ -58,6 +58,13 @@
   gap: 10px;
 }
 
+.menu-item .nav_link{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 10px;
+}
+
 .vip-section {
   background-color: pink;
   padding: 10px;
@@ -83,6 +90,7 @@
   position: relative;
   transform-origin: center;
   gap: 8px;
+  cursor: pointer;
 }
 
 .user:nth-child(1) {

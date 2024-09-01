@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "./UserProfile_Main.css";
 import My_profile from "./My_profile";
 import Interests from "./Interests";
@@ -7,45 +8,155 @@ import Photos from "./Photos";
 import Hobbies from "./Hobbies";
 import PhotoUploadPopup from "./PhotoUploadPopup";
 
-function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
-	const [user_id] = useState(5); //  for testing purposes @@@@@@@@@@@
+function UserProfile_Main({
+	currentUser,
+	// currentUserProfile,
+	setCurrentUserProfile,
+	handleAvatarClick,
+	receiver_id,
+}) {
+	// console.log("currentUser:", currentUser.user_id);
+	const [user_id] = useState(currentUser.user_id);
 
 	const [photos, setPhotos] = useState(null);
 	const [activeTab, setActiveTab] = useState("My profile");
+	const [profileToDisplay, setProfileToDisplay] = useState(null);
+	const [error, setError] = useState("");
+	const [showChat, setShowChat] = useState("pending");
+
+	//const [receiver_id, setReceiver_id] = useState(5); // for testing purposes @@@@@@@@@@@
+
+	// const updateShowChat = (item) => {
+		
+	// };
+
+	//----------------------------------------------------------------
+	//         check status friend request
+	const getStatus = async () => {
+
+		if ( user_id && receiver_id ) {
+			try {
+				const response = await axios.get(
+					"http://localhost:5000/friend-request-status",
+					{
+						params: {
+							sender_id: user_id,
+							receiver_id: receiver_id,
+						},
+					}
+				);
+				setShowChat(response.data.status);
+				console.log("response.data.status =" + response.data.status);
+				setError("");
+			} catch (err) {
+				setError("Failed to fetch the status");
+				setShowChat("pending");
+			}
+
+			// if (showChat === undefined) {
+			// 	setShowChat("accepted");
+			// }
+		}
+	};
+
+	useEffect(() => {
+		if( user_id === receiver_id){
+			setShowChat("pending");
+		}else{
+			getStatus();
+		}	
+	}, [receiver_id]);
+
+	useEffect(() => {
+		console.log("^^^^^^^^^^^^^^^^^^^^^^");
+		console.log("ShowChat : ", showChat);
+		console.log("ShowChat : ", showChat);
+		console.log("ShowChat : ", showChat);
+		console.log("-----------------------");
+
+	}, [showChat]);
+	//----------------------------------------------------------------
+
+	useEffect(() => {
+		// if (user_id !== receiver_id) {
+		// Fetch user profile when component mounts
+		if (receiver_id) {
+			const fetchUserProfile = async () => {
+				try {
+					const response = await axios.get(
+						"http://localhost:5000/profile",
+						{
+							params: {
+								user_id: receiver_id, // ارسال user_id به عنوان پارامتر
+							},
+						}
+					);
+					setProfileToDisplay(response.data);
+				} catch (err) {
+					if (err.response && err.response.data) {
+						setError(err.response.data.message);
+					} else {
+						setError(
+							"An error occurred while fetching the profile."
+						);
+					}
+				}
+			};
+
+			fetchUserProfile();
+		}
+		// } else {
+		// 	setProfileToDisplay(currentUserProfile);
+		// }
+	}, [receiver_id]);
+
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	//                  tester
+	// useEffect(() => {
+	// console.log("user_id : ");
+	// console.log(user_id);
+	// console.log("receiver_id : " + receiver_id);
+	// console.log("currentUserProfile :");
+	// console.log(currentUserProfile);
+	// console.log("profileToDisplay :");
+	// console.log(profileToDisplay);
+	// }, [currentUserProfile]);
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 	//*********************************************************************** */
 	//                checking for friend request
 	//--------------------------------------------------------------------------
 	const [friendRequest, setFriendRequest] = useState(null);
 
-	const [receiver_id] = useState(1); // for testing purposes @@@@@@@@@@@
-
 	//----------------------------------------
 	//          Get friend request status
 	const fetchFriendRequestStatus = async () => {
-		try {
-			const response = await axios.get(
-				`http://localhost:5000/friend-request-status`,
-				{
-					params: {
-						sender_id: user_id,
-						receiver_id: receiver_id,
-					},
-				}
-			);
-
-			const data = response.data; // دریافت داده‌ها از پاسخ
-
-			if (data) {
-				// بررسی اینکه داده‌ای موجود است
-				setFriendRequest(data);
-			} else {
-				setFriendRequest({ status: "rejected" }); // اگر هیچ داده‌ای موجود نبود
-			}
-		} catch (error) {
-			console.error("Error fetching friend request status:", error);
-			setFriendRequest({ status: "rejected" });
+		if (!user_id || !receiver_id){
+			return null;
 		}
+			try {
+				const response = await axios.get(
+					`http://localhost:5000/friend-request-status`,
+					{
+						params: {
+							sender_id: user_id,
+							receiver_id: receiver_id,
+						},
+					}
+				);
+
+				const data = response.data; // دریافت داده‌ها از پاسخ
+
+				if (data) {
+					// بررسی اینکه داده‌ای موجود است
+					setFriendRequest(data);
+				} else {
+					setFriendRequest({ status: "rejected" }); // اگر هیچ داده‌ای موجود نبود
+				}
+			} catch (error) {
+				// console.error("Error fetching friend request status:", error);
+				setFriendRequest({ status: "rejected" });
+			}
 	};
 
 	// استفاده از تابع درون useEffect
@@ -56,6 +167,8 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 	//-------------------------------------------------------------------------
 	//    Set image for friend request status
 	const getImageSrc = () => {
+		// let new_Status="";
+
 		// بررسی می‌کنیم که آیا friendRequest یک آرایه است و حداقل یک عنصر دارد
 		if (Array.isArray(friendRequest) && friendRequest.length > 0) {
 			// پیدا کردن درخواست ارسال‌شده از user_id
@@ -76,38 +189,22 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 				}
 			}
 
+			// updateShowChat(userRequest.status);
+
 			// اگر درخواست ارسال‌شده از سمت user_id وجود نداشته باشد، وضعیت پیش‌فرض
 			return "./images/heart.png";
 		} else {
 			// اگر friendRequest آرایه‌ای از درخواست‌ها نباشد یا خالی باشد
 			return "./images/heart.png";
 		}
+
+		// setShowChat(new_Status);
 	};
-
-	//@@@@@@@@@@@ => old code <= @@@@@@@@@@@@@@@@@@@@@@@
-	// تعیین تصویر بر اساس وضعیت
-	// const getImageSrc = () => {
-	// 	if (friendRequest && friendRequest.status === "accepted") {
-	// 		return "./images/heart-accepted.png";
-	// 	}
-
-	// 	if (friendRequest && 
-	// 		friendRequest.status === "pending" && 
-	// 		friendRequest.sender_id === user_id) {
-	// 		return "./images/heart-red.png";
-	// 	} else {
-	// 		return "./images/heart.png";
-	// 	}
-
-	// 	if (friendRequest && friendRequest.status === "rejected") {
-	// 		return "./images/heart.png";
-	// 	}
-	// };
 
 	//---------------------------------------------
 	//        Update friend request status
 	// تابع برای مدیریت کلیک روی تصویر
-	
+
 	const handleFriendRequestClick = async () => {
 		try {
 			let newStatus;
@@ -143,7 +240,7 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 				);
 
 				let receiver_status_rejected = true;
-				
+
 				if (Array.isArray(friendRequest) && friendRequest.length > 1) {
 					// پیدا کردن ایندکس آبجکت‌هایی که شرایط مشخص شده را دارند
 					const index_obj_sender = friendRequest.findIndex(
@@ -166,13 +263,14 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 
 					existingRequest = friendRequest[index_obj_sender];
 
-					console.log("index_obj_sender : " + index_obj_sender);
-					console.log("index_obj_receiver : " + index_obj_receiver);
-					console.log("receiver_status_rejected : " + receiver_status_rejected);
+					// console.log("index_obj_sender : " + index_obj_sender);
+					// console.log("index_obj_receiver : " + index_obj_receiver);
+					// console.log(
+					// 	"receiver_status_rejected : " + receiver_status_rejected
+					// );
 				}
 
-				
-				console.log(existingRequest);
+				// console.log(existingRequest);
 
 				if (existingRequest) {
 					if (existingRequest.sender_id === user_id) {
@@ -189,7 +287,7 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 							receiver_status_rejected
 						) {
 							newStatus = "pending"; // اگر وضعیت فعلی "rejected" است، باید به "pending" برگردد
-						} else { 
+						} else {
 							newStatus = "accepted"; // اگر وضعیت فعلی "rejected" است، باید به "pending" برگردد
 						}
 					} else if (existingRequest.sender_id === receiver_id) {
@@ -210,25 +308,8 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 				// اگر هیچ درخواست دوستی موجود نباشد
 				newStatus = "pending"; // وضعیت پیش‌فرض
 			}
-			//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-			// تعیین وضعیت جدید بر اساس وضعیت فعلی
-			// if (
-			// 	friendRequest?.status === "pending" &&
-			// 	friendRequest?.sender_id === user_id
-			// ) {
-			// 	newStatus = "rejected";
-			// } else if (
-			// 	friendRequest?.status === "pending" &&
-			// 	friendRequest?.sender_id === receiver_id
-			// ) {
-			// 	newStatus = "accepted";
-			// } else if (friendRequest?.status === "rejected") {
-			// 	newStatus = "pending";
-			// } else if (friendRequest?.status === "accepted") {
-			// 	newStatus = "rejected";
-			// } else {
-			// 	newStatus = "pending"; // اگر هیچ درخواستی وجود ندارد، وضعیت اولیه "pending" است
-			// }
+
+			// updateShowChat(newStatus);
 
 			const response = await axios.post(
 				"http://localhost:5000/update-friend-request-status",
@@ -239,21 +320,26 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 				}
 			);
 
-			console.log("newStatus : ", newStatus);
+			// console.log("newStatus : ", newStatus);
 			fetchFriendRequestStatus();
 		} catch (error) {
 			console.error("Error updating friend request status:", error);
 		}
+
+		getStatus();
 	};
 	//----------------------
 
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	// --- testing ---
 	useEffect(() => {
-		console.log(friendRequest);
-		console.log("sender_id: ", user_id);
-		console.log("receiver_id: ", receiver_id);
-		// console.log(`sender_id: ${user_id`);
+		// console.log(friendRequest);
+		// console.log("sender_id: ", user_id);
+		// console.log("receiver_id: ", receiver_id);
+		// console.log(`showChat: ${showChat}`);
 	}, [friendRequest]);
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 	//--------------------------------------------------------------------------
 	//                ending friend request
 	//*********************************************************************** */
@@ -269,9 +355,9 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 	//------------------------------------------------------------------------------
 	//  Get photos user
 	useEffect(() => {
-		if (user_id) {
+		if (receiver_id) {
 			axios
-				.get(`http://localhost:5000/photos/${user_id}`)
+				.get(`http://localhost:5000/photos/${receiver_id}`)
 				.then((res) => {
 					setPhotos(res.data);
 				})
@@ -279,7 +365,7 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 					console.error("Error fetching photos:", err);
 				});
 		}
-	}, [user_id]);
+	}, [receiver_id]);
 
 	//------------------------------------------------------------------------------
 	// یک تابع برای مدیریت خطا در بارگذاری تصویر
@@ -289,140 +375,192 @@ function UserProfile_Main({ profile, setProfile, handleAvatarClick }) {
 
 	return (
 		<div className="user-profile">
-			<div className="header">
-				<div className="user-info">
-					<img
-						src={`http://localhost:5000${profile.profile_picture_url}`}
-						alt="User Avatar"
-						className="avatar"
-						// key={profile.user_id}
-					/>
-					<p className="user-name">
-						{profile.first_name} {profile.last_name},{" "}
-						{new Date().getFullYear() -
-							new Date(profile.birthdate).getFullYear()}
-					</p>
-					<img
-						className="img_send_request"
-						key={receiver_id}
-						src={getImageSrc()}
-						alt="Friend Request Status"
-						onClick={handleFriendRequestClick}
-					/>
-				</div>
-			</div>
-
-			<div className="tabs_images">
-				{photos ? (
-					<>
-						{/*  ---------------------------------------------------------  */}
-						{photos[0] && photos[0].photo_url ? ( // بررسی وجود photo_url
+			{profileToDisplay != null ? (
+				<>
+					<div className="header">
+						<div className="user-info">
 							<img
-								src={`http://localhost:5000/images/${photos[0].photo_url}`}
+								src={
+									profileToDisplay.profile_picture_url
+										? `http://localhost:5000${profileToDisplay.profile_picture_url}`
+										: "./images/user.png"
+								}
 								alt="User Avatar"
-								className="image-user"
-								onError={handleImageError}
+								className="avatar"
+								// key={profile.user_id}
 							/>
-						) : (
+							<p className="user-name">
+								{profileToDisplay.first_name &&
+								profileToDisplay.last_name
+									? `${profileToDisplay.first_name} ${profileToDisplay.last_name}`
+									: profileToDisplay.username}
+								,{" "}
+								{new Date().getFullYear() -
+									new Date(
+										profileToDisplay.birthdate
+									).getFullYear()}
+							</p>
+							{showChat === "accepted" ? (
+								<>
+									<Link className="nav_link" to="/chat">
+										<img
+											className="icons"
+											src="./images/msg.png"
+										/>
+									</Link>
+								</>
+							) : null}
+							{user_id !== receiver_id ? (
+								<img
+									className="img_send_request"
+									key={receiver_id}
+									src={getImageSrc()}
+									alt="Friend Request Status"
+									onClick={handleFriendRequestClick}
+								/>
+							) : null}
+						</div>
+					</div>
+
+					<div className="tabs_images">
+						{photos ? (
+							<>
+								{/*  ---------------------------------------------------------  */}
+								{photos[0] && photos[0].photo_url ? ( // بررسی وجود photo_url
+									<img
+										src={`http://localhost:5000/images/${photos[0].photo_url}`}
+										alt="User Avatar"
+										className="image-user"
+										onError={handleImageError}
+									/>
+								) : (
+									<img
+										src="./images/user.png"
+										alt="Default User Avatar"
+										className="image-user"
+									/>
+								)}
+								{/*  ---------------------------------------------------------  */}
+								{photos[1] && photos[1].photo_url ? (
+									<img
+										src={`http://localhost:5000/images/${photos[1].photo_url}`}
+										alt="User Avatar"
+										className="image-user"
+										onError={handleImageError}
+									/>
+								) : (
+									<img
+										src="./images/user.png"
+										alt="Default User Avatar"
+										className="image-user"
+									/>
+								)}
+								{/*  ---------------------------------------------------------  */}
+								{photos[2] && photos[2].photo_url ? (
+									<img
+										src={`http://localhost:5000/images/${photos[2].photo_url}`}
+										alt="User Avatar"
+										className="image-user"
+										onError={handleImageError}
+									/>
+								) : (
+									<img
+										src="./images/user.png"
+										alt="Default User Avatar"
+										className="image-user"
+									/>
+								)}
+							</>
+						) : null}
+
+						{/* ------------------ upload photo ---------------------------- */}
+						{user_id === receiver_id ? (
 							<img
-								src="./images/user.png"
-								alt="Default User Avatar"
-								className="image-user"
+								src="./images/upload-image.png"
+								alt="Upload User Image"
+								className="upload-image-user"
+								onClick={openPopup}
+							/>
+						) : null}
+						<PhotoUploadPopup
+							receiver_id={receiver_id}
+							showPopup={showPopup}
+							closePopup={closePopup}
+							setPhotos={setPhotos}
+						/>
+						{/* ------------------------------------------------------------ */}
+					</div>
+
+					<div className="tabs">
+						<div
+							className={`tab ${
+								activeTab === "My profile" ? "active" : ""
+							}`}
+							onClick={() => handleTabClick("My profile")}
+						>
+							Profile
+						</div>
+						<div
+							className={`tab ${
+								activeTab === "Interests" ? "active" : ""
+							}`}
+							onClick={() => handleTabClick("Interests")}
+						>
+							Interests
+						</div>
+						<div
+							className={`tab ${
+								activeTab === "Hobbies" ? "active" : ""
+							}`}
+							onClick={() => handleTabClick("Hobbies")}
+						>
+							Hobbies
+						</div>
+						<div
+							className={`tab ${
+								activeTab === "Photos" ? "active" : ""
+							}`}
+							onClick={() => handleTabClick("Photos")}
+						>
+							Photos
+						</div>
+					</div>
+
+					<div className="profile-content">
+						{activeTab === "My profile" && (
+							<My_profile
+								user_id={user_id}
+								receiver_id={receiver_id}
+								profileToDisplay={profileToDisplay}
+								setProfileToDisplay={setProfileToDisplay}
+								// setCurrentUserProfile={setCurrentUserProfile}
+								handleAvatarClick={handleAvatarClick}
 							/>
 						)}
-						{/*  ---------------------------------------------------------  */}
-						{photos[1] && photos[1].photo_url ? (
-							<img
-								src={`http://localhost:5000/images/${photos[1].photo_url}`}
-								alt="User Avatar"
-								className="image-user"
-								onError={handleImageError}
-							/>
-						) : (
-							<img
-								src="./images/user.png"
-								alt="Default User Avatar"
-								className="image-user"
+						{activeTab === "Interests" && (
+							<Interests
+								user_id={user_id}
+								receiver_id={receiver_id}
 							/>
 						)}
-						{/*  ---------------------------------------------------------  */}
-						{photos[2] && photos[2].photo_url ? (
-							<img
-								src={`http://localhost:5000/images/${photos[2].photo_url}`}
-								alt="User Avatar"
-								className="image-user"
-								onError={handleImageError}
-							/>
-						) : (
-							<img
-								src="./images/user.png"
-								alt="Default User Avatar"
-								className="image-user"
+						{activeTab === "Hobbies" && (
+							<Hobbies
+								user_id={user_id}
+								receiver_id={receiver_id}
 							/>
 						)}
-					</>
-				) : null}
-
-				{/* ------------------ upload photo ---------------------------- */}
-				<img
-					src="./images/upload-image.png"
-					alt="Upload User Image"
-					className="upload-image-user"
-					onClick={openPopup}
-				/>
-				<PhotoUploadPopup
-					showPopup={showPopup}
-					closePopup={closePopup}
-					setPhotos={setPhotos}
-				/>
-				{/* ------------------------------------------------------------ */}
-			</div>
-
-			<div className="tabs">
-				<div
-					className={`tab ${
-						activeTab === "My profile" ? "active" : ""
-					}`}
-					onClick={() => handleTabClick("My profile")}
-				>
-					Profile
-				</div>
-				<div
-					className={`tab ${
-						activeTab === "Interests" ? "active" : ""
-					}`}
-					onClick={() => handleTabClick("Interests")}
-				>
-					Interests
-				</div>
-				<div
-					className={`tab ${activeTab === "Hobbies" ? "active" : ""}`}
-					onClick={() => handleTabClick("Hobbies")}
-				>
-					Hobbies
-				</div>
-				<div
-					className={`tab ${activeTab === "Photos" ? "active" : ""}`}
-					onClick={() => handleTabClick("Photos")}
-				>
-					Photos
-				</div>
-			</div>
-
-			<div className="profile-content">
-				{activeTab === "My profile" && (
-					<My_profile
-						profile={profile}
-						setProfile={setProfile}
-						handleAvatarClick={handleAvatarClick}
-					/>
-				)}
-				{activeTab === "Interests" && <Interests />}
-				{activeTab === "Hobbies" && <Hobbies />}
-				{activeTab === "Photos" && (
-					<Photos photos={photos} setPhotos={setPhotos} />
-				)}
-			</div>
+						{activeTab === "Photos" && (
+							<Photos
+								user_id={user_id}
+								receiver_id={receiver_id}
+								photos={photos}
+								setPhotos={setPhotos}
+							/>
+						)}
+						{/* photos, setPhotos */}
+					</div>
+				</>
+			) : null}
 		</div>
 	);
 }

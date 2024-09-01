@@ -1,4 +1,9 @@
 .App {
+<<<<<<< HEAD
     background-color: #212121;
     max-width: 99vw;
+=======
+    background-color: rgb(114, 114, 114);
+    width: 100vw;
+>>>>>>> e0bc5e2c745f289e54fd23332ced664febc6e0cc
 }

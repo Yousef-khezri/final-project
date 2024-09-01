@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
+import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import DropDown from "./DropDown";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +11,9 @@ export default function Header({ checkLogin }) {
   const navigateTo = useNavigate();
 
   const handelClickDiamond = () => {
-    if(checkLogin === true){
-      navigateTo('/diamond-page');
-    }else{
+    if (checkLogin === true) {
+      navigateTo("/diamond-page");
+    } else {
       alert("Bitte melde dich ein!");
     }
   };
@@ -37,57 +38,34 @@ export default function Header({ checkLogin }) {
     >
       {windowSize > 450 ? (
         <nav className="navbar">
-          <div
-            className="nav_link"
-            onClick={navigateTo('/')}
-          >
+          <div className="nav_link" onClick={navigateTo("/")}>
             Home
           </div>
-          <div
-            className="nav_link"
-            onClick={navigateTo('/about-us')}
-          >
+          <div className="nav_link" onClick={navigateTo("/about-us")}>
             About us
           </div>
-          <div
-            className="nav_link"
-            onClick={handelClickDiamond}
-          >
+          <div className="nav_link" onClick={handelClickDiamond}>
             Diamond
           </div>
-          <div
-            className="nav_link"
-            
-          >
-            Our Team
-          </div>
-          <a
-            className="nav_link"
-            
-          >
-            Contact
-          </a>
+          <div className="nav_link">Our Team</div>
+          <a className="nav_link">Contact</a>
           {!checkLogin ? (
-            <a
-            className="nav_link"
-            href="/login-register"
-            target="_blank"
-          >
-            Signin/Signup
-          </a>
+            <Link className="nav_link" to="/login-register">
+              Signin/Signup
+            </Link>
           ) : (
             <a
-            className="nav_link"
-            href="http://localhost:5000/logout"
-            target="_blank"
-          >
-            Logout
-          </a>
+              className="nav_link"
+              href="http://localhost:5000/logout"
+              target="_blank"
+            >
+              Logout
+            </a>
           )}
         </nav>
       ) : (
         <div className="toggleBox">
-         <DropDown />
+          <DropDown />
         </div>
       )}
     </header>

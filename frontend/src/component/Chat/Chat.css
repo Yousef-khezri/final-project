@@ -1,5 +1,9 @@
 
 .chat {
-    margin: 0 8%;
+    width: 100%;
+    padding: 0 3%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: rgb(114, 114, 114);
 }
