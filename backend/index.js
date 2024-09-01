@@ -12,6 +12,7 @@ const socketIO = require("socket.io");
 
 const app = express();
 const PORT = 5000;
+/* das ist mein PORT für backend */
 
 app.use(bodyParser.json());
 app.use(cors());

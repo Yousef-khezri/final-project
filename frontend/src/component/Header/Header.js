@@ -2,10 +2,20 @@ import React, { useState, useEffect } from "react";
 import "./Header.css";
 import { Button } from "react-bootstrap";
 import DropDown from "./DropDown";
+import { useNavigate } from "react-router-dom";
 
 export default function Header({ checkLogin }) {
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const [showNavbar, setShowNavbar] = useState(false);
+  const navigateTo = useNavigate();
+
+  const handelClickDiamond = () => {
+    if(checkLogin === true){
+      navigateTo('/diamond-page');
+    }else{
+      alert("Bitte melde dich ein!");
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,38 +37,33 @@ export default function Header({ checkLogin }) {
     >
       {windowSize > 450 ? (
         <nav className="navbar">
-          <a
+          <div
             className="nav_link"
-            href="http://localhost:3000/"
-            target="_blank"
+            onClick={navigateTo('/')}
           >
             Home
-          </a>
-          <a
+          </div>
+          <div
             className="nav_link"
-            href="http://localhost:3000/about-us"
-            target="_blank"
+            onClick={navigateTo('/about-us')}
           >
             About us
-          </a>
-          <a
+          </div>
+          <div
             className="nav_link"
-            href=""
-            target="_blank"
+            onClick={handelClickDiamond}
           >
-            Galery
-          </a>
-          <a
+            Diamond
+          </div>
+          <div
             className="nav_link"
-            href=""
-            target="_blank"
+            
           >
             Our Team
-          </a>
+          </div>
           <a
             className="nav_link"
-            href="../src/componente/Home/Home.js"
-            target="_blank"
+            
           >
             Contact
           </a>

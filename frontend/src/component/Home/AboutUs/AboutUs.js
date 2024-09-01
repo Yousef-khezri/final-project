@@ -2,6 +2,7 @@ import React from "react";
 import "./AboutUs.css";
 
 function AboutUs() {
+   /* test Adrijana */
   return (
     <div className="A-container">
       <h1>Mehr über uns</h1>

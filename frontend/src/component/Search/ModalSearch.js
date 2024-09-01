@@ -16,6 +16,8 @@ function ModalSearch() {
   const [location, setLocation] = useState(null);
   const [userProfiles, setUserProfiles] = useState([]);
 
+  /* test Adrijana */
+
   useEffect(() => {
     console.log("gender:", gender);
     console.log("minAge:", minAge);

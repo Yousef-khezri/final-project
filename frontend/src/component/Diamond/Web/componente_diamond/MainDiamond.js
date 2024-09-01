@@ -5,6 +5,7 @@ import Axios from "axios";
 function MainDiamond() {
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const [userProfiles, setUserProfiles] = useState([]);
+  /* myProfile ist für Test */
   const myProfile = {
     user_id: 2,
     gender: "female",

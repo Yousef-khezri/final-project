@@ -18,6 +18,7 @@ function App() {
     setCheckLogin(true);
   };
 
+  /* * */
   return (
     <div className="App">
       <div className="content">
