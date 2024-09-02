@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
 const Sidebar = ({ currentUser, handleAvatarClick, setReceiver_id }) => {
-	// const navigate = useNavigate();
+	const navigate = useNavigate();
 	// console.log(currentUser);
 
 	// useEffect(() => {
@@ -19,6 +19,23 @@ const Sidebar = ({ currentUser, handleAvatarClick, setReceiver_id }) => {
 	// when clicked button chat
 	const clickStartChat = () => {
 		setReceiver_id(0); // اجرای تابع دلخواه شما
+	};
+	//----------------------------------------------------------------
+	//     clicked Diamond
+	const clickedDiamond = () => {
+		navigate("/diamond-page");
+	};
+	//----------------------------------------------------------------
+	//       /received-requests
+	//     clicked Diamond
+	const clickedRequests = () => {
+		navigate("/received-requests");
+	};
+	//----------------------------------------------------------------
+	//        /search-page
+	//       clicked Search
+	const clickedSearch = () => {
+		navigate("/search-page");
 	};
 	//----------------------------------------------------------------
 
@@ -65,19 +82,19 @@ const Sidebar = ({ currentUser, handleAvatarClick, setReceiver_id }) => {
 						<div className="menu-chat">Chat</div>
 					</Link>
 				</div>
-				<div className="menu-item">
+				<div className="menu-item" onClick={clickedRequests}>
 					<img className="icons" src="./images/heart.png" />
-					<div className="menu-like">Like</div>
+					<div className="menu-like">Requests</div>
 				</div>
-				<div className="menu-item">
+				<div className="menu-item" onClick={clickedDiamond}>
 					<img className="icons" src="./images/diamond.png" />
 					<div className="menu-text1">Diamond</div>
 				</div>
-				<div className="menu-item">
+				<div className="menu-item" onClick={clickedSearch}>
 					<img className="icons" src="./images/question-mark.png" />
 					<div className="menu-text2">Search</div>
 				</div>
-				<div className="vip-section">VIP</div>
+				{/* <div className="vip-section">VIP</div> */}
 			</div>
 			{/* -------------------------------------------------------------------- */}
 			{/*                         Suggested users                              */}

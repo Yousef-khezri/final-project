@@ -1,0 +1,74 @@
+.containerOT{
+    width: 100%;
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 180, 151);
+}
+.firstOTsec{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.p1{
+    font-size: 1.6rem;
+    font-weight: 500;
+    font-family: fantasy;
+}
+.p2{
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-decoration: underline;
+}
+.secondOTsec{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+}
+.boxOT{
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    color: white;
+}
+.leftOT{
+    width: 35%;
+    height: 25vh;
+    border-radius: 15px;
+    background-color: black;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+.claudia{
+    width: 40%;
+    height: 100%;
+    margin-right: 20px;
+}
+.rightOT{
+    width: 35%;
+    height: 25vh;
+    border-radius: 15px;
+    background-color: black;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    display: flex;
+    align-self: flex-end;
+}
+.iris{
+    width: 40%;
+    height: 100%;
+    margin-right: 20px;
+}
+.bottomText{
+    display: flex;
+    align-self: center;
+}

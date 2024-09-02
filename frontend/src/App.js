@@ -9,7 +9,15 @@ import Notfound from "./component/Notfound";
 import Chat from "./component/Chat/Chat";
 import UserProfile from "./component/UserProfile/UserProfile";
 import Diamond from "./component/Diamond/Diamond";
+import Requests from "./component/Requests/Requests";
+import Search from "./component/Search/Search";
+import Contact from "./component/Contact/Contact";
+import AboutUs from "./component/AboutUs/AboutUs";
+import OurTeam from "./component/OurTeam/OurTeam";
 // import ModalSearch from "./component/Search/ModalSearch";
+
+// Contact AboutUs OurTeam
+
 
 function App() {
 	const [checkLogin, setCheckLogin] = useState(false);
@@ -42,7 +50,6 @@ function App() {
 	// }, [checkLogin]);
 	//----------------------------------------------------------------
 
-	
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	// useEffect(() => {
 	// 	console.log("currentUser ==>");
@@ -59,7 +66,36 @@ function App() {
 						path="/"
 						element={<Home checkLogin={checkLogin} />}
 					/>
-					<Route path="/diamond-page" element={<Diamond />} />
+					<Route
+						path="/diamond-page"
+						element={
+							<Diamond
+								currentUser={currentUser}
+								setCurrentUser={setCurrentUser}
+								setReceiver_id={setReceiver_id}
+							/>
+						}
+					/>
+					<Route
+						path="/received-requests"
+						element={
+							<Requests
+								currentUser={currentUser}
+								setCurrentUser={setCurrentUser}
+								setReceiver_id={setReceiver_id}
+							/>
+						}
+					/>
+					<Route
+						path="/search-page"
+						element={
+							<Search
+								currentUser={currentUser}
+								setCurrentUser={setCurrentUser}
+								setReceiver_id={setReceiver_id}
+							/>
+						}
+					/>
 					<Route
 						path="/login-register"
 						element={
@@ -92,6 +128,10 @@ function App() {
 							/>
 						}
 					/>
+					<Route path="/Contact" element={<Contact />} />
+					<Route path="/AboutUs" element={<AboutUs />} />
+					<Route path="/OurTeam" element={<OurTeam />} />
+					
 					<Route path="/*" element={<Notfound />} />
 				</Routes>
 			</div>

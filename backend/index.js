@@ -188,7 +188,7 @@ app.post("/login", (req, res) => {
 		}
 		// حالا که کاربر معتبر است، اطلاعات اضافی را دریافت کنید
 		const queryUserProfile = `
-    SELECT first_name, last_name, profile_picture_url 
+    SELECT first_name, last_name, profile_picture_url, gender
     FROM user_profile 
     WHERE user_id = ?
   `;
@@ -206,6 +206,7 @@ app.post("/login", (req, res) => {
 				first_name: userProfile.first_name,
 				last_name: userProfile.last_name,
 				profile_picture_url: userProfile.profile_picture_url,
+				gender: userProfile.gender,
 			};
 
 			res.status(200).json({
@@ -215,12 +216,13 @@ app.post("/login", (req, res) => {
 				first_name: userProfile.first_name,
 				last_name: userProfile.last_name,
 				profile_picture_url: userProfile.profile_picture_url,
+				gender: userProfile.gender,
 			});
 		});
 	});
 });
 //----------------------------------------------------------------
-// دریافت محتویات session.user 
+// دریافت محتویات session.user
 app.get("/api/current-user", (req, res) => {
 	console.log(req.session.user);
 	// بررسی اینکه آیا user در session وجود دارد
@@ -493,34 +495,156 @@ app.get("/profile", (req, res) => {
 });
 //--------------------------------------------------------------------------
 //  برای دریافت اطلاعات کاربر بر اساس user_id  برای قسمت چت  زمانی که از پروفایل کاربر به قسمت چت میرویم
-app.post('/get-user-info', (req, res) => {
-  const { user_id } = req.body; // دریافت user_id از درخواست
+app.post("/get-user-info", (req, res) => {
+	const { user_id } = req.body; // دریافت user_id از درخواست
 
-  if (!user_id) {
-    return res.status(400).json({ message: 'user_id is required' });
-  }
+	if (!user_id) {
+		return res.status(400).json({ message: "user_id is required" });
+	}
 
-  // پرس و جو برای دریافت اطلاعات کاربر
-  const query = `
+	// پرس و جو برای دریافت اطلاعات کاربر
+	const query = `
     SELECT up.first_name, up.last_name, up.profile_picture_url, uc.username 
     FROM user_profile up
     JOIN user_credentials uc ON up.user_id = uc.id
     WHERE up.user_id = ?
   `;
 
-  db.query(query, [user_id], (err, results) => {
-    if (err) {
-      console.error('Error fetching user info:', err);
-      return res.status(500).json({ message: 'Database error', error: err });
-    }
+	db.query(query, [user_id], (err, results) => {
+		if (err) {
+			console.error("Error fetching user info:", err);
+			return res
+				.status(500)
+				.json({ message: "Database error", error: err });
+		}
 
-    if (results.length > 0) {
-      res.status(200).json(results[0]);
-    } else {
-      res.status(404).json({ message: 'User not found' });
-    }
-  });
+		if (results.length > 0) {
+			res.status(200).json(results[0]);
+		} else {
+			res.status(404).json({ message: "User not found" });
+		}
+	});
 });
+//--------------------------------------------------------------------------
+//                      get user_profile
+//
+//                   >> for Diamond page  <<
+
+app.get("/user-profiles/all/:gender", (req, res) => {
+	const { gender } = req.params;
+
+	const query = `
+    SELECT  
+      up.user_id,
+      up.first_name,
+      up.last_name,
+      up.gender,
+      up.birthdate,
+      up.location,
+      up.profile_picture_url,
+      uc.username
+    FROM
+      user_profile up
+    LEFT JOIN
+      user_credentials uc ON up.user_id = uc.id
+    WHERE
+      up.gender = ?`;
+
+	db.query(query, [gender], (err, results) => {
+		if (err) {
+			return res.status(500).json({ msg: "DB ERROR", err: err });
+		}
+
+		if (results.length === 0) {
+			return res
+				.status(404)
+				.json({ msg: `Profile not found! Table is probably empty.` });
+		}
+
+		res.status(200).json(results);
+	});
+});
+
+
+//--------------------------------------------------------------------------
+//         Get all received-requests for current user
+app.get("/user-profiles/received-requests/:receiver_id", (req, res) => {
+	const { receiver_id } = req.params;
+
+	const query = `
+        SELECT 
+    		fr.status,
+    		up.user_id,
+    		up.first_name,
+    		up.last_name,
+    		up.gender,
+    		up.birthdate,
+    		up.location,
+    		up.profile_picture_url,
+    		uc.username
+		FROM 
+    		friend_requests fr
+		JOIN 
+    		user_profile up ON fr.sender_id = up.user_id
+		JOIN 
+    		user_credentials uc ON fr.sender_id = uc.id
+		WHERE 
+    		fr.receiver_id = ? AND fr.status != 'accepted'`;
+
+	db.query(query, [receiver_id], (err, results) => {
+		if (err) {
+			return res.status(500).json({ msg: "DB ERROR", err: err });
+		}
+
+		if (results.length === 0) {
+			return res.status(404).json({
+				msg: `No pending or rejected requests found for the user with ID ${receiver_id}.`,
+			});
+		}
+
+		res.status(200).json(results);
+	});
+});
+// app.get("/user-profiles/received-requests/:receiver_id", (req, res) => {
+// 	const { receiver_id } = req.params;
+
+// 	const query = `
+//         SELECT  
+//           up.user_id,
+//           up.first_name,
+//           up.last_name,
+//           up.gender,
+//           up.birthdate,
+//           up.location,
+//           up.profile_picture_url,
+//           uc.username,
+//           fr.status
+//         FROM
+//           user_profile up
+//         LEFT JOIN
+//           user_credentials uc ON up.user_id = uc.id
+//         LEFT JOIN
+//           friend_requests fr 
+//           ON up.user_id = fr.sender_id AND fr.receiver_id = ?
+//         WHERE
+// 		(fr.receiver_id = ? AND
+//           fr.status != 'accepted')`;
+
+// 	db.query(query, [receiver_id, receiver_id], (err, results) => {
+// 		if (err) {
+// 			return res.status(500).json({ msg: "DB ERROR", err: err });
+// 		}
+
+// 		if (results.length === 0) {
+// 			return res.status(404).json({
+// 				msg: `No pending or rejected requests found for the user with ID ${receiver_id}.`,
+// 			});
+// 		}
+
+// 		res.status(200).json(results);
+// 	});
+// });
+
 //--------------------------------------------------------------------------
 //##########################################################################
 //##########################################################################
@@ -1321,9 +1445,9 @@ app.get("/friend-request-status", (req, res) => {
 	const { sender_id, receiver_id } = req.query;
 
 	// لاگ کردن sender_id و receiver_id برای بررسی
-	console.log("sender_id: ", sender_id);
-	console.log("receiver_id : ", receiver_id);
-	console.log("receiver_id: ", receiver_id);
+	// console.log("sender_id: ", sender_id);
+	// console.log("receiver_id : ", receiver_id);
+	// console.log("receiver_id: ", receiver_id);
 
 	// بررسی اینکه آیا sender_id و receiver_id تعریف شده‌اند یا نه
 	if (!sender_id || !receiver_id) {
@@ -1332,12 +1456,10 @@ app.get("/friend-request-status", (req, res) => {
 			.json({ error: "Sender ID and Receiver ID are required" });
 	}
 
-	// اجرای کوئری برای دریافت وضعیت درخواست
 	// اجرای کوئری برای دریافت وضعیت درخواست دوستی
 	const query =
 		"SELECT status FROM friend_requests WHERE sender_id = ? AND receiver_id = ?";
 	connection.execute(query, [sender_id, receiver_id], (err, results) => {
-		// بررسی اینکه آیا کوئری پایگاه داده با خطا مواجه شده است یا نه
 		if (err) {
 			console.error("Database error: ", err); // لاگ خطا برای شناسایی مشکل
 			return res.status(500).json({ error: "Database query failed" });
@@ -1548,9 +1670,119 @@ app.post("/update-friend-request-status", (req, res) => {
 		}
 	);
 });
+
+//--------------------------------------------------------------------------
+app.get("/api/friend-request-status", (req, res) => {
+	const { sender_id, receiver_id } = req.query;
+
+	const query = `
+        SELECT status 
+        FROM friend_requests 
+        WHERE sender_id = ? AND receiver_id = ? 
+        LIMIT 1
+    `;
+
+	db.query(query, [sender_id, receiver_id], (err, results) => {
+		if (err) {
+			return res.status(500).json({ error: "Database query error" });
+		}
+
+		if (results.length > 0) {
+			res.json({ status: results[0].status });
+		} else {
+			res.json({ status: "rejected" }); // اگر هیچ نتیجه‌ای پیدا نشد
+		}
+	});
+});
+//--------------------------------------------------------------------------
+//  برای قسمت function_Friend_request
+// مسیر برای بررسی درخواست دوستی کاربر آنلاین با کاربر مقابل
+// app.post('/check-friend-request', (req, res) => {
+//   const { sender_id, receiver_id } = req.body;
+
+//   const query = `
+//     SELECT sender_id, receiver_id, status
+//     FROM friend_requests
+//     WHERE sender_id = ? AND receiver_id = ?
+//   `;
+
+//   db.query(query, [sender_id, receiver_id], (err, results) => {
+//     if (err) {
+//       console.error('Error executing query', err);
+//       return res.status(500).send('Database error');
+//     }
+
+//     if (results.length > 0) {
+//       res.json(results[0]);
+//     } else {
+//       res.json({
+//         sender_id: sender_id,
+//         receiver_id: receiver_id,
+//         status: 'rejected'
+//       });
+//     }
+//   });
+// });
 //--------------------------------------------------------------------------
 //                    End friend-request
 //##########################################################################
+
+//##########################################################################
+//                   Search with filter
+//--------------------------------------------------------------------------
+app.get("/user-profiles/filtered", (req, res) => {
+	const { minAge } = req.query;
+	const { maxAge } = req.query;
+	const { gender, location } = req.query;
+	console.log("minAge:", minAge);
+	console.log("maxAge:", maxAge);
+	console.log("gender:", gender);
+	console.log("location:", location);
+
+	let query = `
+    SELECT  
+    up.user_id,
+    up.first_name,
+    up.last_name,
+    up.gender,
+    up.birthdate,
+    up.location,
+    up.profile_picture_url,
+    uc.username
+    FROM
+    user_profile up
+    LEFT JOIN
+    user_credentials uc ON up.user_id = uc.id
+    WHERE
+      gender = ?
+    AND (DATEDIFF(CURDATE(), birthdate) / 365.25) BETWEEN ? AND ?
+  `;
+
+	let queryParams = [gender, minAge, maxAge];
+
+	if (location !== null && location !== undefined) {
+		query += " AND location = ? LIMIT 6";
+		queryParams.push(location);
+	} else {
+		query += " LIMIT 6";
+	}
+
+	db.query(query, queryParams, (err, results) => {
+		if (err) {
+			return res.status(500).json({ msg: "DB ERROR", err: err });
+		}
+
+		if (!results) {
+			return res.status(400).json({ msg: `Keiner gefunden!` });
+		}
+
+		return res.status(200).json(results);
+	});
+});
+//--------------------------------------------------------------------------
+//                End Search with filter
+//##########################################################################
+
 //##########################################################################
 //--------------------------------------------------------------------------
 app.listen(PORT, () => {

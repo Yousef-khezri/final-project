@@ -1,83 +1,74 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { Button } from "react-bootstrap";
 import DropDown from "./DropDown";
 
 export default function Header({ checkLogin }) {
-  const [windowSize, setWindowSize] = useState(window.innerWidth);
-  const [showNavbar, setShowNavbar] = useState(false);
+	const [windowSize, setWindowSize] = useState(window.innerWidth);
+	const [showNavbar, setShowNavbar] = useState(false);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowSize(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+	const navigate = useNavigate();
 
-  const toggleClass = () => {
-    setShowNavbar(!showNavbar);
-  };
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowSize(window.innerWidth);
+		};
+		window.addEventListener("resize", handleResize);
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 
-  return (
+	const toggleClass = () => {
+		setShowNavbar(!showNavbar);
+	};
+
+	// <Route path="/Contact" element={<Contact />} />
+	// <Route path="/AboutUs" element={<AboutUs />} />
+	// <Route path="/OurTeam" element={<OurTeam />} />
+	//----------------------------------------------------------------
+	const clickedHome = () => {
+		navigate("/");
+	};
+	//----------------------------------------------------------------
+	const clickedAboutUs = () => {
+		navigate("/AboutUs");
+	};
+	//----------------------------------------------------------------
+	const clickedOurTeam = () => {
+		navigate("/OurTeam");
+	};
+	//----------------------------------------------------------------
+	const clickedContact = () => {
+		navigate("/Contact");
+	};
+	//----------------------------------------------------------------
+
+	return (
 		<header
 			className={windowSize > 450 ? "header showWeb" : "header showHandy"}
 		>
 			{windowSize > 450 ? (
 				<nav className="navbar">
-					<a
-						className="nav_link"
-						href="../src/componente/Home/Home.js"
-						target="_blank"
-					>
+					<div className="nav_link" onClick={clickedHome}>
 						Home
-					</a>
-					<a
-						className="nav_link"
-						href="../src/componente/Home/Home.js"
-						target="_blank"
-					>
+					</div>
+					<div className="nav_link" onClick={clickedAboutUs}>
 						About us
-					</a>
-					<a
-						className="nav_link"
-						href="../src/componente/Home/Home.js"
-						target="_blank"
-					>
-						Galery
-					</a>
-					<a
-						className="nav_link"
-						href="../src/componente/Home/Home.js"
-						target="_blank"
-					>
+					</div>
+					<div className="nav_link" onClick={clickedOurTeam}>
 						Our Team
-					</a>
-					<a
-						className="nav_link"
-						href="../src/componente/Home/Home.js"
-						target="_blank"
-					>
+					</div>
+					<div className="nav_link" onClick={clickedContact}>
 						Contact
-					</a>
+					</div>
 					{!checkLogin ? (
-						<Link
-							className="nav_link"
-							to="/login-register"
-						>
+						<Link className="nav_link" to="/login-register">
 							Signin/Signup
 						</Link>
 					) : (
-						<a
-							className="nav_link"
-							href="http://localhost:5000/logout"
-							target="_blank"
-						>
-							Logout
-						</a>
+						<div className="nav_link">Logout</div>
 					)}
 				</nav>
 			) : (
@@ -86,5 +77,5 @@ export default function Header({ checkLogin }) {
 				</div>
 			)}
 		</header>
-  );
+	);
 }

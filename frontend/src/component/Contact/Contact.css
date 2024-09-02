@@ -1,0 +1,87 @@
+.contactContainer {
+    width: 100vw;
+    height: 100vh;
+    padding: 35px;
+    background-image: linear-gradient(to top left, rgb(250, 94, 126), white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+ 
+.contactBox-1 {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+ 
+.contact-left,
+.wHours-right {
+    width: 35%;
+    height: 100%;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+ 
+.contactBox-2 {
+    width: 100%;
+    padding: 5% 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ 
+.form {
+    border: 2px solid;
+    width: 50%;
+    height: 35vh;
+    padding: 2%;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+ 
+.nameBox {
+    width: 100%;
+    padding: 1%;
+}
+ 
+.nameInput {
+    margin-left: 10px;
+}
+ 
+.textArea {
+    width: 100%;
+    padding: 1%;
+    margin: 1%;
+}
+ 
+.sendenBtn {
+    width: 100%;
+    transform: translateX(5px);
+    background-color: #DD3A5A;
+}
+ 
+.iconsSection {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    padding: 1%;
+    border-radius: 15px;
+    background-color: white;
+}
+ 
+.iconsSection a img {
+    width: 35px;
+    height: 35px;
+}

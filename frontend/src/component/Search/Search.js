@@ -1,10 +1,10 @@
 import React from 'react';
-import Diamond_Web from './Web/Diamond_Web';
+import Search_Web from "./Web/Search_Web";
 
-function Diamond({ currentUser, setCurrentUser, setReceiver_id }) {
+function Search({ currentUser, setCurrentUser, setReceiver_id }) {
 	return (
 		<div>
-			<Diamond_Web
+			<Search_Web
 				currentUser={currentUser}
 				setCurrentUser={setCurrentUser}
 				setReceiver_id={setReceiver_id}
@@ -13,4 +13,4 @@ function Diamond({ currentUser, setCurrentUser, setReceiver_id }) {
 	);
 }
 
-export default Diamond
+export default Search;
