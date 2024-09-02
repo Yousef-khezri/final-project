@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./MainDiamond.css";
+import "./MainRequests.css";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
@@ -7,39 +7,32 @@ import {
 	handleFriendRequestClick,
 } from "../../../function_Friend_request";
 
-function MainDiamond({ currentUser, setReceiver_id }) {
+function MainRequests({ currentUser, setReceiver_id }) {
 	const [windowSize, setWindowSize] = useState(window.innerWidth);
 	const [usersProfile, setUsersProfile] = useState([]);
 	const [imageSrcs, setImageSrcs] = useState({});
 
 	const navigate = useNavigate();
 
-  // console.log(currentUser);
-
 	useEffect(() => {
-		let gender;
-		if (currentUser.gender && currentUser.gender === "female") {
-			gender = "male";
-		} else {
-			gender = "female";
-		}
-
-		//  جستجو کاربران بر اساس جنسیت و برای وضعیت درخواست دوستی آیدی کاربر ارسال میکنیم
+		// ارسال درخواست به بک‌اند برای دریافت درخواست‌های دریافتی که وضعیت آنها 'accepted' نیست
 		Axios.get(
-			`http://localhost:5000/user-profiles/all/${gender}`
+			`http://localhost:5000/user-profiles/received-requests/${currentUser.user_id}`
 		)
 			.then((response) => {
 				setUsersProfile(response.data);
+				// تابع loadImages برای بارگذاری تصاویر (در صورت نیاز) به اینجا اضافه کنید
 				loadImages(response.data);
 			})
 			.catch((error) => {
-				console.error("Error fetching user profiles:", error);
+				console.error("Error fetching user received-requests:", error);
+				// setError(error);
 			});
 	}, []);
 
-	// useEffect(() => {
-	// 	console.log(usersProfile);
-	// }, [usersProfile]);
+	useEffect(() => {
+		console.log(usersProfile);
+	}, [usersProfile]);
 
 	useEffect(() => {
 		// getProfileData();
@@ -217,4 +210,4 @@ function MainDiamond({ currentUser, setReceiver_id }) {
 	);
 }
 
-export default MainDiamond;
+export default MainRequests;

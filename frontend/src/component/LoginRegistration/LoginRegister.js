@@ -21,7 +21,8 @@ function LoginRegister({ updateCheckLogin }) {
 			});
 			updateCheckLogin(response.data);
 			//console.log(response.data); // test *******************************
-			navigate("/user-profile");
+			// navigate("/user-profile");
+			navigate("/diamond-page");
 		} catch (error) {
 			console.log(error);
 			setErrorMessage("Invalid email or password");

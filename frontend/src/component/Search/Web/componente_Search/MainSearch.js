@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./MainDiamond.css";
+import "./MainSearch.css";
+import ModalSearch from "./ModalSearch";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
@@ -7,14 +8,15 @@ import {
 	handleFriendRequestClick,
 } from "../../../function_Friend_request";
 
-function MainDiamond({ currentUser, setReceiver_id }) {
+function MainSearch({ currentUser, setReceiver_id }) {
 	const [windowSize, setWindowSize] = useState(window.innerWidth);
 	const [usersProfile, setUsersProfile] = useState([]);
 	const [imageSrcs, setImageSrcs] = useState({});
+	const [show, setShow] = useState(true);
 
 	const navigate = useNavigate();
 
-  // console.log(currentUser);
+	// console.log(currentUser);
 
 	useEffect(() => {
 		let gender;
@@ -25,9 +27,7 @@ function MainDiamond({ currentUser, setReceiver_id }) {
 		}
 
 		//  جستجو کاربران بر اساس جنسیت و برای وضعیت درخواست دوستی آیدی کاربر ارسال میکنیم
-		Axios.get(
-			`http://localhost:5000/user-profiles/all/${gender}`
-		)
+		Axios.get(`http://localhost:5000/user-profiles/all/${gender}`)
 			.then((response) => {
 				setUsersProfile(response.data);
 				loadImages(response.data);
@@ -100,121 +100,124 @@ function MainDiamond({ currentUser, setReceiver_id }) {
 
 	return (
 		<main className="main">
-			{usersProfile
-				? usersProfile.map((item, index) => {
-						// const imageSrc = getImageSrc(
-						// 	currentUser.user_id,
-						// 	item.user_id
-						// );
-						return (
+			{usersProfile ? (
+				usersProfile.map((item, index) => {
+					// const imageSrc = getImageSrc(
+					// 	currentUser.user_id,
+					// 	item.user_id
+					// );
+					return (
+						<div
+							className={
+								windowSize > 1200
+									? "diamond_mainBox_big"
+									: "diamond_mainBox_small"
+							}
+							key={item.user_id}
+						>
 							<div
 								className={
 									windowSize > 1200
-										? "diamond_mainBox_big"
-										: "diamond_mainBox_small"
+										? "imageDivBig"
+										: "imageDivSmall"
 								}
-								key={item.user_id}
 							>
-								<div
-									className={
-										windowSize > 1200
-											? "imageDivBig"
-											: "imageDivSmall"
+								<img
+									onClick={() => {
+										handeleClick_ShowUserProfile(
+											item.user_id
+										);
+									}}
+									src={
+										item.profile_picture_url
+											? `http://localhost:5000${item.profile_picture_url}`
+											: "./images/user.png"
 									}
-								>
-									<img
+								/>
+								<div className="img_text">
+									<div
 										onClick={() => {
-											handeleClick_ShowUserProfile(
+											handeleClick_SendRequest(
 												item.user_id
 											);
 										}}
-										src={
-											item.profile_picture_url
-												? `http://localhost:5000${item.profile_picture_url}`
-												: "./images/user.png"
-										}
-									/>
-									<div className="img_text">
-										<div
-											onClick={() => {
-												handeleClick_SendRequest(
-													item.user_id
-												);
-											}}
-										>
-											<img
-												// className="leerH"
-												className="img_send_request"
-												key={item.user_id}
-												src={
-													imageSrcs[item.user_id] ||
-													"./images/heart.png"
-												}
-												alt="Request Status"
-											/>
-										</div>
-										<div
-											onClick={() => {
-												handeleClick_ShowUserProfile(
-													item.user_id
-												);
-											}}
-										>
-											<div>
-												<label>{item.first_name}</label>{" "}
-												<label>{item.last_name}</label>,
-												<label>{item.location}</label>
-											</div>
-											<p>
-												{new Date().getFullYear() -
-													new Date(
-														item.birthdate
-													).getFullYear()}
-											</p>
-										</div>
+									>
+										<img
+											// className="leerH"
+											className="img_send_request"
+											key={item.user_id}
+											src={
+												imageSrcs[item.user_id] ||
+												"./images/heart.png"
+											}
+											alt="Request Status"
+										/>
 									</div>
-								</div>
-								{/* right box */}
-								{windowSize > 1200 ? (
 									<div
-										className="userInfo_div"
 										onClick={() => {
 											handeleClick_ShowUserProfile(
 												item.user_id
 											);
 										}}
 									>
-										<div className="above_line">
+										<div>
 											<label>{item.first_name}</label>{" "}
-											<label>{item.last_name}</label>
-										</div>
-										<hr />
-										<div className="under_line">
-											<img src="./icons/locationDiamond.png" />
+											<label>{item.last_name}</label>,
 											<label>{item.location}</label>
 										</div>
-										<div className="under_line">
-											<img src="./icons/kalendarDiamond.png" />
-											<label>
-												{new Date().getFullYear() -
-													new Date(
-														item.birthdate
-													).getFullYear()}
-												<label> Jahre alt</label>
-											</label>
-										</div>
-										<div className="under_line">
-											<img src="./icons/genderDiamond.png" />
-											<label> {item.gender}</label>
-										</div>
+										<p>
+											{new Date().getFullYear() -
+												new Date(
+													item.birthdate
+												).getFullYear()}
+										</p>
 									</div>
-								) : null}
+								</div>
 							</div>
-						);
-				  })
-				: "Loading..."}
+							{/* right box */}
+							{windowSize > 1200 ? (
+								<div
+									className="userInfo_div"
+									onClick={() => {
+										handeleClick_ShowUserProfile(
+											item.user_id
+										);
+									}}
+								>
+									<div className="above_line">
+										<label>{item.first_name}</label>{" "}
+										<label>{item.last_name}</label>
+									</div>
+									<hr />
+									<div className="under_line">
+										<img src="./icons/locationDiamond.png" />
+										<label>{item.location}</label>
+									</div>
+									<div className="under_line">
+										<img src="./icons/kalendarDiamond.png" />
+										<label>
+											{new Date().getFullYear() -
+												new Date(
+													item.birthdate
+												).getFullYear()}
+											<label> Jahre alt</label>
+										</label>
+									</div>
+									<div className="under_line">
+										<img src="./icons/genderDiamond.png" />
+										<label> {item.gender}</label>
+									</div>
+								</div>
+							) : null}
+						</div>
+					);
+				})
+			) : (
+				<ModalSearch setUsersProfile={setUsersProfile}
+				show={show} setShow={setShow} />
+			)}
 		</main>
 	);
 }
 
-export default MainDiamond;
+export default MainSearch;

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Sidebar from "../../Chat/Web/ComponentsChat/Sidebar";
 import Avatar_Upload_Popup from "../../UserProfile/Web/component/Avatar_Upload_Popup";
-import MainDiamond from "./componente_diamond/MainDiamond";
-import "../Web/Diamond_Web.css";
+import MainSearch from "./componente_Search/MainSearch";
+import "../Web/Search_Web.css";
 
-function Diamond_Web({ currentUser, setCurrentUser, setReceiver_id }) {
+function Search_Web({ currentUser, setCurrentUser, setReceiver_id }) {
 	const [showPopup, setShowPopup] = useState(false);
 
 	const handleAvatarClick = () => {
@@ -22,7 +22,7 @@ function Diamond_Web({ currentUser, setCurrentUser, setReceiver_id }) {
 				handleAvatarClick={handleAvatarClick}
 				setReceiver_id={setReceiver_id}
 			/>
-			<MainDiamond
+			<MainSearch
 				currentUser={currentUser}
 				setReceiver_id={setReceiver_id}
 			/>
@@ -36,4 +36,4 @@ function Diamond_Web({ currentUser, setCurrentUser, setReceiver_id }) {
 	);
 }
 
-export default Diamond_Web;
+export default Search_Web;
